@@ -10,8 +10,8 @@ DEVRAJ SINGH
 
 Usage:
 After git cloning this project, perform this steps in comman line:  
-```mvn clean install```   
+```mvn clean compile```
+```mvn clean test```
 
-```java -jar target/cabby-1.0.jar```   
-
-Then you can access the spring-boot url in *localhost:8080/hello* , just to see hello world
+You can simply run dummy application:
+```java src/main/java/com/dal/cabby/Application.java```
