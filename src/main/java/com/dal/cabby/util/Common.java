@@ -1,6 +1,7 @@
 package com.dal.cabby.util;
 
 import java.util.Scanner;
+
 /*
     This class will contain all the common methods which can be reused across multiple
     places in the project.
