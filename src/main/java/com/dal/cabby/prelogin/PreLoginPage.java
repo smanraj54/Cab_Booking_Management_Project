@@ -3,7 +3,6 @@ package com.dal.cabby.prelogin;
 import com.dal.cabby.admin.Admin;
 import com.dal.cabby.customer.Customer;
 import com.dal.cabby.driver.Driver;
-import com.dal.cabby.util.Common;
 
 import java.util.Scanner;
 
@@ -19,6 +18,7 @@ public class PreLoginPage {
     public void welcomeMessage() {
         System.out.println("***** Cabby App: A one stop app for your cab booking *****\n");
     }
+
     public void page1() {
         System.out.println("Are you: \n1: Admin\n2: Driver\n3: Customer");
         Scanner sc = new Scanner(System.in);
