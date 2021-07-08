@@ -9,8 +9,18 @@ public class DBHelper {
     Connection connection;
     String connUrl;
     String url = "jdbc:mysql://%s:3306/%s?useSSL=false";
+    private String DEFAULT_MYSQL_USERNAME = "root";
+    private String DEFAULT_MYSQL_PASSWORD = "mysql@789";
+    private String DEFAULT_MYSQL_DATABASE = "cabby";
 
-    DBHelper(String user, String password) {
+    public DBHelper() {
+        this.database = DEFAULT_MYSQL_DATABASE;
+        this.user = DEFAULT_MYSQL_USERNAME;
+        this.password = DEFAULT_MYSQL_PASSWORD;
+        connUrl = String.format(url, "localhost", this.database);
+    }
+
+    public DBHelper(String user, String password) {
         this.database = "cabby";
         this.user = user;
         this.password = password;
