@@ -16,7 +16,7 @@ public class Registration {
         String email = "";
         String password = "";
         String confirmPassword = "";
-        String phoneNumber = "";
+        //String phoneNumber = "";
         String userName = "";
         ValidateInput validateInput = new ValidateInput();
 
@@ -48,7 +48,7 @@ public class Registration {
                 break;
             }
             else{
-                System.err.println("\t\tConfirm password does't match !!!");
+                System.err.println("\t\tConfirm password doesn't match !!!");
                 try {
                     sleep(100);
                 } catch (InterruptedException e) {
@@ -56,8 +56,6 @@ public class Registration {
                 }
             }
         }
-
-
         sc.close();
     }
 
