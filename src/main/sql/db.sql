@@ -31,8 +31,6 @@ CREATE TABLE IF NOT EXISTS trips (
     trip_id INT AUTO_INCREMENT PRIMARY KEY,
     driver_id INT,
     cust_id INT,
-    driver_rating DOUBLE,
-    customer_rating DOUBLE,
     trip_amount DOUBLE,
     distance_covered DOUBLE,
     trip_start_time TIMESTAMP,
@@ -44,3 +42,38 @@ CREATE TABLE IF NOT EXISTS trips (
     CONSTRAINT fk_customer FOREIGN KEY (cust_id) REFERENCES customer(cust_id)
 );
 
+CREATE TABLE IF NOT EXISTS customer_ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cust_id int,
+    trip_id int,
+    rating int,
+    FOREIGN KEY (cust_id) REFERENCES customer(cust_id),
+    FOREIGN KEY (trip_id) REFERENCES trips(trip_id)
+);
+
+CREATE TABLE IF NOT EXISTS driver_ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    driver_id int,
+    trip_id int,
+    rating int,
+    FOREIGN KEY (driver_id) REFERENCES driver(driver_id),
+    FOREIGN KEY (trip_id) REFERENCES trips(trip_id)
+);
+
+CREATE TABLE IF NOT EXISTS customer_score (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cust_id int,
+    trip_id int,
+    score double,
+    FOREIGN KEY (cust_id) REFERENCES customer(cust_id),
+    FOREIGN KEY (trip_id) REFERENCES trips(trip_id)
+);
+
+CREATE TABLE IF NOT EXISTS driver_score (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    driver_id int,
+    trip_id int,
+    score double,
+    FOREIGN KEY (driver_id) REFERENCES driver(driver_id),
+    FOREIGN KEY (trip_id) REFERENCES trips(trip_id)
+);
