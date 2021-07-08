@@ -1,5 +1,6 @@
 package com.dal.cabby.admin;
 
+import com.dal.cabby.profileManagement.Registration;
 import com.dal.cabby.util.Common;
 
 import java.util.Scanner;
@@ -45,7 +46,8 @@ public class Admin {
 
     public void register() {
         System.out.println("Welcome to Admin registration page");
-        System.out.println("Feature not implemented yet.");
+        Registration registration = new Registration();
+
     }
 
     public void forgotPassword() {
