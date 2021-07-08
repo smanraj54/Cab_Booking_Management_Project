@@ -7,10 +7,14 @@ cache:
 
 build:
   stage: build
+  tags:
+    - ugrad
   script:
     - mvn clean compile
 
 test:
   stage: test
+  tags:
+    - ugrad
   script:
     - mvn clean test
