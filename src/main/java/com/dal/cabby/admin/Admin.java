@@ -47,7 +47,6 @@ public class Admin {
     public void register() {
         System.out.println("Welcome to Admin registration page");
         Registration registration = new Registration();
-
     }
 
     public void forgotPassword() {
