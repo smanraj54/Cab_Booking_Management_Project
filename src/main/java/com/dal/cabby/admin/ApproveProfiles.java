@@ -1,10 +1,13 @@
 package com.dal.cabby.admin;
 
-import com.dal.cabby.dbHelper.DBHelper;
-
 import java.sql.SQLException;
 
-public class ApproveDrivers {
+public class ApproveProfiles {
+
+    public static void main(String[] args) {
+        ApproveProfiles a = new ApproveProfiles();
+        a.approveProfile(1, AdminHelper.customerProfile);
+    }
 
     /*
         Driver will be by default deactivated at the time of first time registration.
@@ -13,19 +16,14 @@ public class ApproveDrivers {
 
         This function will accept the driver_id and it will the update the status field.
      */
-    public boolean approveDriver(int driver_id) {
+    public boolean approveProfile(int id, String profileType) {
         try {
             AdminHelper adminHelper = new AdminHelper();
-            adminHelper.updateStatus(AdminHelper.driverProfile, true, driver_id);
+            adminHelper.updateStatus(profileType, true, id);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
         return true;
-    }
-
-    public static void main(String[] args) {
-        ApproveDrivers a = new ApproveDrivers();
-        a.approveDriver(1);
     }
 }
