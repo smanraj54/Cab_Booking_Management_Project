@@ -23,4 +23,10 @@ public class Ratings {
                 userId, tripId, rating);
         dbHelper.executeCreateOrUpdateQuery(q);
     }
+
+    double getAverageRatingOfDriver() throws SQLException {
+        String q = "select avg(rating) as avg_rating from driver_ratings";
+        ResultSet resultSet = dbHelper.executeSelectQuery(q);
+        return resultSet.getDouble("avg_rating");
+    }
 }
