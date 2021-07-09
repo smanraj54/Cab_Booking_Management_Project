@@ -35,9 +35,38 @@ public class Scorer {
         return score;
     }
 
-    public double calculateCustomerScore() {
+    public double calculateCustomerScore(int stars, double initialScore, int actualArrivalTime, int boardTime, boolean hasCancelled, boolean hasArrived) {
 
+        int diff = actualArrivalTime - boardTime;
+        double score = initialScore;
 
-        return 0.0;
+        if (diff < 0 && diff > -1) {
+            score += 0.1;
+        } else if (diff == 0) {
+            score += 0.2;
+        } else {
+            score -= 0.2;
+        }
+
+        if (hasCancelled) {
+            if (hasArrived) {
+                score -= 0.5;
+            } else {
+                score -= 0.2;
+            }
+            if (stars == 5) {
+                score += 0.3;
+            } else if (stars == 4) {
+                score += 0.1;
+            } else if (stars == 3) {
+                score -= 0.1;
+            } else if (stars == 2) {
+                score -= 0.3;
+            } else if (stars == 1) {
+                score -= 0.5;
+            }
+
+        }
+        return score;
     }
 }
