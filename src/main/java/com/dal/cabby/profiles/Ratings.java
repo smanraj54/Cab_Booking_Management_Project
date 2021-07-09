@@ -17,4 +17,10 @@ public class Ratings {
                 driverId, tripId, rating);
         dbHelper.executeCreateOrUpdateQuery(q);
     }
+
+    void addCustomerRating(int userId, int tripId, int rating) throws SQLException {
+        String q = String.format("insert into customer_ratings(cust_id, trip_id, rating) values (%d, %d, %d))",
+                userId, tripId, rating);
+        dbHelper.executeCreateOrUpdateQuery(q);
+    }
 }
