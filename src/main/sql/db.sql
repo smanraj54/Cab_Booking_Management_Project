@@ -1,5 +1,7 @@
 CREATE DATABASE IF NOT EXISTS cabby;
 
+USE cabby;
+
 CREATE TABLE IF NOT EXISTS admin (
     admin_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -91,3 +93,12 @@ CREATE TABLE IF NOT EXISTS driver_score (
     FOREIGN KEY (driver_id) REFERENCES driver(driver_id),
     FOREIGN KEY (trip_id) REFERENCES trips(trip_id)
 );
+
+CREATE TABLE IF NOT EXISTS Registration (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL
+
+    );
