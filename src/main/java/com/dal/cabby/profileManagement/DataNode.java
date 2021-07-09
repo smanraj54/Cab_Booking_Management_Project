@@ -6,12 +6,14 @@ public class DataNode {
     private String name = null;
     private String email = null;
     private String password = null;
+    private String userType = null;
 
-    public DataNode(String user, String name, String email, String password) {
+    public DataNode(String user, String name, String email, String password, String userType) {
         this.user = user;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.userType = userType;
     }
 
     public String getUser() {
@@ -20,6 +22,14 @@ public class DataNode {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public String getName() {

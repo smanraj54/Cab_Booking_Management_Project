@@ -8,6 +8,7 @@ import java.sql.SQLException;
 public class DB_Operations {
 
     private String query = "Select * from Registration where username = <username>";
+    private String queryEmail = "Select * from Registration where email = <email>";
 
     public boolean dbUserNameValidation(String userName){
 
@@ -24,6 +25,18 @@ public class DB_Operations {
         }
         if(userName.equals(value)){
            foundUser =  true;
+        }
+        return foundUser;
+    }
+
+    public boolean dbContainsEmail(String email){
+        boolean foundUser = false;
+        String value = getEmailValue(email, "email");
+        if(value==null){
+            return false;
+        }
+        if(email.equals(value)){
+            foundUser =  true;
         }
         return foundUser;
     }
@@ -62,9 +75,26 @@ public class DB_Operations {
         return value;
     }
 
+    private String getEmailValue(String email, String keywordSearch ){
+        String queryEmail = this.queryEmail.replace("<email>", email);
+        String value = null;
+        DBHelper dbHelper = new DBHelper();
+        try {
+            dbHelper.initialize();
+            ResultSet resultSet = dbHelper.executeSelectQuery(query);
+            while(resultSet.next()){
+                value = resultSet.getString(keywordSearch);
+            }
+            dbHelper.close();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return value;
+    }
+
     public void entryRegistration(DataNode dataNode){
         DBHelper dbHelper = getDBInstance();
-        String query = "insert into registration (username, name, password, email) value value ('"+dataNode.getUser()+"', '"+dataNode.getName()+"', '"+dataNode.getPassword()+"', '"+dataNode.getEmail()+"')";
+        String query = "insert into registration (username, name, password, email, usertype) value value ('"+dataNode.getUser()+"', '"+dataNode.getName()+"', '"+dataNode.getPassword()+"', '"+dataNode.getEmail()+"', '"+dataNode.getUserType()+"')";
         try {
             dbHelper.executeCreateOrUpdateQuery(query);
             dbHelper.close();
