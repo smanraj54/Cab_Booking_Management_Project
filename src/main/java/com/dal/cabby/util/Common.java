@@ -7,8 +7,6 @@ import java.util.Scanner;
     places in the project.
  */
 public class Common {
-
-
     // Return false if the input is outside the range of start and end.
     public static boolean isInputInvalid(int input, int start, int end) {
         return input < start || input > end;
@@ -20,5 +18,22 @@ public class Common {
         Scanner sc = new Scanner(System.in);
         int input = sc.nextInt();
         return input;
+    }
+
+    public static void simulateCabTrip() {
+        try {
+            System.out.println("Trip started!");
+            for (int i = 0; i < 5; i++) {
+                System.out.println("Trip is going on....");
+                Thread.sleep(1000);
+            }
+            System.out.println("Trip finished!");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        Common.simulateCabTrip();
     }
 }
