@@ -7,4 +7,12 @@ public class DriverEarnings {
         return 0.0;
     }
 
+    public double MonthlyEarnings() {
+        return 0.0;
+    }
+
+    public double SpecificPeriodEarnings() {
+        return 0.0;
+    }
+
 }
