@@ -9,6 +9,12 @@ import static java.lang.Thread.sleep;
 public class Registration {
 
     public Registration(){
+
+
+    }
+
+    private boolean RegisterUser(){
+        boolean registerSuccessful = false;
         Scanner sc = new Scanner(System.in);
         System.out.println("\n\n");
         System.out.print("\nEnter Name : ");
@@ -19,12 +25,14 @@ public class Registration {
         //String phoneNumber = "";
         String userName = "";
         ValidateInput validateInput = new ValidateInput();
+        DB_Operations db_operations = new DB_Operations();
 
-        for(;;){
+        for(int t=0; t<3; t++){
             System.out.print("\nEnter Email : ");
             email = sc.nextLine();
 
             if(validateInput.validateEmail(email)){
+                registerSuccessful = true;
                 break;
             }
             else{
@@ -37,14 +45,22 @@ public class Registration {
             }
         }
 
+        if(!registerSuccessful) {
+            return false;
+        }
+
         System.out.print("\nEnter new Username : ");
         userName = sc.next();
+
         System.out.print("\nEnter Password : ");
         password = sc.nextLine();
-        for(;;){
+        registerSuccessful = false;
+
+        for(int t=0; t<3; t++){
             System.out.print("\nConfirm above password : ");
             confirmPassword = sc.nextLine();
             if(validateInput.validateConfirmPassword(password, confirmPassword)){
+                registerSuccessful = true;
                 break;
             }
             else{
@@ -56,7 +72,16 @@ public class Registration {
                 }
             }
         }
+
+        if(!registerSuccessful) {
+            return false;
+        }
+
         sc.close();
+        DataNode dataNode = new DataNode(userName, name, email, password);
+        db_operations.entryRegistration(dataNode);
+
+        return true;
     }
 
 

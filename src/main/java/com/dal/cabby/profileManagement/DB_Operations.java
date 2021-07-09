@@ -62,6 +62,29 @@ public class DB_Operations {
         return value;
     }
 
+    public void entryRegistration(DataNode dataNode){
+        DBHelper dbHelper = getDBInstance();
+        String query = "insert into registration (username, name, password, email) value value ('"+dataNode.getUser()+"', '"+dataNode.getName()+"', '"+dataNode.getPassword()+"', '"+dataNode.getEmail()+"')";
+        try {
+            dbHelper.executeCreateOrUpdateQuery(query);
+            dbHelper.close();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+    }
+
+    private DBHelper getDBInstance(){
+        DBHelper dbHelper = new DBHelper();
+        try {
+            dbHelper.initialize();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return dbHelper;
+    }
+
+
 }
 
 
