@@ -1,7 +1,5 @@
 package com.dal.cabby.admin;
 
-import com.dal.cabby.dbHelper.DBHelper;
-
 import java.sql.SQLException;
 
 /*

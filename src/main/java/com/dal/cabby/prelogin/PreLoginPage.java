@@ -4,14 +4,20 @@ import com.dal.cabby.admin.Admin;
 import com.dal.cabby.customer.Customer;
 import com.dal.cabby.driver.Driver;
 
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Scanner;
 
 // Prelogin page when user visit the Cabby app
 public class PreLoginPage {
     /* Starting point of Prelogin page. */
     public void start() {
-        welcomeMessage();
-        page1();
+        try {
+            welcomeMessage();
+            page1();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /* Show welcome message when user vigit Cabby app page */
@@ -19,7 +25,7 @@ public class PreLoginPage {
         System.out.println("***** Cabby App: A one stop app for your cab booking *****\n");
     }
 
-    public void page1() {
+    public void page1() throws SQLException, ParseException {
         System.out.println("Are you: \n1: Admin\n2: Driver\n3: Customer");
         Scanner sc = new Scanner(System.in);
         int input = sc.nextInt();
