@@ -35,5 +35,4 @@ public class Ratings {
         ResultSet resultSet = dbHelper.executeSelectQuery(q);
         return resultSet.getDouble("avg_rating");
     }
-
 }
