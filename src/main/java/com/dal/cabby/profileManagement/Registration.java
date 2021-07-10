@@ -1,8 +1,6 @@
 package com.dal.cabby.profileManagement;
 
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.lang.Thread.sleep;
 
@@ -22,27 +20,61 @@ public class Registration {
         String email = "";
         String password = "";
         String confirmPassword = "";
-        //String phoneNumber = "";
         String userName = "";
         ValidateInput validateInput = new ValidateInput();
         DB_Operations db_operations = new DB_Operations();
+        String userType = "";
 
+        for(int t=0; t<3; t++){
+            System.out.println("\nEnter UserType : ");
+            System.out.print("press 1 for 'Admin' \n press 2 for 'customer' \n press 3 for 'driver' \n");
+            int val = sc.nextInt();
+            switch (val){
+                case 1:{
+                    userType = "Admin";
+                    registerSuccessful = true;
+                    break;
+                }
+                case 2:{
+                    userType = "Customer";
+                    registerSuccessful = true;
+                    break;
+                }
+                case 3:{
+                    userType = "driver";
+                    registerSuccessful = true;
+                    break;
+                }
+                default:{
+                    System.err.println("\t\tinvalid UserType ... please enter correct userType");
+                }
+                if(registerSuccessful){
+                    break;
+                }
+            }
+
+        }
+
+        registerSuccessful = false;
         for(int t=0; t<3; t++){
             System.out.print("\nEnter Email : ");
             email = sc.nextLine();
 
-            if(validateInput.validateEmail(email)){
-                registerSuccessful = true;
-                break;
-            }
-            else{
-                System.err.println("\t\tEnter Valid Email!!!!!");
-                try {
-                    sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            if(!validateInput.validateEmail(email)){
+                if(validateInput.validateEmail(email)){
+                    registerSuccessful = true;
+                    break;
+                }
+                else{
+                    System.err.println("\t\tEnter Valid Email!!!!!");
+                    try {
+                        sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
         }
 
         if(!registerSuccessful) {
@@ -78,7 +110,7 @@ public class Registration {
         }
 
         sc.close();
-        DataNode dataNode = new DataNode(userName, name, email, password);
+        DataNode dataNode = new DataNode(userName, name, email, password, userType);
         db_operations.entryRegistration(dataNode);
 
         return true;
