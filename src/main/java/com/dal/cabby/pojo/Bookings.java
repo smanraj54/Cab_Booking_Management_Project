@@ -1,12 +1,12 @@
 package com.dal.cabby.pojo;
 
-public class Booking {
+public class Bookings {
     int bookingId;
     int customerId;
     String source, destination;
     String travelTime;
 
-    public Booking(int booking_id, int customerId, String source, String destination, String travelTime) {
+    public Bookings(int booking_id, int customerId, String source, String destination, String travelTime) {
         this.bookingId = booking_id;
         this.customerId = customerId;
         this.source = source;

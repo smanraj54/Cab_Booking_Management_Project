@@ -1,7 +1,6 @@
 package com.dal.cabby.admin;
 
 import com.dal.cabby.pojo.Profile;
-import com.dal.cabby.profileManagement.Logout;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
@@ -65,23 +64,23 @@ public class Admin {
                     approveCustomerAccounts();
                     break;
                 case 3:
-                    deRegisterDriver();
+                    deRegisterCustomer();
                     break;
                 case 4:
-                    deRegisterCustomer();
+                    deRegisterDriver();
                     break;
                 case 5:
                     logout();
-                    break;
+                    return;
                 default:
                     System.out.println("Invalid input entered");
-                    break;
+                    return;
             }
         }
     }
 
     private void logout() {
-        new Logout().logout();
+        System.out.println("Admin logged out");
     }
 
     private int getInput() {
@@ -90,12 +89,8 @@ public class Admin {
     }
 
     private void approveDriverAccounts() throws SQLException {
-        List<Profile> profileList = adminHelper.listOfDriversToBeApproved();
-        if (profileList.size() == 0) {
-            System.out.println("There is no driver in the system whose account is pending.");
-            return;
-        }
         System.out.println("List of drivers whose account is not yet approved:");
+        List<Profile> profileList = adminHelper.listOfDriversToBeApproved();
         for (Profile p : profileList) {
             System.out.printf("DriverId: %d, Driver Name: %s\n", p.getId(), p.getName());
         }
@@ -107,16 +102,11 @@ public class Admin {
     }
 
     private void approveCustomerAccounts() throws SQLException {
-        List<Profile> profileList = adminHelper.listOfCustomersToBeApproved();
-        if (profileList.size() == 0) {
-            System.out.println("There is no customer in the system whose account is pending.");
-            return;
-        }
         System.out.println("List of customers whose account is not approved:");
+        List<Profile> profileList = adminHelper.listOfCustomersToBeApproved();
         for (Profile p : profileList) {
             System.out.printf("CustomerId: %d, Customer Name: %s\n", p.getId(), p.getName());
         }
-
         System.out.println("Enter the customer_id which you want to approve:");
         int cust_id = getInput();
         ApproveProfiles approveProfiles = new ApproveProfiles();
@@ -136,7 +126,7 @@ public class Admin {
         System.out.println("Enter the driver id:");
         int driver_id = getInput();
         DeRegisterProfiles deRegisterProfile = new DeRegisterProfiles();
-        deRegisterProfile.deRegisterDriver(driver_id);
+        deRegisterProfile.deRegisterCustomer(driver_id);
         System.out.printf("Driver with id: %d is de-registered in the system\n", driver_id);
     }
 }
