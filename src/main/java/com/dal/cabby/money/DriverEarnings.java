@@ -88,7 +88,7 @@ public class DriverEarnings {
         }
     }
 
-    private void specificPeriodEarnings() {
+    private void specificPeriodEarnings() throws SQLException {
     }
 
     // method to calculate the percentage of commission deducted
@@ -132,5 +132,35 @@ public class DriverEarnings {
         // getting commission percentage
         int commissionPercentage = commissionPercentage(totalRides, travelDistance, travelTime);
         return (amountOfRides - ((amountOfRides * commissionPercentage)/100));
+    }
+
+    private int getDateDifference(String startDate, String endDate) throws SQLException {
+        int dateDifference = 0;
+        String query = String.format("select datediff('%s','%s') as date_difference", endDate, startDate);
+        ResultSet result = dbHelper.executeSelectQuery(query);
+        while (result.next()) {
+            dateDifference = result.getInt("date_difference");
+        }
+        return dateDifference;
+    }
+
+    private String getNextDay(String inputDate) throws SQLException {
+        String date = "";
+        String query = String.format("select adddate('%s',1) as next_day", inputDate);
+        ResultSet result = dbHelper.executeSelectQuery(query);
+        while (result.next()){
+            date = result.getString("next_day");
+        }
+        return date;
+    }
+
+    private String getLastDayOfMonth(String inputDate) throws SQLException {
+        String date = "";
+        String query = String.format("select last_day('%s') as last_date", inputDate);
+        ResultSet result = dbHelper.executeSelectQuery(query);
+        while (result.next()) {
+            date = result.getString("last_date");
+        }
+        return date;
     }
 }
