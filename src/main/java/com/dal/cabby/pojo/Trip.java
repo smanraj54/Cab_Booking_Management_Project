@@ -1,6 +1,6 @@
 package com.dal.cabby.pojo;
 
-public class Trips {
+public class Trip {
     int booking_id;
     int trip_id;
     String customerId;
