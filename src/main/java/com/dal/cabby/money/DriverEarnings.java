@@ -69,26 +69,16 @@ public class DriverEarnings {
             String month = input.split("/")[0];
             String year = input.split("/")[1];
             String startDate = year + "-" + month + "-01";
-            String endDate = "";
-            String query1 = String.format("select last_day('%s') as end_date", startDate);
-            ResultSet resultSet = dbHelper.executeSelectQuery(query1);
-            while (resultSet.next()) {
-                endDate = resultSet.getString("end_date");
-            }
-            int lastDay = Integer.parseInt(endDate.split("-")[2]);
-            for (int i=1; i<=lastDay; i++) {
-                String day = Integer.toString(i);
-                if (day.length() == 1) {
-                    day = "0" + day;
-                }
-                String date = (year + "-" + month + "-" + day);
-                earning = earning + earningOnDate(userID, date);
+            String endDate = getLastDayOfMonth(startDate);
+            while (getDateDifference(startDate, endDate) > -1) {
+                earning = earning + earningOnDate(userID, startDate);
+                startDate = getNextDay(startDate);
             }
             System.out.println("\nThe total earnings in "+input+" is $"+earning);
         }
     }
 
-    private void specificPeriodEarnings() {
+    private void specificPeriodEarnings() throws SQLException {
     }
 
     // method to calculate the percentage of commission deducted
@@ -132,5 +122,35 @@ public class DriverEarnings {
         // getting commission percentage
         int commissionPercentage = commissionPercentage(totalRides, travelDistance, travelTime);
         return (amountOfRides - ((amountOfRides * commissionPercentage)/100));
+    }
+
+    private int getDateDifference(String startDate, String endDate) throws SQLException {
+        int dateDifference = 0;
+        String query = String.format("select datediff('%s','%s') as date_difference", endDate, startDate);
+        ResultSet result = dbHelper.executeSelectQuery(query);
+        while (result.next()) {
+            dateDifference = result.getInt("date_difference");
+        }
+        return dateDifference;
+    }
+
+    private String getNextDay(String inputDate) throws SQLException {
+        String date = "";
+        String query = String.format("select adddate('%s',1) as next_day", inputDate);
+        ResultSet result = dbHelper.executeSelectQuery(query);
+        while (result.next()){
+            date = result.getString("next_day");
+        }
+        return date;
+    }
+
+    private String getLastDayOfMonth(String inputDate) throws SQLException {
+        String date = "";
+        String query = String.format("select last_day('%s') as last_date", inputDate);
+        ResultSet result = dbHelper.executeSelectQuery(query);
+        while (result.next()) {
+            date = result.getString("last_date");
+        }
+        return date;
     }
 }
