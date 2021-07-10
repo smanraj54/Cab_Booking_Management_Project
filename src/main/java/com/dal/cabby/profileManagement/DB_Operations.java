@@ -125,37 +125,6 @@ public class DB_Operations {
         return false;
     }
 
-    public String fetchEmailForAuthentication(String user){
-        String email = null;
-
-        boolean isEmail = false;
-        isEmail = dbContainsEmail(user);
-        if(!isEmail){
-            if(!dbContainsUserName(user)){
-                return null;
-            }
-            email = getValueFromDB(user, "email", queryUser);
-        }
-        else{
-            email = user;
-        }
-        return email;
-    }
-
-    public void updateEmailPassword(String email, String newPassword){
-        DBHelper dbHelper = new DBHelper();
-        String query = "UPDATE Registration set password = '"+newPassword+"'where email = '"+email+"'";
-        try {
-            dbHelper.initialize();
-            dbHelper.executeCreateOrUpdateQuery(query);
-            dbHelper.close();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-        }
-    }
-
-
-
 
 
 }
