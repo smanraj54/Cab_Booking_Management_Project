@@ -19,7 +19,7 @@ public class Registration {
         String name = sc.nextLine();
         String email = "";
         String password = "";
-        String confirmPassword = "";
+        //String confirmPassword = "";
         String userName = "";
         ValidateInput validateInput = new ValidateInput();
         DB_Operations db_operations = new DB_Operations();
@@ -115,9 +115,26 @@ public class Registration {
 
         sc.nextLine();
 
+        password = getPassword(sc, validateInput);
+        sc.close();
+
+        if(password == null) {
+            return false;
+        }
+
+
+        DataNode dataNode = new DataNode(userName, name, email, password, userType);
+        db_operations.entryRegistration(dataNode);
+
+        return true;
+    }
+
+    public String getPassword(Scanner sc, ValidateInput validateInput){
+        String password = null;
+        String confirmPassword = null;
+        boolean registerSuccessful = false;
         System.out.print("\nEnter Password : ");
         password = sc.nextLine();
-        registerSuccessful = false;
 
         for(int t=0; t<3; t++){
             System.out.print("\nConfirm above password : ");
@@ -135,19 +152,11 @@ public class Registration {
                 }
             }
         }
-        sc.close();
-
-        if(!registerSuccessful) {
-            return false;
+        if(registerSuccessful){
+            return password;
         }
-
-
-        DataNode dataNode = new DataNode(userName, name, email, password, userType);
-        db_operations.entryRegistration(dataNode);
-
-        return true;
+        return null;
     }
-
 
 
 }
