@@ -41,22 +41,6 @@ public class DB_Operations {
         return foundUser;
     }
 
-    public String getPassword(String userName){
-        String password = getValueFromDB(userName, "password", queryUser);
-
-        return password;
-    }
-
-    public boolean validatePassword(String userName, String password){
-        String dbPassword = getPassword(userName);
-        if(dbPassword == null){
-            return false;
-        }
-        if(dbPassword.equals(password)){
-            return true;
-        }
-        return false;
-    }
 
     private String getValueFromDB(String userName, String keywordSearch, String query ){
         query = query.replace("<input>", userName);
@@ -112,6 +96,33 @@ public class DB_Operations {
         }
 
         return dbHelper;
+    }
+
+    public boolean validateLoginUser(String userName, String password, String userType){
+
+        boolean userNameLogin = dbContainsUserName(userName);
+        boolean emailLogin = dbContainsEmail(userName);
+        boolean passwordValidate = false;
+        boolean userTypeValidate = false;
+
+        if(userNameLogin){
+            passwordValidate = validateKeyword(userName, "password", password, queryUser);
+            userTypeValidate = validateKeyword(userName, "usertype", userType, queryUser);
+        }
+        else if(emailLogin){
+            passwordValidate = validateKeyword(userName, "password", password, queryEmail);
+            userTypeValidate = validateKeyword(userName, "usertype", userType, queryEmail);
+        }
+
+        return (passwordValidate && userTypeValidate);
+    }
+
+    private boolean validateKeyword(String userName, String keyword, String keywordValue, String query){
+        String value = getValueFromDB(userName, keyword, query);
+        if(value!=null && value.equals(keywordValue)){
+            return true;
+        }
+        return false;
     }
 
 
