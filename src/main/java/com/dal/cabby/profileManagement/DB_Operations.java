@@ -7,8 +7,8 @@ import java.sql.SQLException;
 
 public class DB_Operations {
 
-    private String query = "Select * from Registration where username = <username>";
-    private String queryEmail = "Select * from Registration where email = <email>";
+    private String queryUser = "Select * from Registration where username = '<input>'";
+    private String queryEmail = "Select * from Registration where email = '<input>'";
 
     public boolean dbUserNameValidation(String userName){
 
@@ -19,7 +19,7 @@ public class DB_Operations {
     public boolean dbContainsUserName(String userName){
 
         boolean foundUser = false;
-        String value = getValueFromDB(userName, "username");
+        String value = getValueFromDB(userName, "username", queryUser);
         if(value==null){
             return false;
         }
@@ -31,7 +31,7 @@ public class DB_Operations {
 
     public boolean dbContainsEmail(String email){
         boolean foundUser = false;
-        String value = getEmailValue(email, "email");
+        String value = getEmailValue(email, "email", queryEmail);
         if(value==null){
             return false;
         }
@@ -41,25 +41,9 @@ public class DB_Operations {
         return foundUser;
     }
 
-    public String getPassword(String userName){
-        String password = getValueFromDB(userName, "password");
 
-        return password;
-    }
-
-    public boolean validatePassword(String userName, String password){
-        String dbPassword = getPassword(userName);
-        if(dbPassword == null){
-            return false;
-        }
-        if(dbPassword.equals(password)){
-            return true;
-        }
-        return false;
-    }
-
-    private String getValueFromDB(String userName, String keywordSearch ){
-        String query = this.query.replace("<username>", userName);
+    private String getValueFromDB(String userName, String keywordSearch, String query ){
+        query = query.replace("<input>", userName);
         String value = null;
         DBHelper dbHelper = new DBHelper();
         try {
@@ -75,26 +59,26 @@ public class DB_Operations {
         return value;
     }
 
-    private String getEmailValue(String email, String keywordSearch ){
-        String queryEmail = this.queryEmail.replace("<email>", email);
-        String value = null;
+    public String getEmailValue(String email, String keywordSearch, String query){
+        query = query.replace("<input>", email);
+        String emailValue = null;
         DBHelper dbHelper = new DBHelper();
         try {
             dbHelper.initialize();
             ResultSet resultSet = dbHelper.executeSelectQuery(query);
             while(resultSet.next()){
-                value = resultSet.getString(keywordSearch);
+                emailValue = resultSet.getString(keywordSearch);
             }
             dbHelper.close();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-        return value;
+        return emailValue;
     }
 
     public void entryRegistration(DataNode dataNode){
         DBHelper dbHelper = getDBInstance();
-        String query = "insert into registration (username, name, password, email, usertype) value value ('"+dataNode.getUser()+"', '"+dataNode.getName()+"', '"+dataNode.getPassword()+"', '"+dataNode.getEmail()+"', '"+dataNode.getUserType()+"')";
+        String query = "insert into registration (username, name, password, email, usertype) value ('"+dataNode.getUser()+"', '"+dataNode.getName()+"', '"+dataNode.getPassword()+"', '"+dataNode.getEmail()+"', '"+dataNode.getUserType()+"')";
         try {
             dbHelper.executeCreateOrUpdateQuery(query);
             dbHelper.close();
@@ -113,6 +97,34 @@ public class DB_Operations {
 
         return dbHelper;
     }
+
+    public boolean validateLoginUser(String userName, String password, String userType){
+
+        boolean userNameLogin = dbContainsUserName(userName);
+        boolean emailLogin = dbContainsEmail(userName);
+        boolean passwordValidate = false;
+        boolean userTypeValidate = false;
+
+        if(userNameLogin){
+            passwordValidate = validateKeyword(userName, "password", password, queryUser);
+            userTypeValidate = validateKeyword(userName, "usertype", userType, queryUser);
+        }
+        else if(emailLogin){
+            passwordValidate = validateKeyword(userName, "password", password, queryEmail);
+            userTypeValidate = validateKeyword(userName, "usertype", userType, queryEmail);
+        }
+
+        return (passwordValidate && userTypeValidate);
+    }
+
+    private boolean validateKeyword(String userName, String keyword, String keywordValue, String query){
+        String value = getValueFromDB(userName, keyword, query);
+        if(value!=null && value.equals(keywordValue)){
+            return true;
+        }
+        return false;
+    }
+
 
 
 }
