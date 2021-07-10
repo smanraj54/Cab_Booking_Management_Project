@@ -53,14 +53,14 @@ public class DriverEarnings {
     // method to calculate the daily earnings
     public void dailyEarnings() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
-        String date = getInput();
-        if (validateDate(date)) {
-            String[] splitDate = date.split("/");
-            date = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+        String inputDate = getInput();
+        if (validateDate(inputDate)) {
+            String[] splitDate = inputDate.split("/");
+            String date = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
             double earning = earningOnDate(userID, date);
-            System.out.println("\nTotal earning on " + date + " is $" + earning);
+            System.out.println("\nTotal earning on " + inputDate + " is $" + earning);
         } else {
-            System.out.println("Invalid Input...");
+            System.out.println("\nInvalid Input...");
         }
     }
 
@@ -69,7 +69,7 @@ public class DriverEarnings {
         System.out.print("Enter the month in MM/YYYY format: ");
         String input = getInput();
         if (input.isEmpty() || (input.indexOf("/")!=2)) {
-            System.out.println("Invalid Entry");
+            System.out.println("\nInvalid Entry");
         } else {
             double earning = 0.0;
             String month = input.split("/")[0];
@@ -80,11 +80,33 @@ public class DriverEarnings {
                 earning = earning + earningOnDate(userID, startDate);
                 startDate = getNextDay(startDate);
             }
-            System.out.println("\nThe total earnings in "+input+" is $"+earning);
+            System.out.println("\nThe total earnings in " + input + " is $" + earning);
         }
     }
 
     private void specificPeriodEarnings() throws SQLException {
+        System.out.print("Enter the start date (DD/MM/YYYY): ");
+        String startDate = getInput();
+        System.out.print("Enter the end date (DD/MM/YYYY): ");
+        String endDate = getInput();
+        if (validateDate(startDate) && validateDate(endDate)) {
+            double earning = 0.0;
+            String[] splitStartDate = startDate.split("/");
+            String startingDate = splitStartDate[2] + "-" + splitStartDate[1] + "-" + splitStartDate[0];
+            String[] splitEndDate = endDate.split("/");
+            String endingDate = splitEndDate[2] + "-" + splitEndDate[1] + "-" + splitEndDate[0];
+            if (getDateDifference(startingDate, endingDate) < 0) {
+                System.out.println("\nInvalid Entry. Start date is greater than end date...");
+            } else {
+                while (getDateDifference(startingDate, endingDate) > -1) {
+                    earning = earning + earningOnDate(userID, startingDate);
+                    startingDate = getNextDay(startingDate);
+                }
+                System.out.println("\nTotal earnings between " + startDate + " and " + endDate + " is $" + earning);
+            }
+        } else {
+            System.out.println("\nInvalid Entry...");
+        }
     }
 
     // method to calculate the percentage of commission deducted
