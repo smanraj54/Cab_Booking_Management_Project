@@ -11,7 +11,7 @@ public class Registration {
 
     }
 
-    private boolean RegisterUser(){
+    public boolean RegisterUser(){
         boolean registerSuccessful = false;
         Scanner sc = new Scanner(System.in);
         System.out.println("\n\n");
@@ -23,6 +23,7 @@ public class Registration {
         String userName = "";
         ValidateInput validateInput = new ValidateInput();
         DB_Operations db_operations = new DB_Operations();
+
         String userType = "";
 
         for(int t=0; t<3; t++){
@@ -47,20 +48,23 @@ public class Registration {
                 }
                 default:{
                     System.err.println("\t\tinvalid UserType ... please enter correct userType");
-                }
-                if(registerSuccessful){
                     break;
                 }
-            }
 
+            }
+            if(registerSuccessful){
+                break;
+            }
         }
+
+        sc.nextLine();
 
         registerSuccessful = false;
         for(int t=0; t<3; t++){
             System.out.print("\nEnter Email : ");
             email = sc.nextLine();
 
-            if(!validateInput.validateEmail(email)){
+            if(!db_operations.dbContainsEmail(email)){
                 if(validateInput.validateEmail(email)){
                     registerSuccessful = true;
                     break;
@@ -74,15 +78,42 @@ public class Registration {
                     }
                 }
             }
+            else{
+                System.err.println("\t\tEmail already Registered");
+                try {
+                    sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
         }
 
         if(!registerSuccessful) {
             return false;
         }
+        registerSuccessful = false;
+        for(int t=0; t<3; t++){
+            System.out.print("\nEnter new Username : ");
+            userName = sc.next();
+            if(!db_operations.dbContainsUserName(userName)){
+                registerSuccessful = true;
+                break;
+            }
+            else{
+                System.err.println("\t\tUsername already Taken!!!");
+                try {
+                    sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(!registerSuccessful) {
+            return false;
+        }
 
-        System.out.print("\nEnter new Username : ");
-        userName = sc.next();
+        sc.nextLine();
 
         System.out.print("\nEnter Password : ");
         password = sc.nextLine();
@@ -104,12 +135,13 @@ public class Registration {
                 }
             }
         }
+        sc.close();
 
         if(!registerSuccessful) {
             return false;
         }
 
-        sc.close();
+
         DataNode dataNode = new DataNode(userName, name, email, password, userType);
         db_operations.entryRegistration(dataNode);
 
