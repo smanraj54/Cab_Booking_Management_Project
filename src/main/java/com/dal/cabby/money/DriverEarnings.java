@@ -43,4 +43,16 @@ public class DriverEarnings {
         return 0.0;
     }
 
+    // method to calculate the percentage of commission deducted
+    private int commissionPercentage(int totalRides, double totalDistance, int totalTime) {
+        if (totalRides > 12 || totalDistance > 300 || totalTime > 8) {
+            return 15;
+        } else if (totalRides > 10 || totalDistance > 250 || totalTime > 7) {
+            return 16;
+        } else if (totalRides > 8 || totalDistance > 200 || totalTime > 6) {
+            return 18;
+        } else {
+            return 20;
+        }
+    }
 }
