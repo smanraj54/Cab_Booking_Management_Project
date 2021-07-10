@@ -69,20 +69,10 @@ public class DriverEarnings {
             String month = input.split("/")[0];
             String year = input.split("/")[1];
             String startDate = year + "-" + month + "-01";
-            String endDate = "";
-            String query1 = String.format("select last_day('%s') as end_date", startDate);
-            ResultSet resultSet = dbHelper.executeSelectQuery(query1);
-            while (resultSet.next()) {
-                endDate = resultSet.getString("end_date");
-            }
-            int lastDay = Integer.parseInt(endDate.split("-")[2]);
-            for (int i=1; i<=lastDay; i++) {
-                String day = Integer.toString(i);
-                if (day.length() == 1) {
-                    day = "0" + day;
-                }
-                String date = (year + "-" + month + "-" + day);
-                earning = earning + earningOnDate(userID, date);
+            String endDate = getLastDayOfMonth(startDate);
+            while (getDateDifference(startDate, endDate) > -1) {
+                earning = earning + earningOnDate(userID, startDate);
+                startDate = getNextDay(startDate);
             }
             System.out.println("\nThe total earnings in "+input+" is $"+earning);
         }
