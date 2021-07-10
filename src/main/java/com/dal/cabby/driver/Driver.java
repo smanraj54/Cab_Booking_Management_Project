@@ -1,6 +1,7 @@
 package com.dal.cabby.driver;
 
-import com.dal.cabby.pojo.Bookings;
+import com.dal.cabby.pojo.Booking;
+import com.dal.cabby.profileManagement.Logout;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
@@ -75,13 +76,13 @@ public class Driver {
                     break;
                 default:
                     logout();
-                    return;
+                    break;
             }
         }
     }
 
     private void logout() {
-        System.out.println("Logged out successfully");
+        new Logout().logout();
     }
 
     private int getInput() {
@@ -90,13 +91,13 @@ public class Driver {
     }
 
     private void startTrip() throws SQLException, ParseException {
-        List<Bookings> bookingsList = driverHelper.getUnfinishedBookingLists(driverId);
+        List<Booking> bookingsList = driverHelper.getUnfinishedBookingLists(driverId);
         if (bookingsList.size() == 0) {
             System.out.println("You have no new bookings\n");
             return;
         }
         System.out.println("List of bookings: ");
-        for (Bookings b : bookingsList) {
+        for (Booking b : bookingsList) {
             System.out.printf("BookingId: %d, CustomerId: %d, Source: %s, Destination: %s, Travel-Time: %s\n",
                     b.getBookingId(), b.getCustomerId(), b.getSource(), b.getDestination(), b.getTravelTime());
         }
@@ -104,7 +105,7 @@ public class Driver {
         int input = getInput();
         driverHelper.markBookingComplete(input);
         Common.simulateCabTrip();
-        for (Bookings b : bookingsList) {
+        for (Booking b : bookingsList) {
             if (b.getBookingId() == input) {
                 driverHelper.completeTrip(input, driverId, b.getCustomerId(), 5.6, 9.8,
                         "2021-01-24 12:35:16", "2021-01-24 12:55:16");
