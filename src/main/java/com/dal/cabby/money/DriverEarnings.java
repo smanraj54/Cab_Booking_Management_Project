@@ -52,10 +52,16 @@ public class DriverEarnings {
 
     // method to calculate the daily earnings
     public void dailyEarnings() throws SQLException {
-        System.out.print("Enter the date: ");
+        System.out.print("Enter the date in DD/MM/YYYY format: ");
         String date = getInput();
-        double earning = earningOnDate(userID, date);
-        System.out.println("\nTotal earning on "+date+" is $"+earning);
+        if (validateDate(date)) {
+            String[] splitDate = date.split("/");
+            date = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+            double earning = earningOnDate(userID, date);
+            System.out.println("\nTotal earning on " + date + " is $" + earning);
+        } else {
+            System.out.println("Invalid Input...");
+        }
     }
 
     // method to calculate monthly earnings
@@ -152,5 +158,17 @@ public class DriverEarnings {
             date = result.getString("last_date");
         }
         return date;
+    }
+
+    // method to validate date
+    private boolean validateDate(String date) {
+        if (date != null && date.length() == 10 && date.indexOf("/") == 2 && date.lastIndexOf("/") == 5) {
+            String[] splitDate = date.split("/");
+            String day = splitDate[0];
+            String month = splitDate[1];
+            String year = splitDate[2];
+            return !day.equals("00") && !month.equals("00") && !year.equals("0000");
+        }
+        return false;
     }
 }
