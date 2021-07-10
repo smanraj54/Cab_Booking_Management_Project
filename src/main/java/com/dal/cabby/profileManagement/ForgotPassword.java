@@ -65,8 +65,16 @@ public class ForgotPassword {
 
     private boolean validateTempPass(int tempPass, Scanner sc){
         System.out.print("\nEnter temp password sent to your registered email : ");
-        int enteredPass = sc.nextInt();
-        sc.nextLine();
+
+        int enteredPass = -1;
+        try{
+            enteredPass = sc.nextInt();
+        }catch(Exception e){
+            System.err.print("Authentication Fail !!!!");
+            return false;
+        }finally {
+            sc.nextLine();
+        }
         if(tempPass == enteredPass){
             System.out.println("\nAuthentication Passed");
         }
