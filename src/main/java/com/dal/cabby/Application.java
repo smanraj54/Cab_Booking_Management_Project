@@ -7,10 +7,7 @@ import com.dal.cabby.profileManagement.Registration;
 // Main starting class
 public class Application {
     public static void main(String[] args) {
-//        PreLoginPage preLoginPage = new PreLoginPage();
-//        preLoginPage.start();
-
-        Login login = new Login();
-        login.attemptLogin();
+        PreLoginPage preLoginPage = new PreLoginPage();
+        preLoginPage.start();
     }
 }

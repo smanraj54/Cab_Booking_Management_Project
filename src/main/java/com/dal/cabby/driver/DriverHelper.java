@@ -1,7 +1,7 @@
 package com.dal.cabby.driver;
 
 import com.dal.cabby.dbHelper.DBHelper;
-import com.dal.cabby.pojo.Bookings;
+import com.dal.cabby.pojo.Booking;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,18 +26,18 @@ public class DriverHelper {
                 "2021-01-24 12:35:16", "2021-01-24 12:55:16");
     }
 
-    List<Bookings> getUnfinishedBookingLists(int driverId) throws SQLException {
+    List<Booking> getUnfinishedBookingLists(int driverId) throws SQLException {
         String q = String.format("select booking_id, cust_id, travel_time, estimated_price, source, destination from bookings where driver_id=%d and is_trip_done=false",
                 driverId);
         ResultSet resultSet = dbHelper.executeSelectQuery(q);
-        List<Bookings> bookingsList = new ArrayList<>();
+        List<Booking> bookingsList = new ArrayList<>();
         while (resultSet.next()) {
             int bookingId = resultSet.getInt("booking_id");
             int custId = resultSet.getInt("cust_id");
             String travelTime = resultSet.getDate("travel_time").toString();
             String source = resultSet.getString("source");
             String destination = resultSet.getString("destination");
-            bookingsList.add(new Bookings(bookingId, custId, source, destination, travelTime));
+            bookingsList.add(new Booking(bookingId, custId, source, destination, travelTime));
         }
         return bookingsList;
     }
