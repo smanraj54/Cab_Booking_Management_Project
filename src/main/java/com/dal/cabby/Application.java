@@ -1,6 +1,9 @@
 package com.dal.cabby;
 
-import com.dal.cabby.profileManagement.SendEmail;
+import com.dal.cabby.profileManagement.DB_Operations;
+import com.dal.cabby.profileManagement.ForgotPassword;
+
+import java.util.Scanner;
 
 // Main starting class
 public class Application {
@@ -10,12 +13,7 @@ public class Application {
 
 //        Login login = new Login();
 //        login.attemptLogin();
-        try{
-            SendEmail.sendEmail("software5408group15@gmail.com",
-                    "Test email",
-                    "<h2>Java Mail Example</h2><p>hi there!</p>");
-        }catch (Exception ee){
-            System.out.println(ee);
-        }
+        ForgotPassword forgotPassword = new ForgotPassword();
+        forgotPassword.passwordUpdateProcess(new Scanner(System.in), new DB_Operations());
     }
 }
