@@ -2,6 +2,7 @@ package com.dal.cabby.admin;
 
 import com.dal.cabby.pojo.Profile;
 import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.profileManagement.ForgotPassword;
 import com.dal.cabby.profileManagement.Login;
 import com.dal.cabby.profileManagement.Logout;
 import com.dal.cabby.profileManagement.Registration;
@@ -52,7 +53,8 @@ public class Admin {
 
     private void forgotPassword() {
         System.out.println("Welcome to Admin forgot password page");
-        System.out.println("Feature not implemented yet.");
+        ForgotPassword forgotPassword = new ForgotPassword();
+        forgotPassword.passwordUpdateProcess(UserType.ADMIN);
     }
 
     private void page2() throws SQLException {

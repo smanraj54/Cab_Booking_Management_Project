@@ -2,6 +2,7 @@ package com.dal.cabby.driver;
 
 import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.profileManagement.ForgotPassword;
 import com.dal.cabby.profileManagement.Login;
 import com.dal.cabby.profileManagement.Logout;
 import com.dal.cabby.profileManagement.Registration;
@@ -56,7 +57,8 @@ public class Driver {
 
     public void forgotPassword() {
         System.out.println("Welcome to Driver forgot password page");
-        System.out.println("Feature not implemented yet.");
+        ForgotPassword forgotPassword = new ForgotPassword();
+        forgotPassword.passwordUpdateProcess(UserType.DRIVER);
     }
 
     public void page2() throws SQLException, ParseException {
