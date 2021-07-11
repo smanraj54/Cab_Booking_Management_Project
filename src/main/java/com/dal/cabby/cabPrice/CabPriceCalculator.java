@@ -27,14 +27,14 @@ public class CabPriceCalculator {
                 rideSharing();
                 break;
             case 3:
+                amenities();
                 break;
         }
-
         return 0;
     }
 
     public static double distanceFactor(String rideArea,Boolean isPeakHour){
-        int totalDistance=7;
+        int totalDistance=70;  //Distance in KM
         int shortDistance=5;
         if(totalDistance <= shortDistance){
             //For initial few kilometers 5 dollars would be charged per Km
@@ -79,8 +79,42 @@ public class CabPriceCalculator {
                 break;
         }
         discount=basicPrice-priceWithCoPassenger;
-        System.out.println("Total Price for this ride is: $"+priceWithCoPassenger);
         System.out.println("You got a discount of: $"+ String.format("%.2f",discount));
-
+        System.out.println("Total Price for this ride is: $"+priceWithCoPassenger);
     }
+
+    public static void amenities(){
+        // For every 30 minutes of ride we are charging extra $2 per amenity.
+
+        //For dummy data we have taken total time of ride as 90 minutes.
+        System.out.println("Choose amenities:");
+        System.out.println("1. CarTV");
+        System.out.println("2. Wifi");
+        System.out.println("3. Both");
+        int input= ss.nextInt();
+        double basicPrice= distanceFactor("urban",true);
+        System.out.println("Price without amenities: $"+basicPrice);
+        double priceWithAmenities= basicPrice;
+        double extraCharge=0;
+
+        switch (input){
+            case 1:
+                extraCharge=((2*(90/30)));
+                System.out.println("Extra charges: $"+extraCharge);
+                priceWithAmenities+=extraCharge;
+                break;
+            case 2:
+                extraCharge=((2*(90/30)));
+                System.out.println("Extra charges: $"+extraCharge);
+                priceWithAmenities+=extraCharge;
+                break;
+            case 3:
+                extraCharge=(2*(2*(90/30)));
+                System.out.println("Extra charges: $"+extraCharge);
+                priceWithAmenities+=extraCharge;
+                break;
+        }
+        System.out.println("Total Price for this ride is: $"+priceWithAmenities);
+    }
+
 }
