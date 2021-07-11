@@ -4,15 +4,11 @@ import java.sql.Time;
 import java.util.Scanner;
 
 public class CabPriceCalculator {
-    static double price=0.0;
-    static int hour=java.time.LocalTime.now().getHour();
-    static Scanner ss = new Scanner(System.in);
+    double price=0.0;
+    int hour=java.time.LocalTime.now().getHour();
+    Scanner ss = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        priceCalculation("Halifax","Montreal",false,"urban",true,2);
-    }
-
-    public static int priceCalculation(String source, String destination, Boolean rideSharing, String sourceArea, Boolean isOfficeHours, int cabType){
+    public int priceCalculation(String source, String destination, Boolean rideSharing, String sourceArea, Boolean isOfficeHours, int cabType){
         System.out.println("*** Select your Preferences ***");
         System.out.println("1. Normal Booking");
         System.out.println("2. Want to share ride with co-passenger");
@@ -33,7 +29,7 @@ public class CabPriceCalculator {
         return 0;
     }
 
-    public static double distanceFactor(String rideArea,Boolean isPeakHour,int cabCategory){
+    public double distanceFactor(String rideArea,Boolean isPeakHour,int cabCategory){
         int totalDistance=70;  //Distance in KM
         int shortDistance=5;
         if(totalDistance <= shortDistance){
@@ -72,12 +68,12 @@ public class CabPriceCalculator {
         return price;
     }
 
-    public static void rideSharing(int cabCategory){
+    public void rideSharing(int cabCategory){
         System.out.println("Choose number of co-passengers: ");
         System.out.println("One co-passenger");
         System.out.println("Two co-passengers");
         int input= ss.nextInt();
-        double basicPrice=distanceFactor("urban",true,2);
+        double basicPrice=distanceFactor("urban",true,cabCategory);
         System.out.println("Price without Co-passenger: $"+String.format("%.2f",basicPrice));
         double priceWithCoPassenger=basicPrice;
         double discount;
@@ -94,16 +90,15 @@ public class CabPriceCalculator {
         System.out.println("Total Price for this ride is: $"+String.format("%.2f",priceWithCoPassenger));
     }
 
-    public static void amenities(int cabCategory){
+    public void amenities(int cabCategory){
         // For every 30 minutes of ride we are charging extra $2 per amenity.
-
         //For dummy data we have taken total time of ride as 90 minutes.
         System.out.println("Choose amenities:");
         System.out.println("1. CarTV");
         System.out.println("2. Wifi");
         System.out.println("3. Both");
         int input= ss.nextInt();
-        double basicPrice= distanceFactor("urban",true,2);
+        double basicPrice= distanceFactor("urban",true, cabCategory);
         System.out.println("Price without amenities: $"+String.format("%.2f",basicPrice));
         double priceWithAmenities= basicPrice;
         double extraCharge=0;
