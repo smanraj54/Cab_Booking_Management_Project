@@ -3,13 +3,19 @@ package com.dal.cabby.prelogin;
 import com.dal.cabby.admin.Admin;
 import com.dal.cabby.customer.Customer;
 import com.dal.cabby.driver.Driver;
+import com.dal.cabby.io.Inputs;
 
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Scanner;
 
 // Prelogin page when user visit the Cabby app
 public class PreLoginPage {
+    Inputs inputs;
+
+    public PreLoginPage(Inputs inputs) {
+        this.inputs = inputs;
+    }
+
     /* Starting point of Prelogin page. */
     public void start() {
         try {
@@ -27,18 +33,17 @@ public class PreLoginPage {
 
     public void page1() throws SQLException, ParseException {
         System.out.println("Are you: \n1: Admin\n2: Driver\n3: Customer");
-        Scanner sc = new Scanner(System.in);
-        int input = sc.nextInt();
+        int input = inputs.getIntegerInput();
 
         switch (input) {
             case 1:
-                Admin admin = new Admin();
+                Admin admin = new Admin(inputs);
                 break;
             case 2:
-                Driver driver = new Driver();
+                Driver driver = new Driver(inputs);
                 break;
             case 3:
-                Customer customer = new Customer();
+                Customer customer = new Customer(inputs);
                 break;
             default:
                 System.out.println("Invalid input: " + input);
