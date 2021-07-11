@@ -1,7 +1,10 @@
 package com.dal.cabby.driver;
 
 import com.dal.cabby.pojo.Booking;
+import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.profileManagement.Login;
 import com.dal.cabby.profileManagement.Logout;
+import com.dal.cabby.profileManagement.Registration;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
@@ -38,14 +41,17 @@ public class Driver {
     }
 
     public void login() throws SQLException, ParseException {
-        // Call login method.
-        System.out.println("Login successful.");
+        Login login = new Login();
+        if (!login.attemptLogin(UserType.DRIVER)) {
+            return;
+        }
         page2();
     }
 
     public void register() {
         System.out.println("Welcome to Driver registration page");
-        System.out.println("Feature not implemented yet.");
+        Registration registration = new Registration();
+        registration.registerUser(UserType.DRIVER);
     }
 
     public void forgotPassword() {

@@ -1,14 +1,16 @@
 package com.dal.cabby.profileManagement;
 
+import com.dal.cabby.pojo.UserType;
+
 public class DataNode {
 
     private String user = null;
     private String name = null;
     private String email = null;
     private String password = null;
-    private String userType = null;
+    private UserType userType = null;
 
-    public DataNode(String user, String name, String email, String password, String userType) {
+    public DataNode(String user, String name, String email, String password, UserType userType) {
         this.user = user;
         this.name = name;
         this.email = email;
@@ -24,16 +26,12 @@ public class DataNode {
         this.user = user;
     }
 
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public UserType getUserType() {
+        return userType;
     }
 
     public void setName(String name) {

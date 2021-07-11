@@ -1,7 +1,10 @@
 package com.dal.cabby.admin;
 
 import com.dal.cabby.pojo.Profile;
+import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.profileManagement.Login;
 import com.dal.cabby.profileManagement.Logout;
+import com.dal.cabby.profileManagement.Registration;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
@@ -37,11 +40,14 @@ public class Admin {
 
     private void login() throws SQLException {
         System.out.println("Login successfull");
-        page2();
+        Login login = new Login();
+        login.attemptLogin(UserType.ADMIN);
     }
 
     private void register() {
         System.out.println("Welcome to Admin registration page");
+        Registration registration = new Registration();
+        registration.registerUser(UserType.ADMIN);
     }
 
     private void forgotPassword() {
