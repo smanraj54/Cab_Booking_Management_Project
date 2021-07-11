@@ -61,9 +61,8 @@ public class DisplayRides {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
         Scanner sc = new Scanner(System.in);
         String inputDate = sc.nextLine();
-        if (inputDate.length() == 10 && inputDate.indexOf("/") == 2 && inputDate.lastIndexOf("/") == 5) {
-            String[] splitDate = inputDate.split("/");
-            String date = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+        if (validateDate(inputDate)) {
+            String date = getFormattedDate(inputDate);
             String query = String.format("select\n" +
                     "bookings.booking_id,\n" +
                     "bookings.source,\n" +
@@ -82,6 +81,8 @@ public class DisplayRides {
                 double rideAmount = result.getDouble("trip_amount");
                 System.out.println("BookingID: " + bookingId + ", Pickup: " + pickupLocation + ", Destination: " + dropLocation + ", Price: " + rideAmount + ", Status: Completed");
             }
+        } else {
+            System.out.println("\nInvalid Date");
         }
     }
 
@@ -91,5 +92,24 @@ public class DisplayRides {
 
     // method to get rides between specific time period
     private void getSpecificPeriodRides() {
+    }
+
+    private boolean validateDate(String date) {
+        if (date != null && date.length() == 10 && date.indexOf("/") == 2 && date.lastIndexOf("/") == 5) {
+            String[] splitDate = date.split("/");
+            String day = splitDate[0];
+            String month = splitDate[1];
+            String year = splitDate[2];
+            return !day.equals("00") && !month.equals("00") && !year.equals("0000");
+        }
+        return false;
+    }
+
+    private String getFormattedDate(String inputDate) {
+        String[] splitDate = inputDate.split("/");
+        String day = splitDate[0];
+        String month = splitDate[1];
+        String year = splitDate[2];
+        return (year + "-" + month + "-" + day);
     }
 }
