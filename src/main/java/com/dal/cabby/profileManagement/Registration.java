@@ -1,19 +1,21 @@
 package com.dal.cabby.profileManagement;
 
+import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
-
-import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
 public class Registration {
+    Inputs inputs;
+    public Registration(Inputs inputs) {
+        this.inputs = inputs;
+    }
 
     public boolean registerUser(UserType userType) {
         boolean registerSuccessful = false;
-        Scanner sc = new Scanner(System.in);
         System.out.println("\n\n");
         System.out.print("\nEnter Name : ");
-        String name = sc.nextLine();
+        String name = inputs.getStringInput();
         String email = "";
         String password = "";
         //String confirmPassword = "";
@@ -23,7 +25,7 @@ public class Registration {
 
         for (int t = 0; t < 3; t++) {
             System.out.print("\nEnter Email : ");
-            email = sc.nextLine();
+            email = inputs.getStringInput();
 
             if (!db_operations.dbContainsEmail(email, userType)) {
                 if (validateInput.validateEmail(email)) {
@@ -53,7 +55,7 @@ public class Registration {
         registerSuccessful = false;
         for (int t = 0; t < 3; t++) {
             System.out.print("\nEnter new Username : ");
-            userName = sc.next();
+            userName = inputs.getStringInput();
             if (!db_operations.dbContainsUserName(userName, userType)) {
                 registerSuccessful = true;
                 break;
@@ -70,10 +72,7 @@ public class Registration {
             return false;
         }
 
-        sc.nextLine();
-
-        password = getPassword(sc, validateInput);
-        sc.close();
+        password = getPassword(validateInput);
 
         if (password == null) {
             return false;
@@ -84,16 +83,16 @@ public class Registration {
         return true;
     }
 
-    public String getPassword(Scanner sc, ValidateInput validateInput) {
+    public String getPassword(ValidateInput validateInput) {
         String password = null;
         String confirmPassword = null;
         boolean registerSuccessful = false;
         System.out.print("\nEnter Password : ");
-        password = sc.nextLine();
+        password = inputs.getStringInput();
 
         for (int t = 0; t < 3; t++) {
             System.out.print("\nConfirm above password : ");
-            confirmPassword = sc.nextLine();
+            confirmPassword = inputs.getStringInput();
             if (validateInput.validateConfirmPassword(password, confirmPassword)) {
                 registerSuccessful = true;
                 break;

@@ -1,27 +1,26 @@
 package com.dal.cabby.profileManagement;
 
+import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
-
-import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
 public class Login {
 
-    public Login(){
-
+    Inputs inputs;
+    public Login(Inputs inputs){
+        this.inputs = inputs;
     }
+
     public boolean attemptLogin(UserType userType){
-        Scanner sc = new Scanner(System.in);
         DB_Operations db_operations = new DB_Operations(userType);
         String userNameOrEmail = null;
         String password = null;
         System.out.print("\nEnter UserName or Email : ");
-        userNameOrEmail = sc.nextLine();
+        userNameOrEmail = inputs.getStringInput();
 
         System.out.print("\nEnter Password : ");
-        password = sc.nextLine();
-        sc.close();
+        password = inputs.getStringInput();
 
         if(db_operations.validateLoginUser(userNameOrEmail, password, userType)){
             System.out.println("\n\t\tLogin Successful !!");

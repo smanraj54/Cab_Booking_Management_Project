@@ -1,29 +1,33 @@
 package com.dal.cabby.driver;
 
+import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.ForgotPassword;
 import com.dal.cabby.profileManagement.Login;
 import com.dal.cabby.profileManagement.Logout;
 import com.dal.cabby.profileManagement.Registration;
+import com.dal.cabby.profiles.Ratings;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Scanner;
 
 public class Driver {
     DriverHelper driverHelper;
     int driverId = 1;
+    private final Inputs inputs;
 
-    public Driver() throws SQLException, ParseException {
+    public Driver(Inputs inputs) throws SQLException, ParseException {
         driverHelper = new DriverHelper();
         driverPage1();
+        this.inputs = inputs;
     }
 
     private void driverPage1() throws SQLException, ParseException {
-        int input = Common.page1Options();
+        Common.page1Options();
+        int input = inputs.getIntegerInput();
 
         switch (input) {
             case 1:
@@ -42,7 +46,7 @@ public class Driver {
     }
 
     public void login() throws SQLException, ParseException {
-        Login login = new Login();
+        Login login = new Login(inputs);
         if (!login.attemptLogin(UserType.DRIVER)) {
             return;
         }
@@ -51,13 +55,13 @@ public class Driver {
 
     public void register() {
         System.out.println("Welcome to Driver registration page");
-        Registration registration = new Registration();
+        Registration registration = new Registration(inputs);
         registration.registerUser(UserType.DRIVER);
     }
 
     public void forgotPassword() {
         System.out.println("Welcome to Driver forgot password page");
-        ForgotPassword forgotPassword = new ForgotPassword();
+        ForgotPassword forgotPassword = new ForgotPassword(inputs);
         forgotPassword.passwordUpdateProcess(UserType.DRIVER);
     }
 
@@ -68,7 +72,7 @@ public class Driver {
             System.out.println("3. View incomes");
             System.out.println("4. Rate customer for the trip:");
             System.out.println("5. Logout");
-            int input = getInput();
+            int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
                     startTrip();
@@ -93,11 +97,6 @@ public class Driver {
         new Logout().logout();
     }
 
-    private int getInput() {
-        Scanner sc = new Scanner(System.in);
-        return sc.nextInt();
-    }
-
     private void startTrip() throws SQLException, ParseException {
         List<Booking> bookingsList = driverHelper.getUnfinishedBookingLists(driverId);
         if (bookingsList.size() == 0) {
@@ -110,7 +109,7 @@ public class Driver {
                     b.getBookingId(), b.getCustomerId(), b.getSource(), b.getDestination(), b.getTravelTime());
         }
         System.out.println("Enter the bookingId for which you want to start the trip: ");
-        int input = getInput();
+        int input = inputs.getIntegerInput();
         driverHelper.markBookingComplete(input);
         Common.simulateCabTrip();
         for (Booking b : bookingsList) {
@@ -129,11 +128,17 @@ public class Driver {
         System.out.println("Rides displayed");
     }
 
-    private void rateCustomer() {
+    private void rateCustomer() throws SQLException {
         System.out.println("Rating customer for the completed trip is " +
                 "mandatory in the Cabby. It helps us to improve our services." +
                 "Hence please rate the customer for the trips");
         System.out.println("Enter customer id:");
-        int cust_id = getInput();
+        int cust_id = inputs.getIntegerInput();
+        System.out.println("Enter trip id:");
+        int trip_id = inputs.getIntegerInput();
+        System.out.println("Enter the rating between 1-5:");
+        int rating = inputs.getIntegerInput();
+        Ratings ratings = new Ratings();
+        ratings.addCustomerRating(cust_id, trip_id, rating);
     }
 }
