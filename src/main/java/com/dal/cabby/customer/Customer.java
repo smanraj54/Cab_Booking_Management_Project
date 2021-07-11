@@ -1,16 +1,25 @@
 package com.dal.cabby.customer;
 
+import com.dal.cabby.io.Inputs;
+import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.profileManagement.ForgotPassword;
+import com.dal.cabby.profileManagement.Login;
+import com.dal.cabby.profileManagement.Registration;
+import com.dal.cabby.profiles.Ratings;
 import com.dal.cabby.util.Common;
 
-import java.util.Scanner;
+import java.sql.SQLException;
 
 public class Customer {
-    public Customer() {
+    private final Inputs inputs;
+    public Customer(Inputs inputs) {
+        this.inputs = inputs;
         customerPage1();
     }
 
     private void customerPage1() {
-        int input = Common.page1Options();
+        Common.page1Options();
+        int input = inputs.getIntegerInput();
         switch (input) {
             case 1:
                 login();
@@ -28,26 +37,35 @@ public class Customer {
     }
 
     public void login() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Welcome to Customer login page. Please enter username and password.");
-        System.out.println("Username: ");
-        String userName = sc.nextLine();
-        System.out.println("Password: ");
-        String password = sc.nextLine();
-        if (!userName.equals("root") || !password.equals("root123")) {
-            System.out.println("Invalid username or password. Please retry");
-            return;
-        }
+        System.out.println("Welcome to Customer login page");
+        Login login = new Login(inputs);
+        login.attemptLogin(UserType.CUSTOMER);
         System.out.println("Login successful.");
     }
 
     public void register() {
         System.out.println("Welcome to Customer registration page");
-        System.out.println("Feature not implemented yet.");
+        Registration registration = new Registration(inputs);
+        registration.registerUser(UserType.CUSTOMER);
     }
 
     public void forgotPassword() {
         System.out.println("Welcome to Customer forgot password page");
-        System.out.println("Feature not implemented yet.");
+        ForgotPassword forgotPassword = new ForgotPassword(inputs);
+        forgotPassword.passwordUpdateProcess(UserType.CUSTOMER);
+    }
+
+    private void rateDriver() throws SQLException {
+        System.out.println("Rating driver for the completed trip is " +
+                "mandatory in the Cabby. It helps us to improve our services." +
+                "Hence please rate the driver for the trips");
+        System.out.println("Enter driver id:");
+        int driver_id = inputs.getIntegerInput();
+        System.out.println("Enter trip id:");
+        int trip_id = inputs.getIntegerInput();
+        System.out.println("Enter the rating between 1-5:");
+        int rating = inputs.getIntegerInput();
+        Ratings ratings = new Ratings();
+        ratings.addCustomerRating(driver_id, trip_id, rating);
     }
 }

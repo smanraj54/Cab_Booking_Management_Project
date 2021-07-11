@@ -1,70 +1,28 @@
 package com.dal.cabby.profileManagement;
 
-import java.util.Scanner;
+import com.dal.cabby.io.Inputs;
+import com.dal.cabby.pojo.UserType;
 
 import static java.lang.Thread.sleep;
 
 public class Login {
 
-    public Login(){
-
+    Inputs inputs;
+    public Login(Inputs inputs){
+        this.inputs = inputs;
     }
-    public boolean attemptLogin(){
-        Scanner sc = new Scanner(System.in);
-        DB_Operations db_operations = new DB_Operations();
-        String userType = null;
-        String userName = null;
+
+    public boolean attemptLogin(UserType userType){
+        DB_Operations db_operations = new DB_Operations(userType);
+        String userNameOrEmail = null;
         String password = null;
-        boolean registerSuccessful = false;
-        for(int t=0; t<3; t++){
-            System.out.println("\nEnter UserType : ");
-            System.out.print("press 1 for 'Admin' \n press 2 for 'customer' \n press 3 for 'driver' \n");
-            int val = sc.nextInt();
-            switch (val){
-                case 1:{
-                    userType = "Admin";
-                    registerSuccessful = true;
-                    break;
-                }
-                case 2:{
-                    userType = "Customer";
-                    registerSuccessful = true;
-                    break;
-                }
-                case 3:{
-                    userType = "driver";
-                    registerSuccessful = true;
-                    break;
-                }
-                default:{
-                    System.err.println("\t\tinvalid UserType ... please enter correct userType");
-                    try {
-                        sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                }
-
-            }
-
-            if(registerSuccessful){
-                break;
-            }
-        }
-        if(!registerSuccessful) {
-            return false;
-        }
-        sc.nextLine();
         System.out.print("\nEnter UserName or Email : ");
-        userName = sc.nextLine();
+        userNameOrEmail = inputs.getStringInput();
 
         System.out.print("\nEnter Password : ");
-        password = sc.nextLine();
+        password = inputs.getStringInput();
 
-        sc.close();
-
-        if(db_operations.validateLoginUser(userName, password, userType)){
+        if(db_operations.validateLoginUser(userNameOrEmail, password, userType)){
             System.out.println("\n\t\tLogin Successful !!");
             return true;
         }

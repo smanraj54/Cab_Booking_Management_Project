@@ -1,19 +1,28 @@
 package com.dal.cabby.profileManagement;
 
+import com.dal.cabby.io.Inputs;
+import com.dal.cabby.pojo.UserType;
+
 import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
 public class ForgotPassword {
+    Inputs inputs;
+    public ForgotPassword(Inputs inputs) {
+        this.inputs = inputs;
+    }
 
-    public boolean passwordUpdateProcess(Scanner sc, DB_Operations db_operations){
+    public boolean passwordUpdateProcess(UserType userType){
+        DB_Operations dbOperations = new DB_Operations(userType);
         boolean authenticationPass = false;
+        Scanner sc = new Scanner(System.in);
         String email = null;
         for(int t=0; t<3; t++) {
             System.out.print("\nEnter UserName or Email : ");
             String user = sc.next();
             sc.nextLine();
-            email = db_operations.fetchEmailForAuthentication(user);
+            email = dbOperations.fetchEmailForAuthentication(user, userType);
             if(email!=null){
                 authenticationPass = true;
                 break;
@@ -59,7 +68,8 @@ public class ForgotPassword {
         if(newPass == null){
             return false;
         }
-        db_operations.updateEmailPassword(email, newPass);
+        dbOperations.updateEmailPassword(email, newPass, userType);
+        System.out.println("Password updated successfully");
         return true;
     }
 
@@ -91,8 +101,8 @@ public class ForgotPassword {
 
     private String getNewPassword(Scanner sc){
         //System.out.print("\nEnter new Password : ");
-        Registration registration = new Registration();
-        String newPassword = registration.getPassword(sc, new ValidateInput());
+        Registration registration = new Registration(inputs);
+        String newPassword = registration.getPassword(new ValidateInput());
         if(newPassword == null){
             System.err.println("\nPassword Update Failed");
             try {
