@@ -30,8 +30,7 @@ public class DisplayRides {
             System.out.println("\t3. Rides between a specific period");
             System.out.println("\t4. Return to the previous page");
             System.out.print("Please enter a selection: ");
-            Scanner sc = new Scanner(System.in);
-            int selection = sc.nextInt();
+            int selection = Integer.parseInt(getInput());
             switch (selection) {
                 case 1:
                     getDailyRides();
@@ -52,17 +51,11 @@ public class DisplayRides {
 
     // method to get daily rides
     private void getDailyRides() throws SQLException {
-        String tableColumn;
-        if (requesterType.equalsIgnoreCase("DRIVER")) {
-            tableColumn = "driver_id";
-        } else {
-            tableColumn = "cust_id";
-        }
         System.out.print("Enter the date in DD/MM/YYYY format: ");
-        Scanner sc = new Scanner(System.in);
-        String inputDate = sc.nextLine();
+        String inputDate = getInput();
         if (validateDate(inputDate)) {
             String date = getFormattedDate(inputDate);
+            String columnName = getColumnName(requesterType);
             String query = String.format("select\n" +
                     "bookings.booking_id,\n" +
                     "bookings.source,\n" +
@@ -71,7 +64,7 @@ public class DisplayRides {
                     "from bookings inner join trips\n" +
                     "on bookings.booking_id = trips.booking_id\n" +
                     "where cast(trips.created_at as date) = '%s' and trips.%s = %d\n" +
-                    "order by trips.booking_id;", date, tableColumn, requesterID);
+                    "order by trips.booking_id;", date, columnName, requesterID);
             ResultSet result = dbHelper.executeSelectQuery(query);
             System.out.println("\nRide Details ->");
             while (result.next()) {
@@ -111,5 +104,18 @@ public class DisplayRides {
         String month = splitDate[1];
         String year = splitDate[2];
         return (year + "-" + month + "-" + day);
+    }
+
+    private String getInput() {
+        Scanner sc = new Scanner(System.in);
+        return sc.nextLine();
+    }
+
+    private String getColumnName(String userType) {
+        if (userType.equalsIgnoreCase("DRIVER")) {
+            return "driver_id";
+        } else {
+            return "cust_id";
+        }
     }
 }
