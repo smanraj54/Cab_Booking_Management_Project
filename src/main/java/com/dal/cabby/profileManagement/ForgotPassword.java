@@ -1,19 +1,21 @@
 package com.dal.cabby.profileManagement;
 
+import com.dal.cabby.pojo.UserType;
+
 import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
 public class ForgotPassword {
 
-    public boolean passwordUpdateProcess(Scanner sc, DB_Operations db_operations){
+    public boolean passwordUpdateProcess(Scanner sc, DB_Operations db_operations, UserType userType){
         boolean authenticationPass = false;
         String email = null;
         for(int t=0; t<3; t++) {
             System.out.print("\nEnter UserName or Email : ");
             String user = sc.next();
             sc.nextLine();
-            email = db_operations.fetchEmailForAuthentication(user);
+            email = db_operations.fetchEmailForAuthentication(user, userType);
             if(email!=null){
                 authenticationPass = true;
                 break;
@@ -59,7 +61,7 @@ public class ForgotPassword {
         if(newPass == null){
             return false;
         }
-        db_operations.updateEmailPassword(email, newPass);
+        db_operations.updateEmailPassword(email, newPass, userType);
         return true;
     }
 

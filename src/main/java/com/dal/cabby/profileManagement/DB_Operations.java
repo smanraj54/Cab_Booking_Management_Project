@@ -1,56 +1,58 @@
 package com.dal.cabby.profileManagement;
 
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.pojo.UserType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DB_Operations {
 
-    private String queryUser = "Select * from Registration where username = '<input>'";
-    private String queryEmail = "Select * from Registration where email = '<input>'";
-
-    public boolean dbUserNameValidation(String userName){
-
-        return dbContainsUserName(userName);
-
+    private String queryUser = "Select * from %s where username = '%s'";
+    private String queryEmail = "Select * from %s where email = '%s'";
+    UserType userType;
+    DB_Operations(UserType userType) {
+        this.userType = userType;
     }
 
-    public boolean dbContainsUserName(String userName){
+    public boolean dbUserNameValidation(String userName) {
+        return dbContainsUserName(userName, userType);
+    }
 
+    public boolean dbContainsUserName(String userName, UserType userType) {
         boolean foundUser = false;
-        String value = getValueFromDB(userName, "username", queryUser);
-        if(value==null){
+        String value = getValueFromDB(userName, "username", userType, queryUser);
+        if (value == null) {
             return false;
         }
-        if(userName.equals(value)){
-           foundUser =  true;
+        if (userName.equals(value)) {
+            foundUser = true;
         }
         return foundUser;
     }
 
-    public boolean dbContainsEmail(String email){
+    public boolean dbContainsEmail(String email, UserType userType) {
         boolean foundUser = false;
-        String value = getEmailValue(email, "email", queryEmail);
-        if(value==null){
+        String value = getEmailValue(email, "email", userType, queryEmail);
+        if (value == null) {
             return false;
         }
-        if(email.equals(value)){
-            foundUser =  true;
+        if (email.equals(value)) {
+            foundUser = true;
         }
         return foundUser;
     }
 
-
-    private String getValueFromDB(String userName, String keywordSearch, String query ){
-        query = query.replace("<input>", userName);
+    private String getValueFromDB(String userName, String columnName, UserType userType, String query) {
+        String tableName = getTableName(userType);
+        query = String.format(query, tableName, userName);
         String value = null;
         DBHelper dbHelper = new DBHelper();
         try {
             dbHelper.initialize();
             ResultSet resultSet = dbHelper.executeSelectQuery(query);
-            while(resultSet.next()){
-                value = resultSet.getString(keywordSearch);
+            while (resultSet.next()) {
+                value = resultSet.getString(columnName);
             }
             dbHelper.close();
         } catch (SQLException throwable) {
@@ -59,14 +61,15 @@ public class DB_Operations {
         return value;
     }
 
-    public String getEmailValue(String email, String keywordSearch, String query){
-        query = query.replace("<input>", email);
+    public String getEmailValue(String email, String keywordSearch, UserType userType, String query) {
+        String tableName = getTableName(userType);
+        query = String.format(query, tableName, email);
         String emailValue = null;
         DBHelper dbHelper = new DBHelper();
         try {
             dbHelper.initialize();
             ResultSet resultSet = dbHelper.executeSelectQuery(query);
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 emailValue = resultSet.getString(keywordSearch);
             }
             dbHelper.close();
@@ -76,9 +79,10 @@ public class DB_Operations {
         return emailValue;
     }
 
-    public void entryRegistration(DataNode dataNode){
+    public void entryRegistration(DataNode dataNode) {
         DBHelper dbHelper = getDBInstance();
-        String query = "insert into registration (username, name, password, email, usertype) value ('"+dataNode.getUser()+"', '"+dataNode.getName()+"', '"+dataNode.getPassword()+"', '"+dataNode.getEmail()+"', '"+dataNode.getUserType()+"')";
+        String tableName = getTableName(dataNode.getUserType());
+        String query = String.format("insert into %s (username, name, email, password) value ('%s','%s', '%s', '%s')", tableName, dataNode.getUser(), dataNode.getName(), dataNode.getEmail(), dataNode.getPassword());
         try {
             dbHelper.executeCreateOrUpdateQuery(query);
             dbHelper.close();
@@ -87,64 +91,59 @@ public class DB_Operations {
         }
     }
 
-    private DBHelper getDBInstance(){
+    private DBHelper getDBInstance() {
         DBHelper dbHelper = new DBHelper();
         try {
             dbHelper.initialize();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-
         return dbHelper;
     }
 
-    public boolean validateLoginUser(String userName, String password, String userType){
-
-        boolean userNameLogin = dbContainsUserName(userName);
-        boolean emailLogin = dbContainsEmail(userName);
+    public boolean validateLoginUser(String userNameOrEmail, String password, UserType userType) {
+        boolean userNameLogin = dbContainsUserName(userNameOrEmail, userType);
+        boolean emailLogin = dbContainsEmail(userNameOrEmail, userType);
         boolean passwordValidate = false;
         boolean userTypeValidate = false;
 
-        if(userNameLogin){
-            passwordValidate = validateKeyword(userName, "password", password, queryUser);
-            userTypeValidate = validateKeyword(userName, "usertype", userType, queryUser);
+        if (userNameLogin) {
+            passwordValidate = validateKeyword(userNameOrEmail, "password", password, userType, queryUser);
+            userTypeValidate = validateKeyword(userNameOrEmail, "username", userNameOrEmail, userType, queryUser);
+        } else if (emailLogin) {
+            passwordValidate = validateKeyword(userNameOrEmail, "password", password, userType, queryEmail);
+            userTypeValidate = validateKeyword(userNameOrEmail, "email", userNameOrEmail, userType, queryEmail);
         }
-        else if(emailLogin){
-            passwordValidate = validateKeyword(userName, "password", password, queryEmail);
-            userTypeValidate = validateKeyword(userName, "usertype", userType, queryEmail);
-        }
-
         return (passwordValidate && userTypeValidate);
     }
 
-    private boolean validateKeyword(String userName, String keyword, String keywordValue, String query){
-        String value = getValueFromDB(userName, keyword, query);
-        if(value!=null && value.equals(keywordValue)){
+    private boolean validateKeyword(String userNameOrEmail, String keyword, String keywordValue, UserType userType, String query) {
+        String value = getValueFromDB(userNameOrEmail, keyword, userType, query);
+        if (value != null && value.equals(keywordValue)) {
             return true;
         }
         return false;
     }
 
-    public String fetchEmailForAuthentication(String user){
+    public String fetchEmailForAuthentication(String user, UserType userType) {
         String email = null;
-
         boolean isEmail = false;
-        isEmail = dbContainsEmail(user);
-        if(!isEmail){
-            if(!dbContainsUserName(user)){
+        isEmail = dbContainsEmail(user, userType);
+        if (!isEmail) {
+            if (!dbContainsUserName(user, userType)) {
                 return null;
             }
-            email = getValueFromDB(user, "email", queryUser);
-        }
-        else{
+            email = getValueFromDB(user, "email", userType, queryUser);
+        } else {
             email = user;
         }
         return email;
     }
 
-    public void updateEmailPassword(String email, String newPassword){
+    public void updateEmailPassword(String email, String newPassword, UserType userType) {
         DBHelper dbHelper = new DBHelper();
-        String query = "UPDATE Registration set password = '"+newPassword+"'where email = '"+email+"'";
+        String tableName = getTableName(userType);
+        String query = String.format("UPDATE %s set password = '%s'where email = '%s'", tableName, newPassword, email);
         try {
             dbHelper.initialize();
             dbHelper.executeCreateOrUpdateQuery(query);
@@ -154,10 +153,15 @@ public class DB_Operations {
         }
     }
 
-
-
-
-
+    public String getTableName(UserType userType) {
+        if (userType == UserType.ADMIN) {
+            return "cabby_admin";
+        } else if (userType == UserType.DRIVER) {
+            return  "driver";
+        } else if (userType == UserType.CUSTOMER) {
+            return "customer";
+        } else {
+            throw new RuntimeException("Usertype invalid: " + userType);
+        }
+    }
 }
-
-
