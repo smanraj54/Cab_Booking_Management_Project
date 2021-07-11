@@ -80,7 +80,38 @@ public class DisplayRides {
     }
 
     // method to get monthly rides
-    private void getMonthlyRides() {
+    private void getMonthlyRides() throws SQLException {
+        System.out.print("Enter the month in MM/YYYY format: ");
+        String input = getInput();
+        if (input.length() == 0 || input.indexOf("/") != 2) {
+            System.out.println("\nInvalid Date");
+        } else {
+            String[] splitInput = input.split("/");
+            String month = splitInput[0];
+            String year = splitInput[1];
+            String startDate = year + "-" + month + "-01";
+            String endDate = getLastDay(startDate);
+            String columnName = getColumnName(requesterType);
+            String query = String.format("select\n" +
+                    "bookings.booking_id,\n" +
+                    "bookings.source,\n" +
+                    "bookings.destination,\n" +
+                    "trips.trip_amount\n" +
+                    "from bookings inner join trips\n" +
+                    "on bookings.booking_id = trips.booking_id\n" +
+                    "where cast(trips.created_at as date) between '%s' and '%s' \n" +
+                    "and trips.%s = %d\n" +
+                    "order by trips.booking_id;", startDate, endDate, columnName, requesterID);
+            ResultSet result = dbHelper.executeSelectQuery(query);
+            System.out.println("\nRide Details ->");
+            while (result.next()) {
+                String bookingId = result.getString("booking_id");
+                String pickupLocation = result.getString("source");
+                String dropLocation = result.getString("destination");
+                double rideAmount = result.getDouble("trip_amount");
+                System.out.println("BookingID: " + bookingId + ", Pickup: " + pickupLocation + ", Destination: " + dropLocation + ", Price: " + rideAmount + ", Status: Completed");
+            }
+        }
     }
 
     // method to get rides between specific time period
@@ -104,6 +135,16 @@ public class DisplayRides {
         String month = splitDate[1];
         String year = splitDate[2];
         return (year + "-" + month + "-" + day);
+    }
+
+    private String getLastDay(String inputDate) throws SQLException {
+        String date = "";
+        String query = String.format("select last_day('%s') as last_date", inputDate);
+        ResultSet result = dbHelper.executeSelectQuery(query);
+        while (result.next()) {
+            date = result.getString("last_date");
+        }
+        return date;
     }
 
     private String getInput() {
