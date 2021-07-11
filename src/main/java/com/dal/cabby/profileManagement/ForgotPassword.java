@@ -8,14 +8,16 @@ import static java.lang.Thread.sleep;
 
 public class ForgotPassword {
 
-    public boolean passwordUpdateProcess(Scanner sc, DB_Operations db_operations, UserType userType){
+    public boolean passwordUpdateProcess(UserType userType){
+        DB_Operations dbOperations = new DB_Operations(userType);
         boolean authenticationPass = false;
+        Scanner sc = new Scanner(System.in);
         String email = null;
         for(int t=0; t<3; t++) {
             System.out.print("\nEnter UserName or Email : ");
             String user = sc.next();
             sc.nextLine();
-            email = db_operations.fetchEmailForAuthentication(user, userType);
+            email = dbOperations.fetchEmailForAuthentication(user, userType);
             if(email!=null){
                 authenticationPass = true;
                 break;
@@ -61,7 +63,8 @@ public class ForgotPassword {
         if(newPass == null){
             return false;
         }
-        db_operations.updateEmailPassword(email, newPass, userType);
+        dbOperations.updateEmailPassword(email, newPass, userType);
+        System.out.println("Password updated successfully");
         return true;
     }
 
