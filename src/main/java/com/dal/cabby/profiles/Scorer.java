@@ -13,6 +13,18 @@ public class Scorer {
 
     }
 
+    public double customerCancelled(double initialScore, boolean hasArrived, boolean hasCancelled) {
+        double score = initialScore;
+        if (hasCancelled) {
+            if (hasArrived) {
+                score -= 0.5;
+            } else {
+                score -= 0.2;
+            }
+        }
+        return score;
+    }
+
 
     public double calculateDriverScore(int stars, int eta_pickup, int actualArrivalTime, double initialScore) {
 
