@@ -3,10 +3,7 @@ package com.dal.cabby.admin;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Profile;
 import com.dal.cabby.pojo.UserType;
-import com.dal.cabby.profileManagement.ForgotPassword;
-import com.dal.cabby.profileManagement.Login;
-import com.dal.cabby.profileManagement.Logout;
-import com.dal.cabby.profileManagement.Registration;
+import com.dal.cabby.profileManagement.*;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
@@ -17,8 +14,8 @@ public class Admin {
     Inputs inputs;
 
     public Admin(Inputs inputs) throws SQLException {
-        adminHelper = new AdminHelper();
         this.inputs = inputs;
+        adminHelper = new AdminHelper();
         adminPage1();
     }
 
@@ -43,9 +40,15 @@ public class Admin {
     }
 
     private void login() throws SQLException {
-        System.out.println("Login successfull");
+        System.out.println("Welcome to Admin login page");
         Login login = new Login(inputs);
-        login.attemptLogin(UserType.ADMIN);
+        if (login.attemptLogin(UserType.ADMIN)) {
+            System.out.println("Login successful");
+            System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
+                    LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
+        } else {
+            return;
+        }
         page2();
     }
 

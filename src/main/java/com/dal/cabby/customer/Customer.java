@@ -3,6 +3,7 @@ package com.dal.cabby.customer;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.ForgotPassword;
+import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.profileManagement.Login;
 import com.dal.cabby.profileManagement.Registration;
 import com.dal.cabby.profiles.Ratings;
@@ -39,8 +40,13 @@ public class Customer {
     public void login() {
         System.out.println("Welcome to Customer login page");
         Login login = new Login(inputs);
-        login.attemptLogin(UserType.CUSTOMER);
-        System.out.println("Login successful.");
+        if (login.attemptLogin(UserType.CUSTOMER)) {
+            System.out.println("Login successful");
+            System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
+                    LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
+        } else {
+            return;
+        }
     }
 
     public void register() {
