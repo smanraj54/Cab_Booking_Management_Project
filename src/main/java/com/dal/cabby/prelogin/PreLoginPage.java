@@ -27,11 +27,11 @@ public class PreLoginPage {
     }
 
     /* Show welcome message when user vigit Cabby app page */
-    public void welcomeMessage() {
+    private void welcomeMessage() {
         System.out.println("***** Cabby App: A one stop app for your cab booking *****\n");
     }
 
-    public void page1() throws SQLException, ParseException {
+    private void page1() throws SQLException, ParseException {
         System.out.println("Are you: \n1: Admin\n2: Driver\n3: Customer");
         int input = inputs.getIntegerInput();
 
