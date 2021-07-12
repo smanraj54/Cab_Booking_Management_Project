@@ -53,6 +53,11 @@ public class DB_Operations {
             ResultSet resultSet = dbHelper.executeSelectQuery(query);
             while (resultSet.next()) {
                 value = resultSet.getString(columnName);
+                String idColumnName = getIDColumnName(userType);
+                int id = resultSet.getInt(idColumnName);
+                String loggedInName = resultSet.getString("name");
+                LoggedInProfile.setLoggedInId(id);
+                LoggedInProfile.setLoggedInName(loggedInName);
             }
             dbHelper.close();
         } catch (SQLException throwable) {
@@ -160,6 +165,18 @@ public class DB_Operations {
             return  "driver";
         } else if (userType == UserType.CUSTOMER) {
             return "customer";
+        } else {
+            throw new RuntimeException("Usertype invalid: " + userType);
+        }
+    }
+
+    public String getIDColumnName(UserType userType) {
+        if (userType == UserType.ADMIN) {
+            return "admin_id";
+        } else if (userType == UserType.DRIVER) {
+            return  "driver_id";
+        } else if (userType == UserType.CUSTOMER) {
+            return "cust_id";
         } else {
             throw new RuntimeException("Usertype invalid: " + userType);
         }

@@ -3,10 +3,7 @@ package com.dal.cabby.driver;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
-import com.dal.cabby.profileManagement.ForgotPassword;
-import com.dal.cabby.profileManagement.Login;
-import com.dal.cabby.profileManagement.Logout;
-import com.dal.cabby.profileManagement.Registration;
+import com.dal.cabby.profileManagement.*;
 import com.dal.cabby.profiles.Ratings;
 import com.dal.cabby.util.Common;
 
@@ -20,9 +17,9 @@ public class Driver {
     private final Inputs inputs;
 
     public Driver(Inputs inputs) throws SQLException, ParseException {
+        this.inputs = inputs;
         driverHelper = new DriverHelper();
         driverPage1();
-        this.inputs = inputs;
     }
 
     private void driverPage1() throws SQLException, ParseException {
@@ -46,8 +43,13 @@ public class Driver {
     }
 
     public void login() throws SQLException, ParseException {
+        System.out.println("Welcome to Driver login page");
         Login login = new Login(inputs);
-        if (!login.attemptLogin(UserType.DRIVER)) {
+        if (login.attemptLogin(UserType.DRIVER)) {
+            System.out.println("Login successful");
+            System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
+                    LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
+        } else {
             return;
         }
         page2();
@@ -86,15 +88,18 @@ public class Driver {
                 case 4:
                     rateCustomer();
                     break;
-                default:
-                    logout();
+                case 5:
+                    boolean isLogoutSuccessful = logout();
+                    if (isLogoutSuccessful) {
+                        return;
+                    }
                     break;
             }
         }
     }
 
-    private void logout() {
-        new Logout().logout();
+    private boolean logout() {
+        return new Logout(inputs).logout();
     }
 
     private void startTrip() throws SQLException, ParseException {
