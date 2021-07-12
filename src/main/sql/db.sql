@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS driver_score (
 );
 
 CREATE TABLE IF NOT EXISTS price_Calculation (
-    sourceId INT PRIMARY KEY,
+    sourceId INT AUTO_INCREMENT PRIMARY KEY,
     sourceName VARCHAR(45) NOT NULL,
     distanceFromOrigin DOUBLE,
     sourceArea VARCHAR(45),     /*Urban or Rural*/
@@ -113,3 +113,14 @@ CREATE TABLE IF NOT EXISTS price_Calculation (
     averageSpeed DOUBLE,
     PRIMARY KEY (sourceId)
 );
+
+CREATE TABLE IF NOT EXISTS cab_Selection (
+    cabId INT AUTO_INCREMENT PRIMARY KEY,
+    cabName VARCHAR(45) NOT NULL,
+    distanceFromOrigin DOUBLE,
+    trafficDensity VARCHAR(30),
+    genderPreference VARCHAR (10),
+    FOREIGN KEY (driver_id) REFERENCES driver_ratings(driver_id),
+    FOREIGN KEY (rating) REFERENCES driver_ratings(rating),
+    PRIMARY KEY (cabId)
+    );
