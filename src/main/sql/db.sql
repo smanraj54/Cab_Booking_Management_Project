@@ -102,3 +102,14 @@ CREATE TABLE IF NOT EXISTS driver_score (
     FOREIGN KEY (driver_id) REFERENCES driver(driver_id),
     FOREIGN KEY (trip_id) REFERENCES trips(trip_id)
 );
+
+CREATE TABLE IF NOT EXISTS price_Calculation (
+    sourceId INT PRIMARY KEY,
+    sourceName VARCHAR(45) NOT NULL,
+    distanceFromOrigin DOUBLE,
+    sourceArea VARCHAR(45),     /*Urban or Rural*/
+    isOfficeHours BOOLEAN,
+    rideSharing BOOLEAN,
+    averageSpeed DOUBLE,
+    PRIMARY KEY (sourceId)
+);
