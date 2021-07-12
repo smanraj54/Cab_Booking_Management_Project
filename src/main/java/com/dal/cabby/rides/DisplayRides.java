@@ -55,27 +55,9 @@ public class DisplayRides {
         String inputDate = getInput();
         if (validateDate(inputDate)) {
             String date = getFormattedDate(inputDate);
-            String columnName = getColumnName(requesterType);
-            String query = String.format("select\n" +
-                    "bookings.booking_id,\n" +
-                    "bookings.source,\n" +
-                    "bookings.destination,\n" +
-                    "trips.trip_amount\n" +
-                    "from bookings inner join trips\n" +
-                    "on bookings.booking_id = trips.booking_id\n" +
-                    "where cast(trips.created_at as date) = '%s' and trips.%s = %d\n" +
-                    "order by trips.booking_id;", date, columnName, requesterID);
-            ResultSet result = dbHelper.executeSelectQuery(query);
-            System.out.println("\nRide Details ->");
-            while (result.next()) {
-                String bookingId = result.getString("booking_id");
-                String pickupLocation = result.getString("source");
-                String dropLocation = result.getString("destination");
-                double rideAmount = result.getDouble("trip_amount");
-                System.out.println("BookingID: " + bookingId + ", Pickup: " + pickupLocation + ", Destination: " + dropLocation + ", Price: " + rideAmount + ", Status: Completed");
-            }
+            getRides(date, date, requesterType, requesterID);
         } else {
-            System.out.println("\nInvalid Date");
+            System.out.println("\nInvalid Input");
         }
     }
 
@@ -83,39 +65,42 @@ public class DisplayRides {
     private void getMonthlyRides() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
         String input = getInput();
-        if (input.length() == 0 || input.indexOf("/") != 2) {
-            System.out.println("\nInvalid Date");
-        } else {
+        if (input.length() != 0 && input.indexOf("/") == 2) {
             String[] splitInput = input.split("/");
             String month = splitInput[0];
             String year = splitInput[1];
             String startDate = year + "-" + month + "-01";
             String endDate = getLastDay(startDate);
-            String columnName = getColumnName(requesterType);
-            String query = String.format("select\n" +
-                    "bookings.booking_id,\n" +
-                    "bookings.source,\n" +
-                    "bookings.destination,\n" +
-                    "trips.trip_amount\n" +
-                    "from bookings inner join trips\n" +
-                    "on bookings.booking_id = trips.booking_id\n" +
-                    "where cast(trips.created_at as date) between '%s' and '%s' \n" +
-                    "and trips.%s = %d\n" +
-                    "order by trips.booking_id;", startDate, endDate, columnName, requesterID);
-            ResultSet result = dbHelper.executeSelectQuery(query);
-            System.out.println("\nRide Details ->");
-            while (result.next()) {
-                String bookingId = result.getString("booking_id");
-                String pickupLocation = result.getString("source");
-                String dropLocation = result.getString("destination");
-                double rideAmount = result.getDouble("trip_amount");
-                System.out.println("BookingID: " + bookingId + ", Pickup: " + pickupLocation + ", Destination: " + dropLocation + ", Price: " + rideAmount + ", Status: Completed");
-            }
+            getRides(startDate, endDate, requesterType, requesterID);
+        } else {
+            System.out.println("\nInvalid Input");
         }
     }
 
     // method to get rides between specific time period
     private void getSpecificPeriodRides() {
+    }
+
+    private void getRides(String startDate, String endDate, String userType, int userID) throws SQLException {
+        String query = String.format("select\n" +
+                "bookings.booking_id,\n" +
+                "bookings.source,\n" +
+                "bookings.destination,\n" +
+                "trips.trip_amount\n" +
+                "from bookings inner join trips\n" +
+                "on bookings.booking_id = trips.booking_id\n" +
+                "where cast(trips.created_at as date) between '%s' and '%s' \n" +
+                "and trips.%s = %d\n" +
+                "order by trips.booking_id;", startDate, endDate, getColumnName(userType), userID);
+        ResultSet result = dbHelper.executeSelectQuery(query);
+        System.out.println("\nRide Details -> ");
+        while (result.next()) {
+            String bookingID = result.getString("booking_id");
+            String pickupLocation = result.getString("source");
+            String dropLocation = result.getString("destination");
+            double rideAmount = result.getDouble("trip_amount");
+            System.out.println("BookingID: " + bookingID + ", Pickup: " + pickupLocation + ", Destination: " + dropLocation + ", Price: " + rideAmount + ", Status: Completed");
+        }
     }
 
     private boolean validateDate(String date) {
