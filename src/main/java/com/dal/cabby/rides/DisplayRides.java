@@ -22,6 +22,7 @@ public class DisplayRides {
         ridesPage();
     }
 
+    // method to display ride page options and get input from the user
     private void ridesPage() throws SQLException {
         while (true) {
             System.out.println("\n**** Rides Page ****");
@@ -55,7 +56,7 @@ public class DisplayRides {
         String inputDate = getInput();
         if (validateDate(inputDate)) {
             String date = getFormattedDate(inputDate);
-            getRides(date, date, requesterType, requesterID);
+            getRidesFromDb(date, date, requesterType, requesterID);
         } else {
             System.out.println("\nInvalid Input");
         }
@@ -71,17 +72,33 @@ public class DisplayRides {
             String year = splitInput[1];
             String startDate = year + "-" + month + "-01";
             String endDate = getLastDay(startDate);
-            getRides(startDate, endDate, requesterType, requesterID);
+            getRidesFromDb(startDate, endDate, requesterType, requesterID);
         } else {
             System.out.println("\nInvalid Input");
         }
     }
 
     // method to get rides between specific time period
-    private void getSpecificPeriodRides() {
+    private void getSpecificPeriodRides() throws SQLException {
+        System.out.print("Enter the start date (DD/MM/YYYY): ");
+        String startDate = getInput();
+        System.out.print("Enter the end date (DD/MM/YYYY): ");
+        String endDate = getInput();
+        if (validateDate(startDate) && validateDate(endDate)) {
+            String startingDate = getFormattedDate(startDate);
+            String endingDate = getFormattedDate(endDate);
+            if (getDateDifference(startingDate, endingDate) < 0) {
+                System.out.println("\nInvalid Input. Start date is greater than end date.");
+            } else {
+                getRidesFromDb(startingDate, endingDate, requesterType, requesterID);
+            }
+        } else {
+            System.out.println("\nInvalid Input");
+        }
     }
 
-    private void getRides(String startDate, String endDate, String userType, int userID) throws SQLException {
+    // method to get rides from the database
+    private void getRidesFromDb(String startDate, String endDate, String userType, int userID) throws SQLException {
         String query = String.format("select\n" +
                 "bookings.booking_id,\n" +
                 "bookings.source,\n" +
@@ -103,6 +120,7 @@ public class DisplayRides {
         }
     }
 
+    // method for date validation
     private boolean validateDate(String date) {
         if (date != null && date.length() == 10 && date.indexOf("/") == 2 && date.lastIndexOf("/") == 5) {
             String[] splitDate = date.split("/");
@@ -114,6 +132,7 @@ public class DisplayRides {
         return false;
     }
 
+    // method to get the date in required format
     private String getFormattedDate(String inputDate) {
         String[] splitDate = inputDate.split("/");
         String day = splitDate[0];
@@ -122,6 +141,7 @@ public class DisplayRides {
         return (year + "-" + month + "-" + day);
     }
 
+    // method to get the last day of month
     private String getLastDay(String inputDate) throws SQLException {
         String date = "";
         String query = String.format("select last_day('%s') as last_date", inputDate);
@@ -132,11 +152,24 @@ public class DisplayRides {
         return date;
     }
 
+    // method to get the difference between two dates
+    private int getDateDifference(String startDate, String endDate) throws SQLException {
+        int dateDifference = 0;
+        String query = String.format("select datediff('%s','%s') as date_difference", endDate, startDate);
+        ResultSet result = dbHelper.executeSelectQuery(query);
+        while (result.next()) {
+            dateDifference = result.getInt("date_difference");
+        }
+        return dateDifference;
+    }
+
+    // method to get input from the user
     private String getInput() {
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
     }
 
+    // method to get the column name for user category
     private String getColumnName(String userType) {
         if (userType.equalsIgnoreCase("DRIVER")) {
             return "driver_id";
