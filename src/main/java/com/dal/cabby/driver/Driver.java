@@ -88,15 +88,18 @@ public class Driver {
                 case 4:
                     rateCustomer();
                     break;
-                default:
-                    logout();
+                case 5:
+                    boolean isLogoutSuccessful = logout();
+                    if (isLogoutSuccessful) {
+                        return;
+                    }
                     break;
             }
         }
     }
 
-    private void logout() {
-        new Logout().logout();
+    private boolean logout() {
+        return new Logout(inputs).logout();
     }
 
     private void startTrip() throws SQLException, ParseException {

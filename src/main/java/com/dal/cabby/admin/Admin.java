@@ -86,7 +86,10 @@ public class Admin {
                     deRegisterCustomer();
                     break;
                 case 5:
-                    logout();
+                    boolean isLogoutSuccessful = logout();
+                    if (isLogoutSuccessful) {
+                        return;
+                    }
                     break;
                 default:
                     System.out.println("Invalid input entered");
@@ -95,8 +98,8 @@ public class Admin {
         }
     }
 
-    private void logout() {
-        new Logout().logout();
+    private boolean logout() {
+        return new Logout(inputs).logout();
     }
 
     private void approveDriverAccounts() throws SQLException {
