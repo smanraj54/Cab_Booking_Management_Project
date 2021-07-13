@@ -16,7 +16,13 @@ class ScorerTest {
         Assertions.assertEquals(actualScore, expectedScore, "Calculate drive score method is not working");
     }
 
-
+    @Test
+    public void driverCancelledTest() {
+        Scorer scorer = new Scorer();
+        double intialScore = 4.0;
+        double newScore = scorer.driverCancelled(intialScore, true);
+        Assertions.assertEquals(3.7, newScore, "Incorrect new score");
+    }
 
     @Test
     void calculateCustomerScore() {
