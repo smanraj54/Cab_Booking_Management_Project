@@ -107,12 +107,33 @@ CREATE TABLE IF NOT EXISTS price_Calculation (
     sourceId INT AUTO_INCREMENT PRIMARY KEY,
     sourceName VARCHAR(45) NOT NULL,
     distanceFromOrigin DOUBLE,
-    sourceArea VARCHAR(45),     /*Urban or Rural*/
+    sourceArea VARCHAR(45),
     isOfficeHours BOOLEAN,
     rideSharing BOOLEAN,
-    averageSpeed DOUBLE,
-    PRIMARY KEY (sourceId)
-);
+    averageSpeed DOUBLE
+    );
+
+insert into price_Calculation(
+    sourceId,
+    sourceName,
+    distanceFromOrigin,
+    sourceArea,
+    isOfficeHours,
+    rideSharing,
+    averageSpeed
+    )
+VALUES
+(1, 'Halifax', 35, 'urban',true,false,25),
+(2, 'Dartmouth', 30, 'rural', false, true, 28),
+(3, 'BedFord', -8, 'urban', false, true , 26),
+(4, 'Sydney', 18, 'urban', true, false, 24),
+(5, 'Yarmouth', 23, 'rural', false, false, 27),
+(6, 'Toronto', 148, 'urban', true, true, 30),
+(7, 'Kentville', -64, 'rural', true, false, 22),
+(8, 'Winnipeg', 80, 'rural', false, true, 31),
+(9, 'Vancouver', 260, 'urban', true, false, 34),
+(10, 'Montreal', -190, 'rural', false, false, 29);
+
 
 CREATE TABLE IF NOT EXISTS cab_Selection (
     cabId INT AUTO_INCREMENT PRIMARY KEY,
