@@ -21,6 +21,21 @@ CREATE TABLE IF NOT EXISTS driver (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+insert into driver(
+    driver_id,
+    name,
+    email,
+    password,
+    username,
+    status
+)
+VALUES
+    (11, 'Devraj','devraj@gmail.com','devraj@123','devraj',true),
+    (12,'Manjinder','manjinder@gmail.com','manjinder@123','manjinder',true),
+    (13,'Bikram','bikram@gmail.com','bikram@123','bikram',true),
+    (14,'Arvinder','arvinder@gmail.com','arvinder@123','arvinder',true),
+    (15,'Manraj','manraj@gmail.com','manraj@123','manraj',true);
+
 CREATE TABLE IF NOT EXISTS customer (
     cust_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -123,25 +138,39 @@ insert into price_Calculation(
     averageSpeed
     )
 VALUES
-(1, 'Halifax', 35, 'urban',true,false,25),
-(2, 'Dartmouth', 30, 'rural', false, true, 28),
-(3, 'BedFord', -8, 'urban', false, true , 26),
-(4, 'Sydney', 18, 'urban', true, false, 24),
-(5, 'Yarmouth', 23, 'rural', false, false, 27),
-(6, 'Toronto', 148, 'urban', true, true, 30),
-(7, 'Kentville', -64, 'rural', true, false, 22),
-(8, 'Winnipeg', 80, 'rural', false, true, 31),
-(9, 'Vancouver', 260, 'urban', true, false, 34),
-(10, 'Montreal', -190, 'rural', false, false, 29);
+    (1, 'Halifax', 35, 'urban',true,false,25),
+    (2, 'Dartmouth', 30, 'rural', false, true, 28),
+    (3, 'BedFord', -8, 'urban', false, true , 26),
+    (4, 'Sydney', 18, 'urban', true, false, 24),
+    (5, 'Yarmouth', 23, 'rural', false, false, 27),
+    (6, 'Toronto', 148, 'urban', true, true, 30),
+    (7, 'Kentville', -64, 'rural', true, false, 22),
+    (8, 'Winnipeg', 80, 'rural', false, true, 31),
+    (9, 'Vancouver', 260, 'urban', true, false, 34),
+    (10, 'Montreal', -190, 'rural', false, false, 29);
 
 
-CREATE TABLE IF NOT EXISTS cab_Selection (
+CREATE TABLE IF NOT EXISTS cabs(
     cabId INT AUTO_INCREMENT PRIMARY KEY,
     cabName VARCHAR(45) NOT NULL,
-    distanceFromOrigin DOUBLE,
+    cabDistanceFromOrigin DOUBLE,
     trafficDensity VARCHAR(30),
     genderPreference VARCHAR (10),
-    FOREIGN KEY (driver_id) REFERENCES driver_ratings(driver_id),
-    FOREIGN KEY (rating) REFERENCES driver_ratings(rating),
-    PRIMARY KEY (cabId)
+    driver_id INT,
+    FOREIGN KEY (driver_id) REFERENCES driver(driver_id)
     );
+
+insert into cabs(
+    cabId,
+    cabName,
+    cabDistanceFromOrigin,
+    trafficDensity,
+    genderPreference,
+    driver_id
+)
+VALUES
+    (101, 'Cab1', 32, 'low', true, 11),
+    (102, 'Cab2', 33, 'moderate', false, 12),
+    (103, 'Cab3', 37, 'high', true, 13),
+    (104, 'Cab4', 38, 'low', false, 14),
+    (105, 'Cab5', 42, 'high', false, 15);
