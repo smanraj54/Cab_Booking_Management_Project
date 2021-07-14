@@ -22,7 +22,12 @@ public class Scorer {
                 score -= 0.2;
             }
         }
+        else {
+            System.out.println("Driver has not cancelled.");
+            return initialScore;
+        }
         return score;
+
     }
 
 
