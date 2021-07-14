@@ -143,9 +143,8 @@ public class CabPriceCalculator {
         System.out.println("Total Price for this ride is: $"+String.format("%.2f",priceWithCoPassenger));
     }
 
-    public void amenities(String source, String destination,int cabCategory,double distance){
+    public void amenities(String source, String destination,int cabCategory,double distance) throws SQLException {
         // For every 30 minutes of ride we are charging extra $2 per amenity.
-        //For dummy data we have taken total time of ride as 90 minutes.
         System.out.println("Choose amenities:");
         System.out.println("1. CarTV");
         System.out.println("2. Wifi");
@@ -155,20 +154,27 @@ public class CabPriceCalculator {
         System.out.println("Price without amenities: $"+String.format("%.2f",basicPrice));
         double priceWithAmenities= basicPrice;
         double extraCharge=0;
-
+        double speed=0.0;
+        String rideSpeed=String.format("Select averageSpeed from price_Calculation where sourceName='%s'",source);
+        ResultSet rideDuration=dbHelper.executeSelectQuery(rideSpeed);
+        while(rideDuration.next()){
+            speed=rideDuration.getDouble("averageSpeed");
+        }
+        double time=(distance/speed)*60;  //Converted hours into minutes
+        double rideInMinutes=(time/30);
         switch (input){
             case 1:
-                extraCharge=((2*(90/30)));
+                extraCharge=(2*rideInMinutes);
                 System.out.println("Extra charges: $"+extraCharge);
                 priceWithAmenities+=extraCharge;
                 break;
             case 2:
-                extraCharge=((2*(90/30)));
+                extraCharge=(2*rideInMinutes);
                 System.out.println("Extra charges: $"+extraCharge);
                 priceWithAmenities+=extraCharge;
                 break;
             case 3:
-                extraCharge=(2*(2*(90/30)));
+                extraCharge=(2*(2*rideInMinutes));
                 System.out.println("Extra charges: $"+extraCharge);
                 priceWithAmenities+=extraCharge;
                 break;
