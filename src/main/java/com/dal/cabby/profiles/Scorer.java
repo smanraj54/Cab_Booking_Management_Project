@@ -9,6 +9,9 @@ public class Scorer {
         if (hasCancelled) {
             score -= 0.3;
         }
+        else {
+            System.out.println("Driver has not cancelled.");
+            return initialScore;}
         return score;
 
     }
@@ -23,7 +26,7 @@ public class Scorer {
             }
         }
         else {
-            System.out.println("Driver has not cancelled.");
+            System.out.println("Customer has not cancelled.");
             return initialScore;
         }
         return score;
