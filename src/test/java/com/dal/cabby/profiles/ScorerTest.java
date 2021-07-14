@@ -17,11 +17,19 @@ class ScorerTest {
     }
 
     @Test
-    public void driverCancelledTest() {
+    public void driverCancelledTrueTest() {
         Scorer scorer = new Scorer();
-        double intialScore = 4.0;
-        double newScore = scorer.driverCancelled(intialScore, true);
+        double initialScore = 4.0;
+        double newScore = scorer.driverCancelled(initialScore, true);
         Assertions.assertEquals(3.7, newScore, "Incorrect new score");
+    }
+
+    @Test
+    public void driverCancelledFalseTest() {
+        Scorer scorer = new Scorer();
+        double initialScore = 3.9;
+        double newScore = scorer.driverCancelled(initialScore, false);
+        Assertions.assertEquals(initialScore, newScore, "Incorrect new score");
     }
 
     @Test
