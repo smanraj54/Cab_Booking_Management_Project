@@ -42,7 +42,7 @@ public class CabSelection {
             case 4:
                 break;
         }
-        cabPriceCalculator.priceCalculation(sourceLocation,destinationLocation,false,"urban",true, input);
+        cabPriceCalculator.priceCalculation(sourceLocation,destinationLocation,false,"urban", input);
     }
 
     public double fetchSource() throws SQLException {
