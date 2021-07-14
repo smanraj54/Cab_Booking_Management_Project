@@ -1,40 +1,94 @@
 package com.dal.cabby.cabPrice;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Scanner;
+import com.dal.cabby.dbHelper.DBHelper;
 
 public class CabPriceCalculator {
+    DBHelper dbHelper;
+    public CabPriceCalculator(){
+        dbHelper = new DBHelper();
+        try {
+            dbHelper.initialize();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     double price=0.0;
     int hour=java.time.LocalTime.now().getHour();
     Scanner ss = new Scanner(System.in);
+    double distance=0.0;
 
-    public int priceCalculation(String source, String destination, Boolean rideSharing, String sourceArea, Boolean isOfficeHours, int cabType){
+    public int priceCalculation(String source, String destination, Boolean rideSharing, String sourceArea, Boolean isOfficeHours, int cabType) throws SQLException {
         System.out.println("*** Select your Preferences ***");
         System.out.println("1. Normal Booking");
         System.out.println("2. Want to share ride with co-passenger");
         System.out.println("3. Want to have Car TV and Wifi during ride");
         int userInput= ss.nextInt();
+        distance=calculateDistance(source,destination);
         switch(userInput){
             case 1:
-                distanceFactor(sourceArea,isOfficeHours,cabType);
+                distanceFactor(sourceArea,isOfficeHours,cabType,distance);
                 System.out.println("Total Price for the ride is: $" + String.format("%.2f",price));
                 break;
             case 2:
-                rideSharing(cabType);
+                rideSharing(cabType,distance);
                 break;
             case 3:
-                amenities(cabType);
+                amenities(cabType,distance);
                 break;
         }
         return 0;
     }
 
-    public double distanceFactor(String rideArea,Boolean isPeakHour,int cabCategory){
-        int totalDistance=70;  //Distance in KM
+    public double calculateDistance(String source,String destination) throws SQLException {
+        double sourceDistance = 0.0;
+        double destinationDistance= 0.0;
+        double distance = 0.0;
+
+        String sourceLocationQuery= String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'",source);// with sourceLocation find it's distance fro, origin
+        ResultSet sourceDistanceFromOrigin= dbHelper.executeSelectQuery(sourceLocationQuery);
+        while (sourceDistanceFromOrigin.next()) {
+            sourceDistance = sourceDistanceFromOrigin.getDouble("distanceFromOrigin");
+        }
+
+        String destinationLocationQuery= String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'",destination);// with sourceLocation find it's distance from origin
+        ResultSet destinationDistanceFromOrigin= dbHelper.executeSelectQuery(destinationLocationQuery);
+        while (destinationDistanceFromOrigin.next()) {
+            destinationDistance = destinationDistanceFromOrigin.getDouble("distanceFromOrigin");
+        }
+
+        if(sourceDistance >0 && destinationDistance>0) {
+            if (destinationDistance < sourceDistance) {
+                distance = sourceDistance - destinationDistance;
+            } else {
+                distance = destinationDistance - sourceDistance;
+            }
+        }
+        else if (sourceDistance< 0 && destinationDistance < 0) {
+            if (destinationDistance < sourceDistance) {
+                distance = sourceDistance - destinationDistance;
+            } else {
+                distance = destinationDistance - sourceDistance;
+            }
+        }
+        else if (sourceDistance < 0 && destinationDistance > 0) {
+            distance = destinationDistance-sourceDistance;
+        }
+        else if (sourceDistance > 0 && destinationDistance < 0) {
+            distance = sourceDistance - destinationDistance;
+        }
+        System.out.println("Distance between two locations:"+distance);
+        return distance;
+    }
+
+    public double distanceFactor(String rideArea,Boolean isPeakHour,int cabCategory,double distance){
         int shortDistance=5;
-        if(totalDistance <= shortDistance){
+        if(distance <= shortDistance){
             //For initial few kilometers 5 dollars would be charged per Km
-            for (int initialKilometers=1; initialKilometers<totalDistance; initialKilometers++){
+            for (int initialKilometers=1; initialKilometers<=distance; initialKilometers++){
                 price+=5;
             }
         }
@@ -43,7 +97,7 @@ public class CabPriceCalculator {
                 price+=5;
             }
             //Price per kilometer would be reduced for Long Journey
-            for (int longKilometers=6;longKilometers<=totalDistance;longKilometers++ ){
+            for (int longKilometers=6;longKilometers<=distance;longKilometers++ ){
                 price+=3.5;
             }
         }
@@ -68,12 +122,12 @@ public class CabPriceCalculator {
         return price;
     }
 
-    public void rideSharing(int cabCategory){
+    public void rideSharing(int cabCategory,double distance){
         System.out.println("Choose number of co-passengers: ");
         System.out.println("One co-passenger");
         System.out.println("Two co-passengers");
         int input= ss.nextInt();
-        double basicPrice=distanceFactor("urban",true,cabCategory);
+        double basicPrice=distanceFactor("urban",true,cabCategory,distance);
         System.out.println("Price without Co-passenger: $"+String.format("%.2f",basicPrice));
         double priceWithCoPassenger=basicPrice;
         double discount;
@@ -90,7 +144,7 @@ public class CabPriceCalculator {
         System.out.println("Total Price for this ride is: $"+String.format("%.2f",priceWithCoPassenger));
     }
 
-    public void amenities(int cabCategory){
+    public void amenities(int cabCategory,double distance){
         // For every 30 minutes of ride we are charging extra $2 per amenity.
         //For dummy data we have taken total time of ride as 90 minutes.
         System.out.println("Choose amenities:");
@@ -98,7 +152,7 @@ public class CabPriceCalculator {
         System.out.println("2. Wifi");
         System.out.println("3. Both");
         int input= ss.nextInt();
-        double basicPrice= distanceFactor("urban",true, cabCategory);
+        double basicPrice= distanceFactor("urban",true, cabCategory,distance);
         System.out.println("Price without amenities: $"+String.format("%.2f",basicPrice));
         double priceWithAmenities= basicPrice;
         double extraCharge=0;
