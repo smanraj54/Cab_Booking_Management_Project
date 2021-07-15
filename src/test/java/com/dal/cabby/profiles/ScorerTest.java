@@ -12,7 +12,6 @@ class ScorerTest {
         Scorer scorer = new Scorer();
         double expectedScore = 2.9;
         double actualScore = scorer.calculateDriverScore(1, 250, 258, 3.5);
-
         Assertions.assertEquals(actualScore, expectedScore, "Calculate drive score method is not working");
     }
 
@@ -21,7 +20,6 @@ class ScorerTest {
         Scorer scorer = new Scorer();
         double expectedScore = 3.1;
         double actualScore = scorer.calculateDriverScore(2, 250, 258, 3.5);
-
         Assertions.assertEquals(actualScore, expectedScore, "Calculate drive score method is not working");
     }
 
