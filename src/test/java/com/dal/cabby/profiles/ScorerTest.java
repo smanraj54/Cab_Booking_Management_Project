@@ -17,6 +17,15 @@ class ScorerTest {
     }
 
     @Test
+    void calculateDriverScoreWithTwoStars() {
+        Scorer scorer = new Scorer();
+        double expectedScore = 3.1;
+        double actualScore = scorer.calculateDriverScore(2, 250, 258, 3.5);
+
+        Assertions.assertEquals(actualScore, expectedScore, "Calculate drive score method is not working");
+    }
+
+    @Test
     public void driverCancelledTrueTest() {
         Scorer scorer = new Scorer();
         double initialScore = 4.0;
