@@ -76,7 +76,6 @@ public class Scorer {
         } else {
             score -= 0.2;
         }
-
         if (stars == 5) {
             score += 0.3;
         } else if (stars == 4) {
@@ -88,7 +87,6 @@ public class Scorer {
         } else if (stars == 1) {
             score -= 0.5;
         }
-
 
         return score;
     }
