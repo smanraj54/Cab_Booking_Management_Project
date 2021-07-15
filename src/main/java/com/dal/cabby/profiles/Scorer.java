@@ -37,9 +37,7 @@ public class Scorer {
     public double calculateDriverScore(int stars, int eta_pickup, int actualArrivalTime, double initialScore) {
 
         double score = initialScore;
-        if (score >= 5) {
-            return 5.0;
-        }
+
         int diff = actualArrivalTime - eta_pickup;
         if (diff < 0) {
             score += 0.2;
@@ -59,6 +57,10 @@ public class Scorer {
         } else if (stars == 1) {
             score -= 0.5;
         }
+        if (score >= 5) {
+            return 5.0;
+        }
+
         return score;
     }
 
