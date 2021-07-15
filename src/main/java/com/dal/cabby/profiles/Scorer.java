@@ -44,7 +44,7 @@ public class Scorer {
         } else if (diff > 0) {
             score -= 0.1;
         } else {
-            score += 1;
+            score += 0.1;
         }
         if (stars == 5) {
             score += 0.3;
