@@ -32,6 +32,22 @@ class ScorerTest {
     }
 
     @Test
+    void calculateDriverScoreWithFourStars() {
+        Scorer scorer = new Scorer();
+        double expectedScore = 4.6;
+        double actualScore = scorer.calculateDriverScore(4, 258, 258, 4.4);
+        Assertions.assertEquals(actualScore, expectedScore, "Calculate drive score method is not working");
+    }
+
+    @Test
+    void calculateDriverScoreWithFiveStars() {
+        Scorer scorer = new Scorer();
+        double expectedScore = 5.0;
+        double actualScore = scorer.calculateDriverScore(5, 258, 258, 4.7);
+        Assertions.assertEquals(actualScore, expectedScore, "Calculate drive score method is not working");
+    }
+
+    @Test
     public void driverCancelledTrueTest() {
         Scorer scorer = new Scorer();
         double initialScore = 4.0;
@@ -48,7 +64,18 @@ class ScorerTest {
     }
 
     @Test
-    void calculateCustomerScore() {
+    void customerCancelledTrue_hasArrivedTrueTest() {
+        Scorer scorer = new Scorer();
+        double initialScore = 3.9;
+        double newScore = scorer.customerCancelled(initialScore,true, true);
+        Assertions.assertEquals(3.4, newScore, "Incorrect new score");
+    }
+
+
+    @Test
+    void calculateCustomerScorewithOneStar() {
 
     }
+
+
 }
