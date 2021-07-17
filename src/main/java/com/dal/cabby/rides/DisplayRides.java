@@ -1,6 +1,7 @@
 package com.dal.cabby.rides;
 
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.pojo.UserType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 
 public class DisplayRides {
     DBHelper dbHelper;
-    private String requesterType;
+    private UserType requesterType;
     private int requesterID;
 
     public DisplayRides() throws SQLException {
@@ -16,7 +17,7 @@ public class DisplayRides {
         dbHelper.initialize();
     }
 
-    public void getRides(String userType, int userID) throws SQLException {
+    public void getRides(UserType userType, int userID) throws SQLException {
         requesterType = userType;
         requesterID = userID;
         ridesPage();
@@ -98,7 +99,7 @@ public class DisplayRides {
     }
 
     // method to get rides from the database
-    private void getRidesFromDb(String startDate, String endDate, String userType, int userID) throws SQLException {
+    private void getRidesFromDb(String startDate, String endDate, UserType userType, int userID) throws SQLException {
         String query = String.format("select\n" +
                 "bookings.booking_id,\n" +
                 "bookings.source,\n" +
@@ -170,11 +171,13 @@ public class DisplayRides {
     }
 
     // method to get the column name for user category
-    private String getColumnName(String userType) {
-        if (userType.equalsIgnoreCase("DRIVER")) {
+    private String getColumnName(UserType userType) {
+        if (userType == UserType.DRIVER) {
             return "driver_id";
-        } else {
+        } else if (userType == UserType.CUSTOMER) {
             return "cust_id";
+        } else {
+            throw new RuntimeException("Usertype invalid: " + userType);
         }
     }
 }
