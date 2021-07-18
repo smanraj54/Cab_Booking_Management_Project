@@ -3,6 +3,7 @@ import com.dal.cabby.cabPrice.CabPriceCalculator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import com.dal.cabby.dbHelper.DBHelper;
 
@@ -20,6 +21,7 @@ public class CabSelection {
     CabPriceCalculator cabPriceCalculator=new CabPriceCalculator();
     public String sourceLocation, destinationLocation;
     double sourceDistance = 0.0;
+    ArrayList<CabDAO> cabDetails=new ArrayList<>();
 
     public void preferredCab() throws SQLException {
         System.out.println("Enter your Cab preference");

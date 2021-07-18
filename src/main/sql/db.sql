@@ -137,7 +137,7 @@ insert into price_Calculation(
     )
 VALUES
     (1, 'Halifax', 35, 'urban', false,25),
-    (2, 'Dartmouth', 30, 'rural', true, 28),
+    (2, 'Dartmouth', 57, 'rural', true, 28),
     (3, 'BedFord', -8, 'urban', true , 26),
     (4, 'Sydney', 18, 'urban', false, 24),
     (5, 'Yarmouth', 23, 'rural', false, 27),
@@ -152,7 +152,8 @@ CREATE TABLE IF NOT EXISTS cabs(
     cabId INT AUTO_INCREMENT PRIMARY KEY,
     cabName VARCHAR(45) NOT NULL,
     cabDistanceFromOrigin DOUBLE,
-    trafficDensity VARCHAR(30),
+    routeTrafficDensity VARCHAR(30),
+    cabSpeedOnRoute INT,
     genderPreference VARCHAR (10),
     driver_id INT,
     FOREIGN KEY (driver_id) REFERENCES driver(driver_id)
@@ -162,13 +163,14 @@ insert into cabs(
     cabId,
     cabName,
     cabDistanceFromOrigin,
-    trafficDensity,
+    routeTrafficDensity,
+    cabSpeedOnRoute,
     genderPreference,
     driver_id
 )
 VALUES
-    (101, 'Cab1', 32, 'low', true, 11),
-    (102, 'Cab2', 33, 'moderate', false, 12),
-    (103, 'Cab3', 37, 'high', true, 13),
-    (104, 'Cab4', 38, 'low', false, 14),
-    (105, 'Cab5', 42, 'high', false, 15);
+    (101, 'Cab1', 31, 'low', 50, true, 11),
+    (102, 'Cab2', 32, 'moderate', 40, false, 12),
+    (103, 'Cab3', 38, 'high', 30, true, 13),
+    (104, 'Cab4', 39, 'low', 50, false, 14),
+    (105, 'Cab5', 42, 'high', 30, false, 15);
