@@ -11,9 +11,9 @@ import java.text.ParseException;
 import java.util.List;
 
 public class DriverTasks {
-    private DriverHelper driverHelper;
-    private Inputs inputs;
-    private int driverId;
+    private final DriverHelper driverHelper;
+    private final Inputs inputs;
+    private final int driverId;
 
     public DriverTasks(DriverHelper driverHelper, Inputs inputs) {
         this.driverHelper = driverHelper;
@@ -64,5 +64,9 @@ public class DriverTasks {
         int rating = inputs.getIntegerInput();
         Ratings ratings = new Ratings();
         ratings.addCustomerRating(cust_id, trip_id, rating);
+    }
+
+    void viewRatings() {
+        System.out.println("You current rating is: <NA>");
     }
 }

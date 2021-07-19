@@ -69,6 +69,7 @@ public class Driver implements IDriver {
             System.out.println("3. View incomes");
             System.out.println("4. Rate customer for the trip:");
             System.out.println("5. Logout");
+            System.out.println("6. View your current rating");
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
@@ -88,6 +89,12 @@ public class Driver implements IDriver {
                     if (isLogoutSuccessful) {
                         return;
                     }
+                    break;
+                case 6:
+                    driverTasks.viewRatings();
+                    break;
+                default:
+                    System.out.println("\nInvalid Input");
                     break;
             }
         }
