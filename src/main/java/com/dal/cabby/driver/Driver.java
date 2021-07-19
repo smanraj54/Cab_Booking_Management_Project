@@ -1,73 +1,68 @@
 package com.dal.cabby.driver;
 
 import com.dal.cabby.io.Inputs;
-import com.dal.cabby.pojo.Booking;
-import com.dal.cabby.pojo.UserType;
-import com.dal.cabby.profileManagement.*;
-import com.dal.cabby.profiles.Ratings;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.List;
 
-public class Driver {
+public class Driver implements IDriver {
     DriverHelper driverHelper;
-    int driverId = 1;
     private final Inputs inputs;
+    private DriverTasks driverTasks;
+    private DriverProfileManagement driverProfileManagement;
 
     public Driver(Inputs inputs) throws SQLException, ParseException {
         this.inputs = inputs;
+        intialiaze();
+    }
+
+    private void intialiaze() throws SQLException {
         driverHelper = new DriverHelper();
-        driverPage1();
+        driverTasks = new DriverTasks(driverHelper, inputs);
+        driverProfileManagement = new DriverProfileManagement(driverHelper, inputs);
     }
 
-    private void driverPage1() throws SQLException, ParseException {
-        Common.page1Options();
-        int input = inputs.getIntegerInput();
+    @Override
+    public void performTasks() throws SQLException, ParseException {
+        profileManagementTasks();
+    }
 
-        switch (input) {
-            case 1:
-                login();
-                break;
-            case 2:
-                register();
-                break;
-            case 3:
-                forgotPassword();
-                break;
-            default:
-                System.out.println("Invalid input: " + input);
-                return;
+    @Override
+    public void profileManagementTasks() throws SQLException, ParseException {
+        while (true) {
+            Common.page1Options();
+            int input = inputs.getIntegerInput();
+            switch (input) {
+                case 1:
+                    boolean isLoginSuccessful = driverProfileManagement.login();
+                    if (isLoginSuccessful) {
+                        System.out.println("Login successful");
+                        performDriverTasks();
+                    }
+                    break;
+                case 2:
+                    boolean isRegistered = driverProfileManagement.register();
+                    if (!isRegistered) {
+                        System.out.println("Registration failed!");
+                    }
+                    break;
+                case 3:
+                    boolean recoveryStatus = driverProfileManagement.forgotPassword();
+                    if (recoveryStatus) {
+                        System.out.println("Password reset successful. Please login with new credentials");
+                    }
+                    break;
+                case 4:
+                    return;
+                default:
+                    System.out.println("Invalid input: " + input);
+            }
         }
     }
 
-    public void login() throws SQLException, ParseException {
-        System.out.println("Welcome to Driver login page");
-        Login login = new Login(inputs);
-        if (login.attemptLogin(UserType.DRIVER)) {
-            System.out.println("Login successful");
-            System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
-                    LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
-        } else {
-            return;
-        }
-        page2();
-    }
-
-    public void register() {
-        System.out.println("Welcome to Driver registration page");
-        Registration registration = new Registration(inputs);
-        registration.registerUser(UserType.DRIVER);
-    }
-
-    public void forgotPassword() {
-        System.out.println("Welcome to Driver forgot password page");
-        ForgotPassword forgotPassword = new ForgotPassword(inputs);
-        forgotPassword.passwordUpdateProcess(UserType.DRIVER);
-    }
-
-    public void page2() throws SQLException, ParseException {
+    @Override
+    public void performDriverTasks() throws SQLException, ParseException {
         while (true) {
             System.out.println("1. Start trip");
             System.out.println("2. View previous rides");
@@ -77,73 +72,24 @@ public class Driver {
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    startTrip();
+                    driverTasks.startTrip();
                     break;
                 case 2:
-                    viewIncomes();
+                    driverTasks.viewIncomes();
                     break;
                 case 3:
-                    viewRides();
+                    driverTasks.viewRides();
                     break;
                 case 4:
-                    rateCustomer();
+                    driverTasks.rateCustomer();
                     break;
                 case 5:
-                    boolean isLogoutSuccessful = logout();
+                    boolean isLogoutSuccessful = driverProfileManagement.logout();
                     if (isLogoutSuccessful) {
                         return;
                     }
                     break;
             }
         }
-    }
-
-    private boolean logout() {
-        return new Logout(inputs).logout();
-    }
-
-    private void startTrip() throws SQLException, ParseException {
-        List<Booking> bookingsList = driverHelper.getUnfinishedBookingLists(driverId);
-        if (bookingsList.size() == 0) {
-            System.out.println("You have no new bookings\n");
-            return;
-        }
-        System.out.println("List of bookings: ");
-        for (Booking b : bookingsList) {
-            System.out.printf("BookingId: %d, CustomerId: %d, Source: %s, Destination: %s, Travel-Time: %s\n",
-                    b.getBookingId(), b.getCustomerId(), b.getSource(), b.getDestination(), b.getTravelTime());
-        }
-        System.out.println("Enter the bookingId for which you want to start the trip: ");
-        int input = inputs.getIntegerInput();
-        driverHelper.markBookingComplete(input);
-        Common.simulateCabTrip();
-        for (Booking b : bookingsList) {
-            if (b.getBookingId() == input) {
-                driverHelper.completeTrip(input, driverId, b.getCustomerId(), 5.6, 9.8,
-                        "2021-01-24 12:35:16", "2021-01-24 12:55:16");
-            }
-        }
-    }
-
-    private void viewIncomes() {
-        System.out.println("Incomes displayed");
-    }
-
-    private void viewRides() {
-        System.out.println("Rides displayed");
-    }
-
-    private void rateCustomer() throws SQLException {
-        System.out.println("Rating customer for the completed trip is " +
-                "mandatory in the Cabby. It helps us to improve our services." +
-                "Hence please rate the customer for the trips");
-        System.out.println("Enter customer id:");
-        int cust_id = inputs.getIntegerInput();
-        System.out.println("Enter trip id:");
-        int trip_id = inputs.getIntegerInput();
-        System.out.println("Enter the rating between 1-5:");
-        int rating = inputs.getIntegerInput();
-        Ratings ratings = new Ratings();
-        ratings.addCustomerRating(cust_id, trip_id, rating);
     }
 }
