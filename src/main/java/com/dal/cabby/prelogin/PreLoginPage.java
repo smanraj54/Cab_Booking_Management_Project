@@ -46,6 +46,7 @@ public class PreLoginPage {
                 break;
             case 3:
                 Customer customer = new Customer(inputs);
+                customer.performTasks();
                 break;
             default:
                 System.out.println("Invalid input: " + input);
