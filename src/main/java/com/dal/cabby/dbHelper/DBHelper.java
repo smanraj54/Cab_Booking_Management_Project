@@ -8,7 +8,7 @@ public class DBHelper {
     String password;
     Connection connection;
     String connUrl;
-    String url = "jdbc:mysql://%s:3306/%s?useSSL=false";
+    String url = "jdbc:mysql://%s:3306/%s?useSSL=false&allowPublicKeyRetrieval=true";
     private String DEFAULT_MYSQL_USERNAME = "root";
     private String DEFAULT_MYSQL_PASSWORD = "mysql@789";
     private String DEFAULT_MYSQL_DATABASE = "cabby";

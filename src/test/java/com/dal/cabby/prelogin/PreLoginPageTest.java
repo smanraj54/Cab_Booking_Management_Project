@@ -37,9 +37,6 @@ public class PreLoginPageTest {
 
     @Test
     void testStart() {
-        PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(1).add(1).add("devraj").add("devraj123").add(5).add("yes");
-        PreLoginPage preLoginPage = new PreLoginPage(inputs);
-        preLoginPage.start();
+
     }
 }

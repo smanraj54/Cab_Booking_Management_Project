@@ -38,9 +38,11 @@ public class PreLoginPage {
         switch (input) {
             case 1:
                 Admin admin = new Admin(inputs);
+                admin.performTasks();
                 break;
             case 2:
                 Driver driver = new Driver(inputs);
+                driver.performTasks();
                 break;
             case 3:
                 Customer customer = new Customer(inputs);
