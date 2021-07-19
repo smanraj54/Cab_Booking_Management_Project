@@ -8,91 +8,85 @@ import com.dal.cabby.rides.DisplayRides;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 
-public class Customer {
+public class Customer implements ICustomer {
     private final Inputs inputs;
+    private CustomerTasks customerTasks;
+    private CustomerProfileManagement customerProfileManagement;
+
     public Customer(Inputs inputs) throws SQLException {
         this.inputs = inputs;
-        customerPage1();
+        initialize();
     }
 
-    private void customerPage1() throws SQLException {
-        Common.page1Options();
-        int input = inputs.getIntegerInput();
-        switch (input) {
-            case 1:
-                login();
-                break;
-            case 2:
-                register();
-                break;
-            case 3:
-                forgotPassword();
-                break;
-            default:
-                System.out.println("Invalid input: " + input);
-                return;
-        }
+    private void initialize() {
+        customerTasks = new CustomerTasks(inputs);
+        customerProfileManagement = new CustomerProfileManagement(inputs);
     }
 
-    public void login() throws SQLException {
-        System.out.println("Welcome to Customer login page");
-        Login login = new Login(inputs);
-        if (login.attemptLogin(UserType.CUSTOMER)) {
-            System.out.println("Login successful");
-            System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
-                    LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
-        } else {
-            return;
-        }
-        customerOptionsPage();
+    @Override
+    public void performTasks() throws SQLException, ParseException {
+        profileManagementTasks();
     }
 
-    public void register() {
-        System.out.println("Welcome to Customer registration page");
-        Registration registration = new Registration(inputs);
-        registration.registerUser(UserType.CUSTOMER);
-    }
-
-    public void forgotPassword() {
-        System.out.println("Welcome to Customer forgot password page");
-        ForgotPassword forgotPassword = new ForgotPassword(inputs);
-        forgotPassword.passwordUpdateProcess(UserType.CUSTOMER);
-    }
-
-    private void rateDriver() throws SQLException {
-        System.out.println("Rating driver for the completed trip is " +
-                "mandatory in the Cabby. It helps us to improve our services." +
-                "Hence please rate the driver for the trips");
-        System.out.println("Enter driver id:");
-        int driver_id = inputs.getIntegerInput();
-        System.out.println("Enter trip id:");
-        int trip_id = inputs.getIntegerInput();
-        System.out.println("Enter the rating between 1-5:");
-        int rating = inputs.getIntegerInput();
-        Ratings ratings = new Ratings();
-        ratings.addCustomerRating(driver_id, trip_id, rating);
-    }
-
-    public void customerOptionsPage() throws SQLException {
+    @Override
+    public void profileManagementTasks() throws SQLException, ParseException {
         while (true) {
-            System.out.println("\n1. Book Cabs");
-            System.out.println("2. View previous Rides");
-            System.out.println("3. Rate driver for the trip");
-            System.out.println("4. Logout");
+            Common.page1Options();
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    bookRides();
+                    boolean isLoginSuccessful = customerProfileManagement.login();
+                    if (isLoginSuccessful) {
+                        System.out.println("Login successful");
+                        performCustomerTasks();
+                    }
                     break;
                 case 2:
-                    showRides();
+                    boolean isRegistered = customerProfileManagement.register();
+                    if(!isRegistered) {
+                        System.out.println("Registration failed!");
+                    }
                     break;
                 case 3:
-                    rateDriver();
+                    boolean recoveryStatus = customerProfileManagement.forgotPassword();
+                    if(recoveryStatus) {
+                        System.out.println("Password reset successful. Please login with new credentials");
+                    }
                     break;
                 case 4:
-                    if (logout()) {
+                    return;
+                default:
+                    System.out.println("Invalid input: " + input);
+            }
+        }
+    }
+
+    @Override
+    public void performCustomerTasks() throws SQLException, ParseException {
+        while (true) {
+            System.out.println("1. Book Cabs");
+            System.out.println("2. View previous Rides");
+            System.out.println("3. Rate driver for the trip");
+            System.out.println("4. View your current rating");
+            System.out.println("5. Logout");
+            int input = inputs.getIntegerInput();
+            switch (input) {
+                case 1:
+                    customerTasks.bookRides();
+                    break;
+                case 2:
+                    customerTasks.showRides();
+                    break;
+                case 3:
+                    customerTasks.rateDriver();
+                    break;
+                case 4:
+                    customerTasks.viewRatings();
+                    break;
+                case 5:
+                    if (customerProfileManagement.logout()) {
                         return;
                     }
                     break;
@@ -101,18 +95,5 @@ public class Customer {
                     break;
             }
         }
-    }
-
-    private void bookRides() {
-        System.out.println("Ride Booked");
-    }
-
-    private void showRides() throws SQLException {
-        DisplayRides rides = new DisplayRides();
-        rides.getRides(UserType.CUSTOMER, LoggedInProfile.getLoggedInId());
-    }
-
-    private boolean logout() {
-        return new Logout(inputs).logout();
     }
 }
