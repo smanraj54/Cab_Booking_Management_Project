@@ -34,7 +34,9 @@ VALUES
     (12,'Manjinder','manjinder@gmail.com','manjinder@123','manjinder',true),
     (13,'Bikram','bikram@gmail.com','bikram@123','bikram',true),
     (14,'Arvinder','arvinder@gmail.com','arvinder@123','arvinder',true),
-    (15,'Manraj','manraj@gmail.com','manraj@123','manraj',true);
+    (15,'Manraj','manraj@gmail.com','manraj@123','manraj',true),
+    (16,'Dummy1','dummy1@gmail.com','dummy@123','dummy1',true),
+    (17,'Dummy2','dummy2@gmail.com','dummmy@123','dummy2',true);
 
 CREATE TABLE IF NOT EXISTS customer (
     cust_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -153,7 +155,7 @@ CREATE TABLE IF NOT EXISTS cabs(
     cabName VARCHAR(45) NOT NULL,
     cabDistanceFromOrigin DOUBLE,
     routeTrafficDensity VARCHAR(30),
-    cabSpeedOnRoute INT,
+    cabSpeedOnRoute DOUBLE,
     genderPreference VARCHAR (10),
     driver_id INT,
     FOREIGN KEY (driver_id) REFERENCES driver(driver_id)
@@ -169,8 +171,10 @@ insert into cabs(
     driver_id
 )
 VALUES
-    (101, 'Cab1', 31, 'low', 50, true, 11),
-    (102, 'Cab2', 32, 'moderate', 40, false, 12),
-    (103, 'Cab3', 38, 'high', 30, true, 13),
-    (104, 'Cab4', 39, 'low', 50, false, 14),
-    (105, 'Cab5', 42, 'high', 30, false, 15);
+    (101, 'Cab1', 24, 'high',30, false, 11),
+    (102, 'Cab2', 29, 'low', 50, true, 12),
+    (103, 'Cab3', 31, 'moderate',40, false, 13),
+    (104, 'Cab4', 56, 'moderate',40, true, 14),
+    (105, 'Cab5', 39, 'high',30, true, 15),
+    (106, 'Cab6', 49, 'low',50, false, 16),
+    (107, 'Cab7', 40, 'high',30, false, 17);
