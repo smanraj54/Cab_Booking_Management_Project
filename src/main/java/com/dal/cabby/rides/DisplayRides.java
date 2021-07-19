@@ -1,18 +1,19 @@
 package com.dal.cabby.rides;
 
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class DisplayRides {
     DBHelper dbHelper;
     private UserType requesterType;
     private int requesterID;
-
-    public DisplayRides() throws SQLException {
+    Inputs inputs;
+    public DisplayRides(Inputs inputs) throws SQLException {
+        this.inputs = inputs;
         dbHelper = new DBHelper();
         dbHelper.initialize();
     }
@@ -32,7 +33,7 @@ public class DisplayRides {
             System.out.println("\t3. Rides between a specific period");
             System.out.println("\t4. Return to the previous page");
             System.out.print("Please enter a selection: ");
-            int selection = Integer.parseInt(getInput());
+            int selection = inputs.getIntegerInput();
             switch (selection) {
                 case 1:
                     getDailyRides();
@@ -54,7 +55,7 @@ public class DisplayRides {
     // method to get daily rides
     private void getDailyRides() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
-        String inputDate = getInput();
+        String inputDate = inputs.getStringInput();
         if (validateDate(inputDate)) {
             String date = getFormattedDate(inputDate);
             getRidesFromDb(date, date, requesterType, requesterID);
@@ -66,7 +67,7 @@ public class DisplayRides {
     // method to get monthly rides
     private void getMonthlyRides() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
-        String input = getInput();
+        String input = inputs.getStringInput();
         if (input.length() != 0 && input.indexOf("/") == 2) {
             String[] splitInput = input.split("/");
             String month = splitInput[0];
@@ -82,9 +83,9 @@ public class DisplayRides {
     // method to get rides between specific time period
     private void getSpecificPeriodRides() throws SQLException {
         System.out.print("Enter the start date (DD/MM/YYYY): ");
-        String startDate = getInput();
+        String startDate = inputs.getStringInput();
         System.out.print("Enter the end date (DD/MM/YYYY): ");
-        String endDate = getInput();
+        String endDate = inputs.getStringInput();
         if (validateDate(startDate) && validateDate(endDate)) {
             String startingDate = getFormattedDate(startDate);
             String endingDate = getFormattedDate(endDate);
@@ -162,12 +163,6 @@ public class DisplayRides {
             dateDifference = result.getInt("date_difference");
         }
         return dateDifference;
-    }
-
-    // method to get input from the user
-    private String getInput() {
-        Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
     }
 
     // method to get the column name for user category
