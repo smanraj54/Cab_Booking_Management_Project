@@ -1,17 +1,19 @@
 package com.dal.cabby.money;
 
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.io.Inputs;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 // this class will show the earning of driver for a specific period
 public class DriverEarnings {
     DBHelper dbHelper;
     int userID;
+    Inputs inputs;
 
-    public DriverEarnings() {
+    public DriverEarnings(Inputs inputs) {
+        this.inputs = inputs;
         dbHelper = new DBHelper();
         try {
             dbHelper.initialize();
@@ -33,7 +35,7 @@ public class DriverEarnings {
             System.out.println("\t3. Earning between a specific period: ");
             System.out.println("\t4. Return to the previous page: ");
             System.out.print("Please enter a selection: ");
-            int input = Integer.parseInt(getInput());
+            int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
                     dailyEarnings();
@@ -53,7 +55,7 @@ public class DriverEarnings {
     // method to calculate the daily earnings
     public void dailyEarnings() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
-        String inputDate = getInput();
+        String inputDate = inputs.getStringInput();
         if (validateDate(inputDate)) {
             String[] splitDate = inputDate.split("/");
             String date = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
@@ -67,7 +69,7 @@ public class DriverEarnings {
     // method to calculate monthly earnings
     public void monthlyEarnings() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
-        String input = getInput();
+        String input = inputs.getStringInput();
         if (input.isEmpty() || (input.indexOf("/")!=2)) {
             System.out.println("\nInvalid Entry");
         } else {
@@ -86,9 +88,9 @@ public class DriverEarnings {
 
     private void specificPeriodEarnings() throws SQLException {
         System.out.print("Enter the start date (DD/MM/YYYY): ");
-        String startDate = getInput();
+        String startDate = inputs.getStringInput();
         System.out.print("Enter the end date (DD/MM/YYYY): ");
-        String endDate = getInput();
+        String endDate = inputs.getStringInput();
         if (validateDate(startDate) && validateDate(endDate)) {
             double earning = 0.0;
             String[] splitStartDate = startDate.split("/");
@@ -120,11 +122,6 @@ public class DriverEarnings {
         } else {
             return 20;
         }
-    }
-
-    private String getInput() {
-        Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
     }
 
     private double earningOnDate(int driverID, String date) throws SQLException {
