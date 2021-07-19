@@ -4,6 +4,7 @@ import com.dal.cabby.cabPrice.CabPriceCalculator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import com.dal.cabby.dbHelper.DBHelper;
 
@@ -22,6 +23,7 @@ public class CabSelection {
     public String sourceLocation, destinationLocation;
     double sourceDistance = 0.0;
     ArrayList<CabDAO> cabDetails=new ArrayList<>();
+    ArrayList<String> arrayList=new ArrayList<>();
 
     public void preferredCab() throws SQLException {
         System.out.println("Enter your Cab preference");
@@ -38,18 +40,22 @@ public class CabSelection {
             case 1:
                 fetchSourceLocation();
                 getAllNearbyCabs();
+                bestNearbyCab();
                 break;
             case 2:
                 fetchSourceLocation();
                 getAllNearbyCabs();
+                bestNearbyCab();
                 break;
             case 3:
                 fetchSourceLocation();
                 getAllNearbyCabs();
+                bestNearbyCab();
                 break;
             case 4:
                 fetchSourceLocation();
                 getAllNearbyCabs();
+                bestNearbyCab();
                 break;
         }
         cabPriceCalculator.priceCalculation(sourceLocation,destinationLocation,false,"urban", input);
@@ -84,15 +90,27 @@ public class CabSelection {
             System.out.println(cabDetails.get(i).toString());
         }
 
-        ArrayList<String> arrayList=new ArrayList<>();
         for(int i=0;i<cabDetails.size();i++){
             arrayList.add(cabDetails.get(i).cabName);
-        }
+        } /*
+        Created this arrayList to store names of Nearby cabs which will be passed to a function along with
+        sourceLocation to calculate distance between cabs and source location.
+        */
 
         for(int i=0;i<arrayList.size();i++) {
             cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation,arrayList.get(i));
         }
         return cabDetails;
+    }
+
+    public void bestNearbyCab() throws SQLException {
+        ArrayList<Double> timeToReach=new ArrayList<>();
+        for (int i=0;i<cabDetails.size();i++){
+            timeToReach.add((cabDetails.get(i).cabDistanceFromOrigin)/(cabDetails.get(i).cabSpeedOnRoute));
+        }
+        System.out.println("Estimated Arrival time of each Cab:"+ timeToReach);
+        double min= Collections.min(timeToReach);
+        System.out.println("Fastest cab is reaching your location in "+ String.format("%.2f",min) + " minutes");
     }
 }
 

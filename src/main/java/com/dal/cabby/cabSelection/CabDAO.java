@@ -8,8 +8,7 @@ public class CabDAO {
     public int cabSpeedOnRoute;
 
     public String toString(){
-        String result=String.format("%s %s %s %s %s",this.cabName,this.cabDistanceFromOrigin,this.driver_Id,
-                this.routeTrafficDensity,this.cabSpeedOnRoute);
+        String result=String.format("%s -> Driver_ID: %s ",this.cabName,this.driver_Id);
         return result;
     }
 
