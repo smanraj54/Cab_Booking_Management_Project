@@ -1,70 +1,68 @@
 package com.dal.cabby.admin;
 
 import com.dal.cabby.io.Inputs;
-import com.dal.cabby.pojo.Profile;
-import com.dal.cabby.pojo.UserType;
-import com.dal.cabby.profileManagement.*;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.text.ParseException;
 
-public class Admin {
+public class Admin implements IAdmin {
     AdminHelper adminHelper;
-    Inputs inputs;
+    private final Inputs inputs;
+    private AdminTasks adminTasks;
+    private AdminProfileManagement adminProfileManagement;
 
     public Admin(Inputs inputs) throws SQLException {
         this.inputs = inputs;
+        initialize();
+    }
+
+    private void initialize() throws SQLException {
         adminHelper = new AdminHelper();
-        adminPage1();
+        adminTasks = new AdminTasks(adminHelper, inputs);
+        adminProfileManagement = new AdminProfileManagement(adminHelper, inputs);
     }
 
-    private void adminPage1() throws SQLException {
-        Common.page1Options();
-        int input = inputs.getIntegerInput();
+    @Override
+    public void performTasks() throws SQLException, ParseException {
+        profileManagementTasks();
+    }
 
-        switch (input) {
-            case 1:
-                login();
-                break;
-            case 2:
-                register();
-                break;
-            case 3:
-                forgotPassword();
-                break;
-            default:
-                System.out.println("Invalid input: " + input);
-                return;
+    @Override
+    public void profileManagementTasks() throws SQLException, ParseException {
+        while(true) {
+            Common.page1Options();
+            int input = inputs.getIntegerInput();
+            switch (input) {
+                case 1:
+                    boolean isLoginSuccessful = adminProfileManagement.login();
+                    if (isLoginSuccessful) {
+                        System.out.println("Login successful");
+                        performAdminTasks();
+                    }
+                    break;
+                case 2:
+                    boolean isRegistered = adminProfileManagement.register();
+                    if(!isRegistered) {
+                        System.out.println("Registration failed!");
+                    }
+                    break;
+                case 3:
+                    boolean recoveryStatus = adminProfileManagement.forgotPassword();
+                    if(recoveryStatus) {
+                        System.out.println("Password reset successful. Please login with new credentials");
+                    }
+                    break;
+                case 4:
+                    return;
+                default:
+                    System.out.println("Invalid input: " + input);
+            }
         }
     }
 
-    private void login() throws SQLException {
-        System.out.println("Welcome to Admin login page");
-        Login login = new Login(inputs);
-        if (login.attemptLogin(UserType.ADMIN)) {
-            System.out.println("Login successful");
-            System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
-                    LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
-        } else {
-            return;
-        }
-        page2();
-    }
-
-    private void register() {
-        System.out.println("Welcome to Admin registration page");
-        Registration registration = new Registration(inputs);
-        registration.registerUser(UserType.ADMIN);
-    }
-
-    private void forgotPassword() {
-        System.out.println("Welcome to Admin forgot password page");
-        ForgotPassword forgotPassword = new ForgotPassword(inputs);
-        forgotPassword.passwordUpdateProcess(UserType.ADMIN);
-    }
-
-    private void page2() throws SQLException {
+    @Override
+    public void performAdminTasks() throws SQLException, ParseException {
         while (true) {
             System.out.println("1. Approve Drivers");
             System.out.println("2. Approve Customers");
@@ -74,19 +72,19 @@ public class Admin {
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    approveDriverAccounts();
+                    adminTasks.approveDriverAccounts();
                     break;
                 case 2:
-                    approveCustomerAccounts();
+                    adminTasks.approveCustomerAccounts();
                     break;
                 case 3:
-                    deRegisterDriver();
+                    adminTasks.deRegisterDriver();
                     break;
                 case 4:
-                    deRegisterCustomer();
+                    adminTasks.deRegisterCustomer();
                     break;
                 case 5:
-                    boolean isLogoutSuccessful = logout();
+                    boolean isLogoutSuccessful = adminProfileManagement.logout();
                     if (isLogoutSuccessful) {
                         return;
                     }
@@ -96,60 +94,5 @@ public class Admin {
                     break;
             }
         }
-    }
-
-    private boolean logout() {
-        return new Logout(inputs).logout();
-    }
-
-    private void approveDriverAccounts() throws SQLException {
-        List<Profile> profileList = adminHelper.listOfDriversToBeApproved();
-        if (profileList.size() == 0) {
-            System.out.println("There is no driver in the system whose account is pending.");
-            return;
-        }
-        System.out.println("List of drivers whose account is not yet approved:");
-        for (Profile p : profileList) {
-            System.out.printf("DriverId: %d, Driver Name: %s\n", p.getId(), p.getName());
-        }
-        System.out.println("Enter the driver_id which you want to approve:");
-        int driver_id = inputs.getIntegerInput();
-        ApproveProfiles approveProfiles = new ApproveProfiles();
-        approveProfiles.approveProfile(driver_id, AdminHelper.driverProfile);
-        System.out.printf("Driver with id: %d is approved in the system\n", driver_id);
-    }
-
-    private void approveCustomerAccounts() throws SQLException {
-        List<Profile> profileList = adminHelper.listOfCustomersToBeApproved();
-        if (profileList.size() == 0) {
-            System.out.println("There is no customer in the system whose account is pending.");
-            return;
-        }
-        System.out.println("List of customers whose account is not approved:");
-        for (Profile p : profileList) {
-            System.out.printf("CustomerId: %d, Customer Name: %s\n", p.getId(), p.getName());
-        }
-
-        System.out.println("Enter the customer_id which you want to approve:");
-        int cust_id = inputs.getIntegerInput();
-        ApproveProfiles approveProfiles = new ApproveProfiles();
-        approveProfiles.approveProfile(cust_id, AdminHelper.customerProfile);
-        System.out.printf("Customer with id: %d is approved in the system\n", cust_id);
-    }
-
-    private void deRegisterCustomer() {
-        System.out.println("Enter the customer id:");
-        int cust_id = inputs.getIntegerInput();
-        DeRegisterProfiles deRegisterProfile = new DeRegisterProfiles();
-        deRegisterProfile.deRegisterCustomer(cust_id);
-        System.out.printf("Customer with id: %d is de-registered in the system\n", cust_id);
-    }
-
-    private void deRegisterDriver() {
-        System.out.println("Enter the driver id:");
-        int driver_id = inputs.getIntegerInput();
-        DeRegisterProfiles deRegisterProfile = new DeRegisterProfiles();
-        deRegisterProfile.deRegisterDriver(driver_id);
-        System.out.printf("Driver with id: %d is de-registered in the system\n", driver_id);
     }
 }
