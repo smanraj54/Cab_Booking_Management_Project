@@ -19,6 +19,9 @@ public class CabPriceCalculator {
     double price=0.0;
     int hour=java.time.LocalTime.now().getHour();
     Scanner ss = new Scanner(System.in);
+    double sourceDistanceFromOrigin = 0.0;
+    double destinationDistanceFromOrigin= 0.0;
+    double cabDistanceFromOrigin=0.0;
     double distance=0.0;
 
     public int priceCalculation(String source, String destination, Boolean rideSharing, String sourceArea, int cabType) throws SQLException {
@@ -27,64 +30,81 @@ public class CabPriceCalculator {
         System.out.println("2. Want to share ride with co-passenger");
         System.out.println("3. Want to have Car TV and Wifi during ride");
         int userInput= ss.nextInt();
-        distance=calculateDistance(source,destination);
+        distance=locationsDistanceFromOrigin(source,destination);
         switch(userInput){
             case 1:
-                distanceFactor(source,destination,sourceArea,cabType,distance);
+                distanceFactor(sourceArea,cabType,distance);
                 System.out.println("Total Price for the ride is: $" + String.format("%.2f",price));
                 break;
             case 2:
-                rideSharing(source,destination,cabType,distance);
+                rideSharing(cabType,distance);
                 break;
             case 3:
-                amenities(source,destination,cabType,distance);
+                amenities(source, cabType,distance);
                 break;
         }
         return 0;
     }
 
-    public double calculateDistance(String source,String destination) throws SQLException {
-        double sourceDistance = 0.0;
-        double destinationDistance= 0.0;
-        double distance = 0.0;
-
-        String sourceLocationQuery= String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'",source);// with sourceLocation find it's distance fro, origin
-        ResultSet sourceDistanceFromOrigin= dbHelper.executeSelectQuery(sourceLocationQuery);
-        while (sourceDistanceFromOrigin.next()) {
-            sourceDistance = sourceDistanceFromOrigin.getDouble("distanceFromOrigin");
+    public double locationsDistanceFromOrigin(String source,String destination) throws SQLException {
+        String sourceLocationQuery = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", source);
+        ResultSet resultSet = dbHelper.executeSelectQuery(sourceLocationQuery);
+        while (resultSet.next()) {
+            sourceDistanceFromOrigin = resultSet.getDouble("distanceFromOrigin");
         }
 
-        String destinationLocationQuery= String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'",destination);// with sourceLocation find it's distance from origin
-        ResultSet destinationDistanceFromOrigin= dbHelper.executeSelectQuery(destinationLocationQuery);
-        while (destinationDistanceFromOrigin.next()) {
-            destinationDistance = destinationDistanceFromOrigin.getDouble("distanceFromOrigin");
+        String destinationLocationQuery = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", destination);
+        ResultSet resultSet1 = dbHelper.executeSelectQuery(destinationLocationQuery);
+        while (resultSet1.next()) {
+            destinationDistanceFromOrigin = resultSet1.getDouble("distanceFromOrigin");
+        }
+        double distanceBetweenSourceAndDestination= calculateDistance(sourceDistanceFromOrigin,destinationDistanceFromOrigin);
+        System.out.println("Distance between "+ source + " and "+ destination +" is: " + distance+" KM");
+        return distanceBetweenSourceAndDestination;
+    }
+
+    public double locationAndCabDistanceFromOrigin(String source,String destination) throws SQLException {
+        String sourceLocationQuery = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", source);
+        ResultSet resultSet = dbHelper.executeSelectQuery(sourceLocationQuery);
+        while (resultSet.next()) {
+            sourceDistanceFromOrigin = resultSet.getDouble("distanceFromOrigin");
         }
 
-        if(sourceDistance >0 && destinationDistance>0) {
-            if (destinationDistance < sourceDistance) {
-                distance = sourceDistance - destinationDistance;
+        String cabLocationQuery= String.format("Select cabDistanceFromOrigin from cabs where cabName='%s'",destination);
+        ResultSet resultSet1= dbHelper.executeSelectQuery(cabLocationQuery);
+        while (resultSet1.next()) {
+            cabDistanceFromOrigin = resultSet1.getDouble("cabDistanceFromOrigin");
+        }
+        double distanceBetweenSourceAndCab=calculateDistance(sourceDistanceFromOrigin,cabDistanceFromOrigin);
+        System.out.println("Distance between "+ source + " and "+ destination +" is: " + distance+" KM");
+        return distanceBetweenSourceAndCab;
+    }
+
+    public double calculateDistance(Double source,Double destination) throws SQLException {
+        if(source >0 && destination>0) {
+            if (destination < source) {
+                distance = source - destination;
             } else {
-                distance = destinationDistance - sourceDistance;
+                distance = destination - source;
             }
         }
-        else if (sourceDistance< 0 && destinationDistance < 0) {
-            if (destinationDistance < sourceDistance) {
-                distance = sourceDistance - destinationDistance;
+        else if (source< 0 && destination < 0) {
+            if (destination < source) {
+                distance = source - destination;
             } else {
-                distance = destinationDistance - sourceDistance;
+                distance = destination - source;
             }
         }
-        else if (sourceDistance < 0 && destinationDistance > 0) {
-            distance = destinationDistance-sourceDistance;
+        else if (source < 0 && destination > 0) {
+            distance = destination-source;
         }
-        else if (sourceDistance > 0 && destinationDistance < 0) {
-            distance = sourceDistance - destinationDistance;
+        else if (source > 0 && destination < 0) {
+            distance = source - destination;
         }
-        System.out.println("Distance between two locations:"+distance);
         return distance;
     }
 
-    public double distanceFactor(String source, String destination, String rideArea,int cabCategory,double distance){
+    public double distanceFactor(String rideArea,int cabCategory,double distance){
         double shortDistance=5; //For initial few kilometers 5 dollars would be charged per Km
         if(distance <= shortDistance){
             for (int initialKilometers=1; initialKilometers<=distance; initialKilometers++){
@@ -121,12 +141,12 @@ public class CabPriceCalculator {
         return price;
     }
 
-    public void rideSharing(String source, String destination, int cabCategory,double distance){
+    public void rideSharing(int cabCategory,double distance){
         System.out.println("Choose number of co-passengers: ");
         System.out.println("One co-passenger");
         System.out.println("Two co-passengers");
         int input= ss.nextInt();
-        double basicPrice=distanceFactor(source,destination,"urban",cabCategory,distance);
+        double basicPrice=distanceFactor("urban",cabCategory,distance);
         System.out.println("Price without Co-passenger: $"+String.format("%.2f",basicPrice));
         double priceWithCoPassenger=basicPrice;
         double discount;
@@ -143,14 +163,14 @@ public class CabPriceCalculator {
         System.out.println("Total Price for this ride is: $"+String.format("%.2f",priceWithCoPassenger));
     }
 
-    public void amenities(String source, String destination,int cabCategory,double distance) throws SQLException {
+    public void amenities(String source,int cabCategory,double distance) throws SQLException {
         // For every 30 minutes of ride we are charging extra $2 per amenity.
         System.out.println("Choose amenities:");
         System.out.println("1. CarTV");
         System.out.println("2. Wifi");
         System.out.println("3. Both");
         int input= ss.nextInt();
-        double basicPrice= distanceFactor(source,destination,"urban", cabCategory,distance);
+        double basicPrice= distanceFactor("urban", cabCategory,distance);
         System.out.println("Price without amenities: $"+String.format("%.2f",basicPrice));
         double priceWithAmenities= basicPrice;
         double extraCharge=0;

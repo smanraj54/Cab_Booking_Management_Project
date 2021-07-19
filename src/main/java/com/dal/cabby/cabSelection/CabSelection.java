@@ -56,18 +56,18 @@ public class CabSelection {
     }
 
     public double fetchSourceLocation() throws SQLException {
-        String sourceLocationQuery= String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'",sourceLocation);// with sourceLocation find it's distance fro, origin
-        ResultSet sourceDistanceFromOrigin= dbHelper.executeSelectQuery(sourceLocationQuery);
-        while (sourceDistanceFromOrigin.next()) {
-            sourceDistance = sourceDistanceFromOrigin.getDouble("distanceFromOrigin");
+        String sourceLocationQuery= String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'",sourceLocation);
+        ResultSet resultSet= dbHelper.executeSelectQuery(sourceLocationQuery);
+        while (resultSet.next()) {
+            sourceDistance = resultSet.getDouble("distanceFromOrigin");
         }
         return sourceDistance;
     }
 
     public ArrayList<CabDAO> getAllNearbyCabs() throws SQLException {
-        double lowerRangeOfCabs = (sourceDistance-3);
-        double upperRangeOfCabs = (sourceDistance+3);
-        String Query= String.format("Select cabName, cabDistanceFromOrigin, driver_id, trafficDensity, " +
+        double lowerRangeOfCabs = (sourceDistance-5);
+        double upperRangeOfCabs = (sourceDistance+5);
+        String Query= String.format("Select cabName, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
                 "cabSpeedOnRoute from cabs where cabDistanceFromOrigin BETWEEN '%f' AND '%f'"
                 ,lowerRangeOfCabs,upperRangeOfCabs);
         ResultSet resultSet= dbHelper.executeSelectQuery(Query);
@@ -82,6 +82,15 @@ public class CabSelection {
         System.out.println("List of nearby Cabs:");
         for(int i=0;i<cabDetails.size();i++){
             System.out.println(cabDetails.get(i).toString());
+        }
+
+        ArrayList<String> arrayList=new ArrayList<>();
+        for(int i=0;i<cabDetails.size();i++){
+            arrayList.add(cabDetails.get(i).cabName);
+        }
+
+        for(int i=0;i<arrayList.size();i++) {
+            cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation,arrayList.get(i));
         }
         return cabDetails;
     }
