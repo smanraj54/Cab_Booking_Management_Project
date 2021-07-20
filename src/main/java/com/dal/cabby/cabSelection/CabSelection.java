@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.io.Inputs;
 
 public class CabSelection {
     DBHelper dbHelper;
-    public CabSelection() throws SQLException {
+    Inputs inputs;
+    public CabSelection(Inputs inputs) throws SQLException {
+        this.inputs=inputs;
         dbHelper=new DBHelper();
         try {
             dbHelper.initialize();
@@ -18,8 +21,7 @@ public class CabSelection {
             e.printStackTrace();
         }
     }
-    static Scanner ss=new Scanner(System.in);
-    CabPriceCalculator cabPriceCalculator=new CabPriceCalculator();
+    CabPriceCalculator cabPriceCalculator=new CabPriceCalculator(inputs);
     public String sourceLocation, destinationLocation;
     double sourceDistance = 0.0;
     ArrayList<CabDAO> cabDetails=new ArrayList<>();
@@ -31,11 +33,11 @@ public class CabSelection {
         System.out.println("2. Prime Sedan");
         System.out.println("3. Prime SUV");
         System.out.println("4. Luxury Class");
-        int input=ss.nextInt();
+        int input=inputs.getIntegerInput();
         System.out.println("Enter Source location");
-        sourceLocation= ss.next();
+        sourceLocation= inputs.getStringInput();
         System.out.println("Enter Destination location");
-        destinationLocation= ss.next();
+        destinationLocation= inputs.getStringInput();
         switch (input){
             case 1:
                 fetchSourceLocation();
