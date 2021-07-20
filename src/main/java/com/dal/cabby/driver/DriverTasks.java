@@ -7,6 +7,7 @@ import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.profiles.Ratings;
+import com.dal.cabby.rides.DisplayRides;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
@@ -47,13 +48,14 @@ public class DriverTasks {
         }
     }
 
+    void viewRides() throws SQLException {
+        DisplayRides displayRides = new DisplayRides(inputs);
+        displayRides.getRides(UserType.DRIVER, LoggedInProfile.getLoggedInId());
+    }
+
     void viewIncomes() throws SQLException {
         DriverEarnings driverEarnings = new DriverEarnings(inputs);
         driverEarnings.getEarnings(LoggedInProfile.getLoggedInId());
-    }
-
-    void viewRides() {
-        System.out.println("Rides displayed");
     }
 
     void rateCustomer() throws SQLException {

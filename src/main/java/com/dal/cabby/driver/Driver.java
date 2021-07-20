@@ -1,6 +1,5 @@
 package com.dal.cabby.driver;
 
-import com.dal.cabby.io.InputFromUser;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.util.Common;
 
@@ -68,7 +67,7 @@ public class Driver implements IDriver {
             System.out.println("1. Start trip");
             System.out.println("2. View previous rides");
             System.out.println("3. View incomes");
-            System.out.println("4. Rate customer for the trip:");
+            System.out.println("4. Rate customer for the trip");
             System.out.println("5. View your current rating");
             System.out.println("6. Buy Coupons");
             System.out.println("7. Logout");
