@@ -1,5 +1,6 @@
 package com.dal.cabby.driver;
 
+import com.dal.cabby.io.InputFromUser;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.util.Common;
 
@@ -77,10 +78,10 @@ public class Driver implements IDriver {
                     driverTasks.startTrip();
                     break;
                 case 2:
-                    driverTasks.viewIncomes();
+                    driverTasks.viewRides();
                     break;
                 case 3:
-                    driverTasks.viewRides();
+                    driverTasks.viewIncomes();
                     break;
                 case 4:
                     driverTasks.rateCustomer();

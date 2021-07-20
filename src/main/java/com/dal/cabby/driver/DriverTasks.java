@@ -2,6 +2,7 @@ package com.dal.cabby.driver;
 
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.money.BuyCoupons;
+import com.dal.cabby.money.DriverEarnings;
 import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.LoggedInProfile;
@@ -46,8 +47,9 @@ public class DriverTasks {
         }
     }
 
-    void viewIncomes() {
-        System.out.println("Incomes displayed");
+    void viewIncomes() throws SQLException {
+        DriverEarnings driverEarnings = new DriverEarnings(inputs);
+        driverEarnings.getEarnings(LoggedInProfile.getLoggedInId());
     }
 
     void viewRides() {
