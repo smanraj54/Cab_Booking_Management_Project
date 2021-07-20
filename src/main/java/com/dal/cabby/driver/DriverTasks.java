@@ -1,7 +1,9 @@
 package com.dal.cabby.driver;
 
 import com.dal.cabby.io.Inputs;
+import com.dal.cabby.money.BuyCoupons;
 import com.dal.cabby.pojo.Booking;
+import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.profiles.Ratings;
 import com.dal.cabby.util.Common;
@@ -68,5 +70,10 @@ public class DriverTasks {
 
     void viewRatings() {
         System.out.println("You current rating is: <NA>");
+    }
+
+    void buyCoupons() throws SQLException {
+        BuyCoupons buyCoupons = new BuyCoupons(inputs);
+        buyCoupons.getCoupons(LoggedInProfile.getLoggedInId(), UserType.DRIVER);
     }
 }
