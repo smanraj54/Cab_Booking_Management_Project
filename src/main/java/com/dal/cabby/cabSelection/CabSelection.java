@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.Inputs;
 
@@ -26,6 +25,8 @@ public class CabSelection {
     double sourceDistance = 0.0;
     ArrayList<CabDAO> cabDetails=new ArrayList<>();
     ArrayList<String> arrayList=new ArrayList<>();
+    String Query;
+    ResultSet resultSet;
 
     public void preferredCab() throws SQLException {
         System.out.println("Enter your Cab preference");
@@ -64,8 +65,8 @@ public class CabSelection {
     }
 
     public double fetchSourceLocation() throws SQLException {
-        String sourceLocationQuery= String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'",sourceLocation);
-        ResultSet resultSet= dbHelper.executeSelectQuery(sourceLocationQuery);
+        Query= String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'",sourceLocation);
+        resultSet= dbHelper.executeSelectQuery(Query);
         while (resultSet.next()) {
             sourceDistance = resultSet.getDouble("distanceFromOrigin");
         }
@@ -75,10 +76,10 @@ public class CabSelection {
     public ArrayList<CabDAO> getAllNearbyCabs() throws SQLException {
         double lowerRangeOfCabs = (sourceDistance-5);
         double upperRangeOfCabs = (sourceDistance+5);
-        String Query= String.format("Select cabName, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
+        Query= String.format("Select cabName, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
                 "cabSpeedOnRoute from cabs where cabDistanceFromOrigin BETWEEN '%f' AND '%f'"
                 ,lowerRangeOfCabs,upperRangeOfCabs);
-        ResultSet resultSet= dbHelper.executeSelectQuery(Query);
+        resultSet= dbHelper.executeSelectQuery(Query);
         while (resultSet.next()) {
             CabDAO cabDetail = new CabDAO(resultSet.getString("cabName"),
                     resultSet.getDouble("cabDistanceFromOrigin"),
