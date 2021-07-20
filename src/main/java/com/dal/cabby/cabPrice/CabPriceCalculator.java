@@ -2,8 +2,6 @@ package com.dal.cabby.cabPrice;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.util.Scanner;
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.Inputs;
 
@@ -28,7 +26,7 @@ public class CabPriceCalculator {
     String Query;
     ResultSet resultSet;
 
-    public int priceCalculation(String source, String destination, Boolean rideSharing, String sourceArea, int cabType) throws SQLException {
+    public int priceCalculation(String source, String destination, int cabType) throws SQLException {
         System.out.println("*** Select your Preferences ***");
         System.out.println("1. Normal Booking");
         System.out.println("2. Want to share ride with co-passenger");
@@ -37,14 +35,14 @@ public class CabPriceCalculator {
         distance=locationsDistanceFromOrigin(source,destination);
         switch(userInput){
             case 1:
-                distanceFactor(sourceArea,cabType,distance);
+                distanceFactor(source,distance,cabType);
                 System.out.println("Total Price for the ride is: $" + String.format("%.2f",price));
                 break;
             case 2:
-                rideSharing(cabType,distance);
+                rideSharing(source,distance,cabType);
                 break;
             case 3:
-                amenities(source, cabType,distance);
+                amenities(source,distance,cabType);
                 break;
         }
         return 0;
@@ -108,8 +106,9 @@ public class CabPriceCalculator {
         return distance;
     }
 
-    public double distanceFactor(String rideArea,int cabCategory,double distance){
+    public double distanceFactor(String source,double distance,int cabType) throws SQLException {
         double shortDistance=5; //For initial few kilometers 5 dollars would be charged per Km
+        String rideArea=null;
         if(distance <= shortDistance){
             for (int initialKilometers=1; initialKilometers<=distance; initialKilometers++){
                 price+=5;
@@ -129,28 +128,33 @@ public class CabPriceCalculator {
             price+=(.20 * price);
         }
         // rides in urban area would be bit costlier
+        Query=String.format("Select sourceArea from price_Calculation where sourceName='%s'",source);
+        resultSet=dbHelper.executeSelectQuery(Query);
+        while (resultSet.next()){
+            rideArea = resultSet.getString("sourceArea");
+        }
         if(rideArea=="urban"){
             price+=(.05 * price);
         }
 
-        if(cabCategory==2) {
+        if(cabType==2) {
             price+=(.1*price);  //10% price would be higher for Prime Sedan category of Cabs
         }
-        if(cabCategory==3){
+        if(cabType==3){
             price+=(.25*price);  //25% price would be higher for Prime SUV category of Cabs
         }
-        if(cabCategory==4) {
+        if(cabType==4) {
             price += (.40 * price);  //40% price would be higher for PLuxury Class Cabs
         }
         return price;
     }
 
-    public void rideSharing(int cabCategory,double distance){
+    public void rideSharing(String source, double distance, int cabCategory) throws SQLException {
         System.out.println("Choose number of co-passengers: ");
         System.out.println("One co-passenger");
         System.out.println("Two co-passengers");
         int input= inputs.getIntegerInput();
-        double basicPrice=distanceFactor("urban",cabCategory,distance);
+        double basicPrice=distanceFactor(source,distance,cabCategory);
         System.out.println("Price without Co-passenger: $"+String.format("%.2f",basicPrice));
         double priceWithCoPassenger=basicPrice;
         double discount;
@@ -167,14 +171,14 @@ public class CabPriceCalculator {
         System.out.println("Total Price for this ride is: $"+String.format("%.2f",priceWithCoPassenger));
     }
 
-    public void amenities(String source,int cabCategory,double distance) throws SQLException {
+    public void amenities(String source,double distance, int cabCategory) throws SQLException {
         // For every 30 minutes of ride we are charging extra $2 per amenity.
         System.out.println("Choose amenities:");
         System.out.println("1. CarTV");
         System.out.println("2. Wifi");
         System.out.println("3. Both");
         int input= inputs.getIntegerInput();
-        double basicPrice= distanceFactor("urban", cabCategory,distance);
+        double basicPrice= distanceFactor(source,distance, cabCategory);
         System.out.println("Price without amenities: $"+String.format("%.2f",basicPrice));
         double priceWithAmenities= basicPrice;
         double extraCharge=0;

@@ -5,6 +5,6 @@ import com.dal.cabby.io.PredefinedInputs;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class CabCategoryTests {
+public class CabSelectionTests {
 
 }
