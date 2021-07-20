@@ -5,10 +5,13 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Scanner;
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.io.Inputs;
 
 public class CabPriceCalculator {
     DBHelper dbHelper;
-    public CabPriceCalculator(){
+    Inputs inputs;
+    public CabPriceCalculator(Inputs inputs){
+        this.inputs=inputs;
         dbHelper = new DBHelper();
         try {
             dbHelper.initialize();
@@ -18,7 +21,6 @@ public class CabPriceCalculator {
     }
     double price=0.0;
     int hour=java.time.LocalTime.now().getHour();
-    Scanner ss = new Scanner(System.in);
     double sourceDistanceFromOrigin = 0.0;
     double destinationDistanceFromOrigin= 0.0;
     double cabDistanceFromOrigin=0.0;
@@ -29,7 +31,7 @@ public class CabPriceCalculator {
         System.out.println("1. Normal Booking");
         System.out.println("2. Want to share ride with co-passenger");
         System.out.println("3. Want to have Car TV and Wifi during ride");
-        int userInput= ss.nextInt();
+        int userInput= inputs.getIntegerInput();
         distance=locationsDistanceFromOrigin(source,destination);
         switch(userInput){
             case 1:
@@ -145,7 +147,7 @@ public class CabPriceCalculator {
         System.out.println("Choose number of co-passengers: ");
         System.out.println("One co-passenger");
         System.out.println("Two co-passengers");
-        int input= ss.nextInt();
+        int input= inputs.getIntegerInput();
         double basicPrice=distanceFactor("urban",cabCategory,distance);
         System.out.println("Price without Co-passenger: $"+String.format("%.2f",basicPrice));
         double priceWithCoPassenger=basicPrice;
@@ -169,7 +171,7 @@ public class CabPriceCalculator {
         System.out.println("1. CarTV");
         System.out.println("2. Wifi");
         System.out.println("3. Both");
-        int input= ss.nextInt();
+        int input= inputs.getIntegerInput();
         double basicPrice= distanceFactor("urban", cabCategory,distance);
         System.out.println("Price without amenities: $"+String.format("%.2f",basicPrice));
         double priceWithAmenities= basicPrice;
