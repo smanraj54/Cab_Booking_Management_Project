@@ -23,7 +23,7 @@ public class BuyCoupons {
     dbHelper.initialize();
   }
 
-  public void selectCoupons(int userID, UserType userType) throws SQLException {
+  public void getCoupons(int userID, UserType userType) throws SQLException {
     requesterID = userID;
     requesterType = userType;
     couponsPage();
@@ -34,10 +34,10 @@ public class BuyCoupons {
     System.out.println("\nCouponID" + ", " + "CouponName" + ", " +
         "CouponValue" + ", " + "PriceInPoint");
     displayCoupons();
-    System.out.println("\nDo you want to buy any coupon (y/n): ");
+    System.out.print("\nDo you want to buy any coupon (y/n): ");
     String selection = inputs.getStringInput();
     if (selection.equalsIgnoreCase("y")) {
-      System.out.println("\nPlease enter the coupon id: ");
+      System.out.print("\nPlease enter the coupon id: ");
       int id = inputs.getIntegerInput();
       int points = checkUserPoints();
       purchaseCoupon(id, points);
@@ -78,7 +78,7 @@ public class BuyCoupons {
     if (couponPoints > userPoints) {
       System.out.println("\nYou don't have sufficient points to buy this coupon");
     } else {
-      System.out.println("\nCoupon added in your account");
+      beginTransaction(couponId, couponPoints);
     }
   }
 
@@ -92,5 +92,31 @@ public class BuyCoupons {
       points = result.getInt("price_in_points");
     }
     return points;
+  }
+
+  private void beginTransaction(int couponID, int couponPoints) throws SQLException {
+
+    // query to start transaction
+    String query1 = "start transaction;";
+
+    // query to update user points
+    String query2 = String.format("update user_points \n" +
+        "set total_points = total_points - %d \n" +
+        "where user_id = %d and upper(user_type) = '%s';",
+        couponPoints, requesterID, requesterType);
+
+    // query to add the details of purchased coupon in database table
+    String query3 = String.format("insert into user_coupons(user_id, user_type, coupon_id) " +
+        "values (%d, '%s', %d);", requesterID, requesterType, couponID);
+
+    // query to commit the transaction
+    String query4 = "commit;";
+
+    // executing queries in order
+    dbHelper.executeCreateOrUpdateQuery(query1);
+    dbHelper.executeCreateOrUpdateQuery(query2);
+    dbHelper.executeCreateOrUpdateQuery(query3);
+    dbHelper.executeCreateOrUpdateQuery(query4);
+    System.out.println("\nCoupon added in your account successfully");
   }
 }
