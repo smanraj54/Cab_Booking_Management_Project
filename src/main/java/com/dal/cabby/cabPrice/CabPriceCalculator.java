@@ -25,6 +25,8 @@ public class CabPriceCalculator {
     double destinationDistanceFromOrigin= 0.0;
     double cabDistanceFromOrigin=0.0;
     double distance=0.0;
+    String Query;
+    ResultSet resultSet;
 
     public int priceCalculation(String source, String destination, Boolean rideSharing, String sourceArea, int cabType) throws SQLException {
         System.out.println("*** Select your Preferences ***");
@@ -49,16 +51,16 @@ public class CabPriceCalculator {
     }
 
     public double locationsDistanceFromOrigin(String source,String destination) throws SQLException {
-        String sourceLocationQuery = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", source);
-        ResultSet resultSet = dbHelper.executeSelectQuery(sourceLocationQuery);
+        Query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", source);
+        resultSet = dbHelper.executeSelectQuery(Query);
         while (resultSet.next()) {
             sourceDistanceFromOrigin = resultSet.getDouble("distanceFromOrigin");
         }
 
-        String destinationLocationQuery = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", destination);
-        ResultSet resultSet1 = dbHelper.executeSelectQuery(destinationLocationQuery);
-        while (resultSet1.next()) {
-            destinationDistanceFromOrigin = resultSet1.getDouble("distanceFromOrigin");
+        Query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", destination);
+        resultSet = dbHelper.executeSelectQuery(Query);
+        while (resultSet.next()) {
+            destinationDistanceFromOrigin = resultSet.getDouble("distanceFromOrigin");
         }
         double distanceBetweenSourceAndDestination= calculateDistance(sourceDistanceFromOrigin,destinationDistanceFromOrigin);
         System.out.println("Distance between "+ source + " and "+ destination +" is: " + distance+" KM");
@@ -66,16 +68,16 @@ public class CabPriceCalculator {
     }
 
     public double locationAndCabDistanceFromOrigin(String source,String destination) throws SQLException {
-        String sourceLocationQuery = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", source);
-        ResultSet resultSet = dbHelper.executeSelectQuery(sourceLocationQuery);
+        Query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", source);
+        resultSet = dbHelper.executeSelectQuery(Query);
         while (resultSet.next()) {
             sourceDistanceFromOrigin = resultSet.getDouble("distanceFromOrigin");
         }
 
-        String cabLocationQuery= String.format("Select cabDistanceFromOrigin from cabs where cabName='%s'",destination);
-        ResultSet resultSet1= dbHelper.executeSelectQuery(cabLocationQuery);
-        while (resultSet1.next()) {
-            cabDistanceFromOrigin = resultSet1.getDouble("cabDistanceFromOrigin");
+        Query= String.format("Select cabDistanceFromOrigin from cabs where cabName='%s'",destination);
+        resultSet= dbHelper.executeSelectQuery(Query);
+        while (resultSet.next()) {
+            cabDistanceFromOrigin = resultSet.getDouble("cabDistanceFromOrigin");
         }
         double distanceBetweenSourceAndCab=calculateDistance(sourceDistanceFromOrigin,cabDistanceFromOrigin);
         System.out.println("Distance between "+ source + " and "+ destination +" is: " + distance+" KM");
@@ -123,7 +125,7 @@ public class CabPriceCalculator {
             }
         }
         // Extra 20% would be charged on base fare if ride timing would be from 9:00 PM till 5:00 AM or During office hours
-        if((hour>=21 && hour<24)||(hour>=01 && hour<05) || (hour>=17 && hour<19)){
+        if((hour>=21 && hour<=24)||(hour>=00 && hour<05) || (hour>=17 && hour<19)){
             price+=(.20 * price);
         }
         // rides in urban area would be bit costlier
@@ -177,11 +179,12 @@ public class CabPriceCalculator {
         double priceWithAmenities= basicPrice;
         double extraCharge=0;
         double speed=0.0;
-        String rideSpeed=String.format("Select averageSpeed from price_Calculation where sourceName='%s'",source);
-        ResultSet rideDuration=dbHelper.executeSelectQuery(rideSpeed);
-        while(rideDuration.next()){
-            speed=rideDuration.getDouble("averageSpeed");
+        Query=String.format("Select averageSpeed from price_Calculation where sourceName='%s'",source);
+        resultSet=dbHelper.executeSelectQuery(Query);
+        while(resultSet.next()){
+            speed=resultSet.getDouble("averageSpeed");
         }
+
         double time=(distance/speed)*60;  //Converted hours into minutes
         double rideInMinutes=(time/30);
         switch (input){
