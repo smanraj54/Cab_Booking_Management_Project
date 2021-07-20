@@ -39,6 +39,7 @@ public class BuyCoupons {
     if (selection.equalsIgnoreCase("y")) {
       System.out.println("\nPlease enter the coupon id: ");
       int id = inputs.getIntegerInput();
+      int points = checkUserPoints();
     } else {
       return;
     }
@@ -56,5 +57,18 @@ public class BuyCoupons {
       System.out.println(couponID + ", " + couponName + ", $" +
           couponValue + ", " + couponPoints);
     }
+  }
+
+  private int checkUserPoints() throws SQLException {
+    String query = String.format("select total_points \n" +
+        "from user_points \n" +
+        "where user_id = %d and upper(user_type) = '%s';",
+        requesterID, requesterType);
+    ResultSet resultSet = dbHelper.executeSelectQuery(query);
+    int points = 0;
+    while (resultSet.next()) {
+      points = resultSet.getInt("total_points");
+    }
+    return points;
   }
 }
