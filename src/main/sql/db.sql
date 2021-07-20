@@ -180,18 +180,18 @@ VALUES
     (107, 'Cab7', 40, 'high',30, false, 17);
 
 CREATE TABLE IF NOT EXISTS user_points (
-    user__id int not null,
+    user_id int not null,
     user_type varchar(45) not null,
-    user_points int
+    total_points int
 );
 
 ALTER TABLE user_points add primary key (user_id, user_type);
 
 insert into user_points values
 (1, "DRIVER", 1000),
-(1, "CUSTOMER", 1000),
-(2, "DRIVER", 1000),
-(2, "CUSTOMER", 1000);
+(1, "CUSTOMER", 2000),
+(2, "DRIVER", 1500),
+(2, "CUSTOMER", 2500);
 
 CREATE TABLE IF NOT EXISTS coupons (
     coupon_id int auto_increment primary key,
@@ -209,9 +209,8 @@ insert into coupons (coupon_name, coupon_value, price_in_points) values
 ("Opera House Ticket", 100.00, 1000);
 
 CREATE TABLE IF NOT EXISTS user_coupons (
+    txn_id int auto_increment primary key,
     user_id int not null,
     user_type varchar(45) not null,
     coupon_id int not null
 );
-
-alter table user_coupons add primary key (user_id, user_type, coupon_id);

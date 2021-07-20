@@ -13,6 +13,6 @@ public class BuyCouponsTest {
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add("y").add(101);
     BuyCoupons buyCoupons = new BuyCoupons(inputs);
-    buyCoupons.selectCoupons(1, UserType.CUSTOMER);
+    buyCoupons.getCoupons(1, UserType.CUSTOMER);
   }
 }
