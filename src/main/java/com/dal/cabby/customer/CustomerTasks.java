@@ -34,7 +34,7 @@ public class CustomerTasks {
     }
 
     void showRides() throws SQLException {
-        DisplayRides rides = new DisplayRides();
+        DisplayRides rides = new DisplayRides(inputs);
         rides.getRides(UserType.CUSTOMER, LoggedInProfile.getLoggedInId());
     }
 
