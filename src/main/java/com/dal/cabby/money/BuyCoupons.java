@@ -40,6 +40,7 @@ public class BuyCoupons {
       System.out.println("\nPlease enter the coupon id: ");
       int id = inputs.getIntegerInput();
       int points = checkUserPoints();
+      purchaseCoupon(id, points);
     } else {
       return;
     }
@@ -68,6 +69,27 @@ public class BuyCoupons {
     int points = 0;
     while (resultSet.next()) {
       points = resultSet.getInt("total_points");
+    }
+    return points;
+  }
+
+  private void purchaseCoupon(int couponId, int userPoints) throws SQLException {
+    int couponPoints = getCouponValue(couponId);
+    if (couponPoints > userPoints) {
+      System.out.println("\nYou don't have sufficient points to buy this coupon");
+    } else {
+      System.out.println("\nCoupon added in your account");
+    }
+  }
+
+  private int getCouponValue(int couponID) throws SQLException {
+    String query = String.format("select price_in_points \n" +
+        "from coupons\n" +
+        "where coupon_id = %d;", couponID);
+    ResultSet result = dbHelper.executeSelectQuery(query);
+    int points = 0;
+    while (result.next()) {
+      points = result.getInt("price_in_points");
     }
     return points;
   }
