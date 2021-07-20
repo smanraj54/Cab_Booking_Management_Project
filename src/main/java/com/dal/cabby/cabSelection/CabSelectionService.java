@@ -8,10 +8,10 @@ import java.util.Collections;
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.Inputs;
 
-public class CabSelection {
+public class CabSelectionService {
     DBHelper dbHelper;
     Inputs inputs;
-    public CabSelection(Inputs inputs) throws SQLException {
+    public CabSelectionService(Inputs inputs) throws SQLException {
         this.inputs=inputs;
         dbHelper=new DBHelper();
         try {
@@ -23,7 +23,7 @@ public class CabSelection {
     CabPriceCalculator cabPriceCalculator=new CabPriceCalculator(inputs);
     public String sourceLocation, destinationLocation;
     double sourceDistance = 0.0;
-    ArrayList<CabDAO> cabDetails=new ArrayList<>();
+    ArrayList<CabSelectionDAO> cabDetails=new ArrayList<>();
     ArrayList<String> arrayList=new ArrayList<>();
     String Query;
     ResultSet resultSet;
@@ -34,12 +34,12 @@ public class CabSelection {
         System.out.println("2. Prime Sedan");
         System.out.println("3. Prime SUV");
         System.out.println("4. Luxury Class");
-        int input=inputs.getIntegerInput();
+        int cabType=inputs.getIntegerInput();
         System.out.println("Enter Source location");
         sourceLocation= inputs.getStringInput();
         System.out.println("Enter Destination location");
         destinationLocation= inputs.getStringInput();
-        switch (input){
+        switch (cabType){
             case 1:
                 fetchSourceLocation();
                 getAllNearbyCabs();
@@ -61,7 +61,7 @@ public class CabSelection {
                 bestNearbyCab();
                 break;
         }
-        cabPriceCalculator.priceCalculation(sourceLocation,destinationLocation,false,"urban", input);
+        cabPriceCalculator.priceCalculation(sourceLocation,destinationLocation,cabType);
     }
 
     public double fetchSourceLocation() throws SQLException {
@@ -73,7 +73,7 @@ public class CabSelection {
         return sourceDistance;
     }
 
-    public ArrayList<CabDAO> getAllNearbyCabs() throws SQLException {
+    public ArrayList<CabSelectionDAO> getAllNearbyCabs() throws SQLException {
         double lowerRangeOfCabs = (sourceDistance-5);
         double upperRangeOfCabs = (sourceDistance+5);
         Query= String.format("Select cabName, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
@@ -81,7 +81,7 @@ public class CabSelection {
                 ,lowerRangeOfCabs,upperRangeOfCabs);
         resultSet= dbHelper.executeSelectQuery(Query);
         while (resultSet.next()) {
-            CabDAO cabDetail = new CabDAO(resultSet.getString("cabName"),
+            CabSelectionDAO cabDetail = new CabSelectionDAO(resultSet.getString("cabName"),
                     resultSet.getDouble("cabDistanceFromOrigin"),
                     resultSet.getInt("driver_id"),
                     resultSet.getString("routeTrafficDensity"),

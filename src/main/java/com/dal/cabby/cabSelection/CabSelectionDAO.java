@@ -1,6 +1,6 @@
 package com.dal.cabby.cabSelection;
 
-public class CabDAO {
+public class CabSelectionDAO {
     public String cabName;
     public double cabDistanceFromOrigin;
     public int driver_Id;
@@ -12,8 +12,8 @@ public class CabDAO {
         return result;
     }
 
-    public CabDAO(String cabName, double cabDistanceFromOrigin, int driver_Id, String routeTrafficDensity,
-                  int cabSpeedOnRoute){
+    public CabSelectionDAO(String cabName, double cabDistanceFromOrigin, int driver_Id, String routeTrafficDensity,
+                           int cabSpeedOnRoute){
         this.cabName=cabName;
         this.cabDistanceFromOrigin=cabDistanceFromOrigin;
         this.driver_Id=driver_Id;
