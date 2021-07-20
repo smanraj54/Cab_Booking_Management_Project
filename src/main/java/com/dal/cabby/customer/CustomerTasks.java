@@ -1,6 +1,7 @@
 package com.dal.cabby.customer;
 
 import com.dal.cabby.io.Inputs;
+import com.dal.cabby.money.BuyCoupons;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.profiles.Ratings;
@@ -40,5 +41,10 @@ public class CustomerTasks {
 
     void viewRatings() {
         System.out.println("You current rating is: <NA>");
+    }
+
+    void buyCoupons() throws SQLException {
+        BuyCoupons coupons = new BuyCoupons(inputs);
+        coupons.getCoupons(LoggedInProfile.getLoggedInId(), UserType.CUSTOMER);
     }
 }
