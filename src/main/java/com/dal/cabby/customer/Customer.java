@@ -1,10 +1,6 @@
 package com.dal.cabby.customer;
 
 import com.dal.cabby.io.Inputs;
-import com.dal.cabby.pojo.UserType;
-import com.dal.cabby.profileManagement.*;
-import com.dal.cabby.profiles.Ratings;
-import com.dal.cabby.rides.DisplayRides;
 import com.dal.cabby.util.Common;
 
 import java.sql.SQLException;
@@ -64,13 +60,14 @@ public class Customer implements ICustomer {
     }
 
     @Override
-    public void performCustomerTasks() throws SQLException, ParseException {
+    public void performCustomerTasks() throws SQLException {
         while (true) {
             System.out.println("1. Book Cabs");
             System.out.println("2. View previous Rides");
             System.out.println("3. Rate driver for the trip");
             System.out.println("4. View your current rating");
-            System.out.println("5. Logout");
+            System.out.println("5. Buy Coupons");
+            System.out.println("6. Logout");
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
@@ -86,6 +83,9 @@ public class Customer implements ICustomer {
                     customerTasks.viewRatings();
                     break;
                 case 5:
+                    customerTasks.buyCoupons();
+                    break;
+                case 6:
                     if (customerProfileManagement.logout()) {
                         return;
                     }
