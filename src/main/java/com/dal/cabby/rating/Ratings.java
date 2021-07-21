@@ -1,11 +1,11 @@
-package com.dal.cabby.profiles;
+package com.dal.cabby.rating;
 
 import com.dal.cabby.dbHelper.DBHelper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Ratings {
+public class Ratings implements IRatings {
     DBHelper dbHelper;
 
     public Ratings() throws SQLException {
@@ -13,6 +13,7 @@ public class Ratings {
         dbHelper.initialize();
     }
 
+    @Override
     public void addDriverRating(int driverId, int tripId, int rating) throws SQLException {
         if (rating<1 || rating>5) {
             throw new RuntimeException("Rating can only be in the range of 1 to 5");
@@ -22,6 +23,7 @@ public class Ratings {
         dbHelper.executeCreateOrUpdateQuery(q);
     }
 
+    @Override
     public void addCustomerRating(int userId, int tripId, int rating) throws SQLException {
         if (rating<1 || rating>5) {
             throw new RuntimeException("Rating can only be in the range of 1 to 5");
@@ -31,12 +33,14 @@ public class Ratings {
         dbHelper.executeCreateOrUpdateQuery(q);
     }
 
+    @Override
     public double getAverageRatingOfDriver() throws SQLException {
         String q = "select avg(rating) as avg_rating from driver_ratings";
         ResultSet resultSet = dbHelper.executeSelectQuery(q);
         return resultSet.getDouble("avg_rating");
     }
 
+    @Override
     public double getAverageRatingOfCustomer() throws SQLException {
         String q = "select avg(rating) as avg_rating from customer_ratings";
         ResultSet resultSet = dbHelper.executeSelectQuery(q);

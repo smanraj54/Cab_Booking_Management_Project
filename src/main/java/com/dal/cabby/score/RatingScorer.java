@@ -1,39 +1,10 @@
-package com.dal.cabby.profiles;
+package com.dal.cabby.score;
 
 
 // This class wll work on the scores of driver and customers based on rating and ride performance.
-public class Scorer {
+public class RatingScorer implements IRatingScorer {
 
-    public double driverCancelled(double initialScore, boolean hasCancelled) {
-        double score = initialScore;
-        if (hasCancelled) {
-            score -= 0.3;
-        }
-        else {
-            System.out.println("Driver has not cancelled.");
-            return initialScore;}
-        return score;
-
-    }
-
-    public double customerCancelled(double initialScore, boolean hasArrived, boolean hasCancelled) {
-        double score = initialScore;
-        if (hasCancelled) {
-            if (hasArrived) {
-                score -= 0.5;
-            } else {
-                score -= 0.2;
-            }
-        }
-        else {
-            System.out.println("Customer has not cancelled.");
-            return initialScore;
-        }
-        return score;
-
-    }
-
-
+    @Override
     public double calculateDriverScore(int stars, int eta_pickup, int actualArrivalTime, double initialScore) {
 
         double score = initialScore;
@@ -64,12 +35,13 @@ public class Scorer {
         return score;
     }
 
+    @Override
     public double calculateCustomerScore(int stars, double initialScore, int actualArrivalTime, int boardTime) {
 
         int diff = actualArrivalTime - boardTime;
         double score = initialScore;
 
-        if (diff < 0 && diff > -1) {
+        if (diff > -1 || diff == -1) {
             score += 0.1;
         } else if (diff == 0) {
             score += 0.2;
@@ -86,6 +58,9 @@ public class Scorer {
             score -= 0.3;
         } else if (stars == 1) {
             score -= 0.5;
+        }
+        if (score >= 5) {
+            return 5.0;
         }
 
         return score;
