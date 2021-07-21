@@ -39,7 +39,7 @@ public class RatingScorer {
         int diff = actualArrivalTime - boardTime;
         double score = initialScore;
 
-        if (diff < 0 && diff > -1) {
+        if (diff > -1 || diff == -1) {
             score += 0.1;
         } else if (diff == 0) {
             score += 0.2;
@@ -56,6 +56,9 @@ public class RatingScorer {
             score -= 0.3;
         } else if (stars == 1) {
             score -= 0.5;
+        }
+        if (score >= 5) {
+            return 5.0;
         }
 
         return score;
