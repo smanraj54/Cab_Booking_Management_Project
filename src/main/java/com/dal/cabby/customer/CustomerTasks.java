@@ -4,6 +4,7 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.money.BuyCoupons;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.LoggedInProfile;
+import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 import com.dal.cabby.rides.DisplayRides;
 
@@ -26,8 +27,8 @@ public class CustomerTasks {
         int trip_id = inputs.getIntegerInput();
         System.out.println("Enter the rating between 1-5:");
         int rating = inputs.getIntegerInput();
-        Ratings ratings = new Ratings();
-        ratings.addCustomerRating(driver_id, trip_id, rating);
+        IRatings IRatings = new Ratings();
+        IRatings.addCustomerRating(driver_id, trip_id, rating);
     }
 
     void bookRides() {

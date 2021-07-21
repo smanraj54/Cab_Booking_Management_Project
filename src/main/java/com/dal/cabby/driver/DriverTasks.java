@@ -6,6 +6,7 @@ import com.dal.cabby.money.DriverEarnings;
 import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.LoggedInProfile;
+import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 import com.dal.cabby.rides.DisplayRides;
 import com.dal.cabby.util.Common;
@@ -68,8 +69,8 @@ public class DriverTasks {
         int trip_id = inputs.getIntegerInput();
         System.out.println("Enter the rating between 1-5:");
         int rating = inputs.getIntegerInput();
-        Ratings ratings = new Ratings();
-        ratings.addCustomerRating(cust_id, trip_id, rating);
+        IRatings IRatings = new Ratings();
+        IRatings.addCustomerRating(cust_id, trip_id, rating);
     }
 
     void viewRatings() {
