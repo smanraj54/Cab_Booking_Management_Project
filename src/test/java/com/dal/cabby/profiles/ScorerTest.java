@@ -46,29 +46,6 @@ class ScorerTest {
         Assertions.assertEquals(actualScore, expectedScore, "Calculate drive score method is not working");
     }
 
-    @Test
-    public void driverCancelledTrueTest() {
-        Scorer scorer = new Scorer();
-        double initialScore = 4.0;
-        double newScore = scorer.driverCancelled(initialScore, true);
-        Assertions.assertEquals(3.7, newScore, "Incorrect new score");
-    }
-
-    @Test
-    public void driverCancelledFalseTest() {
-        Scorer scorer = new Scorer();
-        double initialScore = 3.9;
-        double newScore = scorer.driverCancelled(initialScore, false);
-        Assertions.assertEquals(initialScore, newScore, "Incorrect new score");
-    }
-
-    @Test
-    void customerCancelledTrue_hasArrivedTrueTest() {
-        Scorer scorer = new Scorer();
-        double initialScore = 3.9;
-        double newScore = scorer.customerCancelled(initialScore,true, true);
-        Assertions.assertEquals(3.4, newScore, "Incorrect new score");
-    }
 
 
     @Test

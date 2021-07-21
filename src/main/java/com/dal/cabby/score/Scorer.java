@@ -4,36 +4,6 @@ package com.dal.cabby.score;
 // This class wll work on the scores of driver and customers based on rating and ride performance.
 public class Scorer {
 
-    public double driverCancelled(double initialScore, boolean hasCancelled) {
-        double score = initialScore;
-        if (hasCancelled) {
-            score -= 0.3;
-        }
-        else {
-            System.out.println("Driver has not cancelled.");
-            return initialScore;}
-        return score;
-
-    }
-
-    public double customerCancelled(double initialScore, boolean hasArrived, boolean hasCancelled) {
-        double score = initialScore;
-        if (hasCancelled) {
-            if (hasArrived) {
-                score -= 0.5;
-            } else {
-                score -= 0.2;
-            }
-        }
-        else {
-            System.out.println("Customer has not cancelled.");
-            return initialScore;
-        }
-        return score;
-
-    }
-
-
     public double calculateDriverScore(int stars, int eta_pickup, int actualArrivalTime, double initialScore) {
 
         double score = initialScore;
