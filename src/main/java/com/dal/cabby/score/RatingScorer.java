@@ -2,8 +2,9 @@ package com.dal.cabby.score;
 
 
 // This class wll work on the scores of driver and customers based on rating and ride performance.
-public class RatingScorer {
+public class RatingScorer implements IRatingScorer {
 
+    @Override
     public double calculateDriverScore(int stars, int eta_pickup, int actualArrivalTime, double initialScore) {
 
         double score = initialScore;
@@ -34,6 +35,7 @@ public class RatingScorer {
         return score;
     }
 
+    @Override
     public double calculateCustomerScore(int stars, double initialScore, int actualArrivalTime, int boardTime) {
 
         int diff = actualArrivalTime - boardTime;
