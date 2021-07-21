@@ -1,7 +1,8 @@
 package com.dal.cabby.score;
 
-public class CancellationScorer {
+public class CancellationScorer implements ICancellationScorer {
 
+    @Override
     public double driverCancelled(double initialScore, boolean hasCancelled) {
         double score = initialScore;
         if (hasCancelled) {
@@ -14,6 +15,7 @@ public class CancellationScorer {
 
     }
 
+    @Override
     public double customerCancelled(double initialScore, boolean hasArrived, boolean hasCancelled) {
         double score = initialScore;
         if (hasCancelled) {
