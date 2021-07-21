@@ -76,7 +76,7 @@ public class CabSelectionService {
         double lowerRangeOfCabs = (sourceDistance-5);
         double upperRangeOfCabs = (sourceDistance+5);
         Query= String.format("Select cabName, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
-                "cabSpeedOnRoute from cabs where cabDistanceFromOrigin BETWEEN '%f' AND '%f'"
+                "cabSpeedOnRoute,driverGender from cabs where cabDistanceFromOrigin BETWEEN '%f' AND '%f'"
                 ,lowerRangeOfCabs,upperRangeOfCabs);
         resultSet= dbHelper.executeSelectQuery(Query);
         while (resultSet.next()) {
@@ -84,7 +84,8 @@ public class CabSelectionService {
                     resultSet.getDouble("cabDistanceFromOrigin"),
                     resultSet.getInt("driver_id"),
                     resultSet.getString("routeTrafficDensity"),
-                    resultSet.getInt("cabSpeedOnRoute"));
+                    resultSet.getInt("cabSpeedOnRoute"),
+                    resultSet.getString("driverGender"));
             cabDetails.add(cabDetail);
         }
         System.out.println("Unfiltered List of nearby Cabs:");
@@ -97,12 +98,44 @@ public class CabSelectionService {
         int input =inputs.getIntegerInput();
         switch (input){
             case 1:
+                withGenderPreference();
                 break;
             case 2:
                 withoutGenderPreference();
                 break;
         }
         return cabDetails;
+    }
+
+    public void withGenderPreference() throws SQLException {
+        System.out.println("Select your gender preference");
+        System.out.println("1. Male ");
+        System.out.println("2. Female ");
+        int input =inputs.getIntegerInput();
+        switch (input){
+            case 1:
+                for(int i=0;i<cabDetails.size();i++){
+                    gender=cabDetails.get(i).driverGender;
+                    if(gender.equals("Male")){
+                        maleArrayList.add(cabDetails.get(i).cabName);
+                    }
+                }
+                for (int i=0;i<maleArrayList.size();i++){
+                    cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation,maleArrayList.get(i));
+                }
+                break;
+            case 2:
+                for (int i=0;i<cabDetails.size();i++){
+                    gender=cabDetails.get(i).driverGender;
+                    if(gender.equals("Female")){
+                        femaleArrayList.add(cabDetails.get(i).cabName);
+                    }
+                }
+                for (int i = 0; i < femaleArrayList.size(); i++) {
+                    cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation, femaleArrayList.get(i));
+                }
+                break;
+        }
     }
 
     public void withoutGenderPreference() throws SQLException{
