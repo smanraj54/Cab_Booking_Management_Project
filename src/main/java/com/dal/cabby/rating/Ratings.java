@@ -1,4 +1,4 @@
-package com.dal.cabby.profiles;
+package com.dal.cabby.rating;
 
 import com.dal.cabby.dbHelper.DBHelper;
 

@@ -1,9 +1,8 @@
 package com.dal.cabby.profiles;
 
+import com.dal.cabby.score.Scorer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ScorerTest {
 

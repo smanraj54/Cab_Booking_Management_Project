@@ -4,7 +4,7 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.money.BuyCoupons;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.LoggedInProfile;
-import com.dal.cabby.profiles.Ratings;
+import com.dal.cabby.rating.Ratings;
 import com.dal.cabby.rides.DisplayRides;
 
 import java.sql.SQLException;
