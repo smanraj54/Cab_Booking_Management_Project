@@ -123,6 +123,7 @@ public class CabSelectionService {
                 for (int i=0;i<maleArrayList.size();i++){
                     cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation,maleArrayList.get(i));
                 }
+                bestNearbyCabOfMaleDriver();
                 break;
             case 2:
                 for (int i=0;i<cabDetails.size();i++){
@@ -134,6 +135,7 @@ public class CabSelectionService {
                 for (int i = 0; i < femaleArrayList.size(); i++) {
                     cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation, femaleArrayList.get(i));
                 }
+                bestNearbyCabOfFemaleDriver();
                 break;
         }
     }
@@ -151,6 +153,39 @@ public class CabSelectionService {
         }
         bestNearbyCabWithoutFilter();
     }
+
+    public void bestNearbyCabOfMaleDriver() throws SQLException {
+        ArrayList<Double> maleDriverTimeToReach=new ArrayList<>();
+        for (int i=0;i<cabDetails.size();i++){
+            gender=cabDetails.get(i).driverGender;
+            if(gender.equals("Male")) {
+                maleDriverTimeToReach.add((cabDetails.get(i).cabDistanceFromOrigin) / (cabDetails.get(i).cabSpeedOnRoute));
+            }
+        }
+        System.out.println("Estimated Arrival time of each Cab:");
+        for (int i = 0; i < maleDriverTimeToReach.size(); i++) {
+            System.out.println(String.format("%.2f",maleDriverTimeToReach.get(i)));
+        }
+        double min= Collections.min(maleDriverTimeToReach);
+        System.out.println("Fastest cab is reaching your location in "+ String.format("%.2f", min) + " minutes");
+    }
+
+    public void bestNearbyCabOfFemaleDriver() throws SQLException {
+        ArrayList<Double> femaleDriverTimeToReach=new ArrayList<>();
+        for (int i=0;i<cabDetails.size();i++){
+            gender=cabDetails.get(i).driverGender;
+            if(gender.equals("Female")) {
+                femaleDriverTimeToReach.add((cabDetails.get(i).cabDistanceFromOrigin) / (cabDetails.get(i).cabSpeedOnRoute));
+            }
+        }
+        System.out.println("Estimated Arrival time of each Cab:");
+        for (int i = 0; i < femaleDriverTimeToReach.size(); i++) {
+            System.out.println(String.format("%.2f",femaleDriverTimeToReach.get(i)));
+        }
+        double min= Collections.min(femaleDriverTimeToReach);
+        System.out.println("Fastest cab is reaching your location in "+ String.format("%.2f",min) + " minutes");
+    }
+
 
     public void bestNearbyCabWithoutFilter() throws SQLException {
         ArrayList<Double> timeToReach=new ArrayList<>();
