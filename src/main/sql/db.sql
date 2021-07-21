@@ -125,7 +125,6 @@ CREATE TABLE IF NOT EXISTS price_Calculation (
     sourceName VARCHAR(45) NOT NULL,
     distanceFromOrigin DOUBLE,
     sourceArea VARCHAR(45),
-    rideSharing BOOLEAN,
     averageSpeed DOUBLE
     );
 
@@ -134,20 +133,19 @@ insert into price_Calculation(
     sourceName,
     distanceFromOrigin,
     sourceArea,
-    rideSharing,
     averageSpeed
-    )
+)
 VALUES
-    (1, 'Halifax', 35, 'urban', false,25),
-    (2, 'Dartmouth', 57, 'rural', true, 28),
-    (3, 'BedFord', -8, 'urban', true , 26),
-    (4, 'Sydney', 18, 'urban', false, 24),
-    (5, 'Yarmouth', 23, 'rural', false, 27),
-    (6, 'Toronto', 148, 'urban', true, 30),
-    (7, 'Kentville', -64, 'rural', false, 22),
-    (8, 'Winnipeg', 80, 'rural', true, 31),
-    (9, 'Vancouver', 260, 'urban', false, 34),
-    (10, 'Montreal', -190, 'rural', false, 29);
+(1, 'Halifax', 35, 'urban', 25),
+(2, 'Dartmouth', 57, 'rural', 28),
+(3, 'BedFord', -8, 'urban', 26),
+(4, 'Sydney', 18, 'urban', 24),
+(5, 'Yarmouth', 23, 'rural', 27),
+(6, 'Toronto', 148, 'urban', 30),
+(7, 'Kentville', -64, 'rural', 22),
+(8, 'Winnipeg', 80, 'rural', 31),
+(9, 'Vancouver', 260, 'urban', 34),
+(10, 'Montreal', -190, 'rural', 29);
 
 
 CREATE TABLE IF NOT EXISTS cabs(
@@ -156,7 +154,7 @@ CREATE TABLE IF NOT EXISTS cabs(
     cabDistanceFromOrigin DOUBLE,
     routeTrafficDensity VARCHAR(30),
     cabSpeedOnRoute DOUBLE,
-    genderPreference VARCHAR (10),
+    driverGender VARCHAR(10),
     driver_id INT,
     FOREIGN KEY (driver_id) REFERENCES driver(driver_id)
     );
@@ -167,17 +165,18 @@ insert into cabs(
     cabDistanceFromOrigin,
     routeTrafficDensity,
     cabSpeedOnRoute,
-    genderPreference,
+    driverGender,
     driver_id
 )
 VALUES
-    (101, 'Cab1', 24, 'high',30, false, 11),
-    (102, 'Cab2', 29, 'low', 50, true, 12),
-    (103, 'Cab3', 31, 'moderate',40, false, 13),
-    (104, 'Cab4', 56, 'moderate',40, true, 14),
-    (105, 'Cab5', 39, 'high',30, true, 15),
-    (106, 'Cab6', 49, 'low',50, false, 16),
-    (107, 'Cab7', 40, 'high',30, false, 17);
+(101, 'Cab1', 24, 'high',30,'Male', 11),
+(102, 'Cab2', 30, 'low', 50,'Female', 12),
+(103, 'Cab3', 31, 'moderate',40,'Male', 13),
+(104, 'Cab4', 56, 'moderate',40,'Male', 14),
+(105, 'Cab5', 39, 'high',30,'Female', 15),
+(106, 'Cab6', 49, 'low',50,'Male', 16),
+(107, 'Cab7', 40, 'high',30,'Male', 17);
+
 
 CREATE TABLE IF NOT EXISTS user_points (
     user_id int not null,
