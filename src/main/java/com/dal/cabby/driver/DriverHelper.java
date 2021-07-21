@@ -34,10 +34,12 @@ public class DriverHelper {
         while (resultSet.next()) {
             int bookingId = resultSet.getInt("booking_id");
             int custId = resultSet.getInt("cust_id");
+            int cabId = resultSet.getInt("cab_id");
+            double price = resultSet.getDouble("estimated_price");
             String travelTime = resultSet.getDate("travel_time").toString();
             String source = resultSet.getString("source");
             String destination = resultSet.getString("destination");
-            bookingsList.add(new Booking(bookingId, custId, source, destination, travelTime));
+            bookingsList.add(new Booking(bookingId, custId, driverId, cabId, source, destination, travelTime, price));
         }
         return bookingsList;
     }
