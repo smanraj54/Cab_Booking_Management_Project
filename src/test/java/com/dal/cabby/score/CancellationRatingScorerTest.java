@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CancellationScorerTest {
+class CancellationRatingScorerTest {
 
     @Test
     public void driverCancelledTrueTest() {
