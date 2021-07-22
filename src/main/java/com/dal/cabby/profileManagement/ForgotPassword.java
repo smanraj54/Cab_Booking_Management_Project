@@ -8,16 +8,21 @@ import java.util.Scanner;
 import static java.lang.Thread.sleep;
 
 public class ForgotPassword {
+
     Inputs inputs;
+
     public ForgotPassword(Inputs inputs) {
+
         this.inputs = inputs;
     }
 
     public boolean passwordUpdateProcess(UserType userType){
-        DB_Operations dbOperations = new DB_Operations(userType);
+
+        DBOperations dbOperations = new DBOperations(userType);
         boolean authenticationPass = false;
         Scanner sc = new Scanner(System.in);
         String email = null;
+
         for(int t=0; t<3; t++) {
             System.out.print("\nEnter UserName or Email : ");
             String user = sc.next();
@@ -70,10 +75,12 @@ public class ForgotPassword {
         }
         dbOperations.updateEmailPassword(email, newPass, userType);
         System.out.println("Password updated successfully");
+
         return true;
     }
 
     private boolean validateTempPass(int tempPass, Scanner sc){
+
         System.out.print("\nEnter temp password sent to your registered email : ");
 
         int enteredPass = -1;
@@ -96,10 +103,12 @@ public class ForgotPassword {
                 e.printStackTrace();
             }
         }
+
         return tempPass == enteredPass;
     }
 
     private String getNewPassword(Scanner sc){
+
         //System.out.print("\nEnter new Password : ");
         Registration registration = new Registration(inputs);
         String newPassword = registration.getPassword(new ValidateInput());
@@ -111,6 +120,7 @@ public class ForgotPassword {
                 e.printStackTrace();
             }
         }
+
         return newPassword;
     }
 

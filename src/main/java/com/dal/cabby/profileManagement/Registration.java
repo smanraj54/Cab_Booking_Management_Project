@@ -21,7 +21,7 @@ public class Registration {
         //String confirmPassword = "";
         String userName = "";
         ValidateInput validateInput = new ValidateInput();
-        DB_Operations db_operations = new DB_Operations(userType);
+        DBOperations db_operations = new DBOperations(userType);
 
         for (int t = 0; t < 3; t++) {
             System.out.print("\nEnter Email : ");
@@ -77,7 +77,8 @@ public class Registration {
         if (password == null) {
             return false;
         }
-        DataNode dataNode = new DataNode(userName, name, email, password, userType);
+        DataNode dataNode = new DataNode(userName, name, email, password,
+                            userType);
         db_operations.entryRegistration(dataNode);
         System.out.println("Registration successful");
         return true;
@@ -93,19 +94,25 @@ public class Registration {
         for (int t = 0; t < 3; t++) {
             System.out.print("\nConfirm above password : ");
             confirmPassword = inputs.getStringInput();
-            if (validateInput.validateConfirmPassword(password, confirmPassword)) {
+            if (validateInput.validateConfirmPassword(password,
+                    confirmPassword)) {
+
                 registerSuccessful = true;
                 break;
             } else {
+
                 System.err.println("\t\tConfirm password doesn't match !!!");
                 try {
+
                     sleep(100);
                 } catch (InterruptedException e) {
+
                     e.printStackTrace();
                 }
             }
         }
         if (registerSuccessful) {
+
             return password;
         }
         return null;

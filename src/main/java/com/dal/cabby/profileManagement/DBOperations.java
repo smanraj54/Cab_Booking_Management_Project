@@ -6,20 +6,23 @@ import com.dal.cabby.pojo.UserType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DB_Operations {
+public class DBOperations {
 
     private String queryUser = "Select * from %s where username = '%s'";
     private String queryEmail = "Select * from %s where email = '%s'";
     UserType userType;
-    DB_Operations(UserType userType) {
+    DBOperations(UserType userType) {
+
         this.userType = userType;
     }
 
     public boolean dbUserNameValidation(String userName) {
+
         return dbContainsUserName(userName, userType);
     }
 
     public boolean dbContainsUserName(String userName, UserType userType) {
+
         boolean foundUser = false;
         String value = getValueFromDB(userName, "username", userType, queryUser);
         if (value == null) {
@@ -28,10 +31,12 @@ public class DB_Operations {
         if (userName.equals(value)) {
             foundUser = true;
         }
+
         return foundUser;
     }
 
     public boolean dbContainsEmail(String email, UserType userType) {
+
         boolean foundUser = false;
         String value = getEmailValue(email, "email", userType, queryEmail);
         if (value == null) {
@@ -40,10 +45,12 @@ public class DB_Operations {
         if (email.equals(value)) {
             foundUser = true;
         }
+
         return foundUser;
     }
 
     private String getValueFromDB(String userName, String columnName, UserType userType, String query) {
+
         String tableName = getTableName(userType);
         query = String.format(query, tableName, userName);
         String value = null;
@@ -63,10 +70,12 @@ public class DB_Operations {
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
+
         return value;
     }
 
     public String getEmailValue(String email, String keywordSearch, UserType userType, String query) {
+
         String tableName = getTableName(userType);
         query = String.format(query, tableName, email);
         String emailValue = null;
@@ -81,10 +90,12 @@ public class DB_Operations {
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
+
         return emailValue;
     }
 
     public void entryRegistration(DataNode dataNode) {
+
         DBHelper dbHelper = getDBInstance();
         String tableName = getTableName(dataNode.getUserType());
         String query = String.format("insert into %s (username, name, email, password) value ('%s','%s', '%s', '%s')", tableName, dataNode.getUser(), dataNode.getName(), dataNode.getEmail(), dataNode.getPassword());
@@ -97,6 +108,7 @@ public class DB_Operations {
     }
 
     private DBHelper getDBInstance() {
+
         DBHelper dbHelper = new DBHelper();
         try {
             dbHelper.initialize();
@@ -107,6 +119,7 @@ public class DB_Operations {
     }
 
     public boolean validateLoginUser(String userNameOrEmail, String password, UserType userType) {
+
         boolean userNameLogin = dbContainsUserName(userNameOrEmail, userType);
         boolean emailLogin = dbContainsEmail(userNameOrEmail, userType);
         boolean passwordValidate = false;
@@ -119,18 +132,22 @@ public class DB_Operations {
             passwordValidate = validateKeyword(userNameOrEmail, "password", password, userType, queryEmail);
             userTypeValidate = validateKeyword(userNameOrEmail, "email", userNameOrEmail, userType, queryEmail);
         }
+
         return (passwordValidate && userTypeValidate);
     }
 
     private boolean validateKeyword(String userNameOrEmail, String keyword, String keywordValue, UserType userType, String query) {
+
         String value = getValueFromDB(userNameOrEmail, keyword, userType, query);
         if (value != null && value.equals(keywordValue)) {
             return true;
         }
+
         return false;
     }
 
     public String fetchEmailForAuthentication(String user, UserType userType) {
+
         String email = null;
         boolean isEmail = false;
         isEmail = dbContainsEmail(user, userType);
@@ -142,10 +159,12 @@ public class DB_Operations {
         } else {
             email = user;
         }
+
         return email;
     }
 
     public void updateEmailPassword(String email, String newPassword, UserType userType) {
+
         DBHelper dbHelper = new DBHelper();
         String tableName = getTableName(userType);
         String query = String.format("UPDATE %s set password = '%s'where email = '%s'", tableName, newPassword, email);
@@ -156,9 +175,11 @@ public class DB_Operations {
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
+
     }
 
     public String getTableName(UserType userType) {
+
         if (userType == UserType.ADMIN) {
             return "cabby_admin";
         } else if (userType == UserType.DRIVER) {
@@ -171,6 +192,7 @@ public class DB_Operations {
     }
 
     public String getIDColumnName(UserType userType) {
+
         if (userType == UserType.ADMIN) {
             return "admin_id";
         } else if (userType == UserType.DRIVER) {

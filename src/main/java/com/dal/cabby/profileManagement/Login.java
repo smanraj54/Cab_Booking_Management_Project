@@ -13,7 +13,7 @@ public class Login {
     }
 
     public boolean attemptLogin(UserType userType){
-        DB_Operations db_operations = new DB_Operations(userType);
+        DBOperations db_operations = new DBOperations(userType);
         String userNameOrEmail = null;
         String password = null;
         System.out.print("\nEnter UserName or Email : ");
