@@ -37,7 +37,7 @@ public class CabSelectionService {
         }
     }
 
-    public Booking preferredCab(int custId, double hour) throws SQLException {
+    public Booking preferredCab(int custId) throws SQLException {
         System.out.println("Enter your Cab preference");
         System.out.println("1. Micro and Mini");
         System.out.println("2. Prime Sedan");
@@ -51,7 +51,7 @@ public class CabSelectionService {
         fetchSourceLocation();
         getAllNearbyCabs();
         double price = cabPriceCalculator.priceCalculation(sourceLocation, destinationLocation, cabType);
-        Booking booking = new Booking(-1, custId, bestCab.driver_Id, -1, sourceLocation, destinationLocation, hour + "", price);
+        Booking booking = new Booking(-1, custId, bestCab.driver_Id, -1, sourceLocation, destinationLocation, "", price);
         return booking;
     }
 
@@ -67,12 +67,13 @@ public class CabSelectionService {
     public ArrayList<CabSelectionDAO> getAllNearbyCabs() throws SQLException {
         double lowerRangeOfCabs = (sourceDistance - 5);
         double upperRangeOfCabs = (sourceDistance + 5);
-        Query = String.format("Select cabName, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
+        Query = String.format("Select cabName, cabId, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
                         "cabSpeedOnRoute,driverGender from cabs where cabDistanceFromOrigin BETWEEN '%f' AND '%f'"
                 , lowerRangeOfCabs, upperRangeOfCabs);
         resultSet = dbHelper.executeSelectQuery(Query);
         while (resultSet.next()) {
             CabSelectionDAO cabDetail = new CabSelectionDAO(resultSet.getString("cabName"),
+                    resultSet.getInt("cabId"),
                     resultSet.getDouble("cabDistanceFromOrigin"),
                     resultSet.getInt("driver_id"),
                     resultSet.getString("routeTrafficDensity"),
@@ -205,7 +206,7 @@ public class CabSelectionService {
 
     public static void main(String[] args) throws SQLException {
         CabSelectionService cabSelectionService = new CabSelectionService(new InputFromUser());
-        cabSelectionService.preferredCab(1, 12);
+        cabSelectionService.preferredCab(1);
     }
 }
 
