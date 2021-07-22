@@ -1,5 +1,6 @@
 package com.dal.cabby.customer;
 
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.PredefinedInputs;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,14 +12,16 @@ import java.util.UUID;
 import static com.dal.cabby.util.Constants.*;
 
 public class CustomerTests {
+    DBHelper dbHelper = new DBHelper();
     @Test
-    void testExit() {
+    void testExit() throws SQLException {
+        dbHelper.initialize();
         System.out.println("Testing simple exit flow for customer");
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(EXIT);
         Customer customer;
         try {
-            customer = new Customer(inputs);
+            customer = new Customer(inputs, dbHelper);
             customer.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
@@ -27,7 +30,8 @@ public class CustomerTests {
     }
 
     @Test
-    void testRegistration() {
+    void testRegistration() throws SQLException {
+        dbHelper.initialize();
         System.out.println("Testing resgitration flow for Customer");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -38,7 +42,7 @@ public class CustomerTests {
 
         Customer customer;
         try {
-            customer = new Customer(inputs);
+            customer = new Customer(inputs, dbHelper);
             customer.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
@@ -47,7 +51,8 @@ public class CustomerTests {
     }
 
     @Test
-    void testLogin() {
+    void testLogin() throws SQLException {
+        dbHelper.initialize();
         System.out.println("Testing login flow for Customer");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -59,7 +64,7 @@ public class CustomerTests {
 
         Customer customer;
         try {
-            customer = new Customer(inputs);
+            customer = new Customer(inputs, dbHelper);
             customer.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();

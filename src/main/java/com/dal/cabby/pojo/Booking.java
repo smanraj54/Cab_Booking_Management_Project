@@ -8,8 +8,71 @@ public class Booking {
     String source, destination;
     String travelTime;
     double price;
+    boolean isCancelled;
+    boolean hasDriverCancelled;
+    boolean hasCustomerCancelled;
 
-    public Booking(int booking_id, int customerId, int driverid, int cabId, String source, String destination, String travelTime, double price) {
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        isCancelled = cancelled;
+    }
+
+    public boolean isHasDriverCancelled() {
+        return hasDriverCancelled;
+    }
+
+    public void setHasDriverCancelled(boolean hasDriverCancelled) {
+        this.hasDriverCancelled = hasDriverCancelled;
+    }
+
+    public boolean isHasCustomerCancelled() {
+        return hasCustomerCancelled;
+    }
+
+    public void setHasCustomerCancelled(boolean hasCustomerCancelled) {
+        this.hasCustomerCancelled = hasCustomerCancelled;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setDriverId(int driverId) {
+        this.driverId = driverId;
+    }
+
+    public void setCabId(int cabId) {
+        this.cabId = cabId;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setTravelTime(String travelTime) {
+        this.travelTime = travelTime;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public Booking() {
+
+    }
+
+    public Booking(int booking_id, int customerId, int driverid, int cabId, String source, String destination, String travelTime, double price, boolean isCancelled) {
         this.bookingId = booking_id;
         this.customerId = customerId;
         this.driverId = driverid;
@@ -18,6 +81,7 @@ public class Booking {
         this.destination = destination;
         this.travelTime = travelTime;
         this.price = price;
+        this.isCancelled = isCancelled;
     }
 
     public int getBookingId() {

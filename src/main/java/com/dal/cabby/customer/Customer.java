@@ -1,5 +1,6 @@
 package com.dal.cabby.customer;
 
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.util.Common;
 
@@ -10,14 +11,16 @@ public class Customer implements ICustomer {
     private final Inputs inputs;
     private CustomerTasks customerTasks;
     private CustomerProfileManagement customerProfileManagement;
+    private DBHelper dbHelper;
 
-    public Customer(Inputs inputs) throws SQLException {
+    public Customer(Inputs inputs, DBHelper dbHelper) throws SQLException {
         this.inputs = inputs;
+        this.dbHelper = dbHelper;
         initialize();
     }
 
     private void initialize() {
-        customerTasks = new CustomerTasks(inputs);
+        customerTasks = new CustomerTasks(inputs, dbHelper);
         customerProfileManagement = new CustomerProfileManagement(inputs);
     }
 
@@ -68,6 +71,7 @@ public class Customer implements ICustomer {
             System.out.println("4. View your current rating");
             System.out.println("5. Buy Coupons");
             System.out.println("6. Logout");
+            System.out.println("7. Cancel booking");
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
@@ -89,6 +93,9 @@ public class Customer implements ICustomer {
                     if (customerProfileManagement.logout()) {
                         return;
                     }
+                    break;
+                case  7:
+                    customerTasks.cancelBooking();
                     break;
                 default:
                     System.out.println("\nInvalid Input");

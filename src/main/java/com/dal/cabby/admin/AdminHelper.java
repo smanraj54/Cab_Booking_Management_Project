@@ -17,8 +17,8 @@ public class AdminHelper {
     static String customerProfile = "customer";
     DBHelper dbHelper;
 
-    AdminHelper() throws SQLException {
-        dbHelper = new DBHelper();
+    AdminHelper(DBHelper dbHelper) throws SQLException {
+        this.dbHelper = dbHelper;
         dbHelper.initialize();
     }
 

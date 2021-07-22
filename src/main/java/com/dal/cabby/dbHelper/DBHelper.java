@@ -10,7 +10,7 @@ public class DBHelper {
     String connUrl;
     String url = "jdbc:mysql://%s:3306/%s?useSSL=false&allowPublicKeyRetrieval=true";
     private String DEFAULT_MYSQL_USERNAME = "root";
-    private String DEFAULT_MYSQL_PASSWORD = "mysql@789";
+    private String DEFAULT_MYSQL_PASSWORD = "root@123";
     private String DEFAULT_MYSQL_DATABASE = "cabby";
 
     public DBHelper() {
@@ -28,7 +28,9 @@ public class DBHelper {
     }
 
     public void initialize() throws SQLException {
-        connection = DriverManager.getConnection(connUrl, user, password);
+        if(connection == null) {
+            connection = DriverManager.getConnection(connUrl, user, password);
+        }
     }
 
     public void close() throws SQLException {

@@ -1,5 +1,6 @@
 package com.dal.cabby.admin;
 
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.util.Common;
 
@@ -11,15 +12,17 @@ public class Admin implements IAdmin {
     private final Inputs inputs;
     private AdminTasks adminTasks;
     private AdminProfileManagement adminProfileManagement;
+    private DBHelper dbHelper;
 
-    public Admin(Inputs inputs) throws SQLException {
+    public Admin(Inputs inputs, DBHelper dbHelper) throws SQLException {
         this.inputs = inputs;
+        this.dbHelper = dbHelper;
         initialize();
     }
 
     private void initialize() throws SQLException {
-        adminHelper = new AdminHelper();
-        adminTasks = new AdminTasks(adminHelper, inputs);
+        adminHelper = new AdminHelper(dbHelper);
+        adminTasks = new AdminTasks(adminHelper, inputs, dbHelper);
         adminProfileManagement = new AdminProfileManagement(adminHelper, inputs);
     }
 

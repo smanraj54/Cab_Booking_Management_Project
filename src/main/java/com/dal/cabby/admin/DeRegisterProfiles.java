@@ -1,5 +1,7 @@
 package com.dal.cabby.admin;
 
+import com.dal.cabby.dbHelper.DBHelper;
+
 import java.sql.SQLException;
 
 /*
@@ -9,10 +11,14 @@ import java.sql.SQLException;
 */
 public class DeRegisterProfiles {
 
+    private DBHelper dbHelper;
+    DeRegisterProfiles(DBHelper dbHelper) {
+        this.dbHelper = dbHelper;
+    }
     // Deactivate the customer profile.
     public boolean deRegisterCustomer(int cust_id) {
         try {
-            AdminHelper adminHelper = new AdminHelper();
+            AdminHelper adminHelper = new AdminHelper(dbHelper);
             adminHelper.updateStatus(AdminHelper.customerProfile, false, cust_id);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -24,7 +30,7 @@ public class DeRegisterProfiles {
     // Deactivate the driver profile.
     public boolean deRegisterDriver(int driver_id) {
         try {
-            AdminHelper adminHelper = new AdminHelper();
+            AdminHelper adminHelper = new AdminHelper(dbHelper);
             adminHelper.updateStatus(AdminHelper.driverProfile, false, driver_id);
         } catch (SQLException e) {
             e.printStackTrace();
