@@ -11,6 +11,17 @@ CREATE TABLE IF NOT EXISTS cabby_admin (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+insert into cabby_admin(
+    name,
+    email,
+    password,
+    username
+)
+VALUES
+    ('Admin1 Singh','admin1@gmail.com','admin1@123','admin1'),
+    ('Admin2 Singh','admin2@gmail.com','admin2@123','admin2'),
+    ('Admin3 Singh','admin3@gmail.com','admin3@123','admin3');
+
 CREATE TABLE IF NOT EXISTS driver (
     driver_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -30,13 +41,16 @@ insert into driver(
     status
 )
 VALUES
-    (11, 'Devraj','devraj@gmail.com','devraj@123','devraj',true),
-    (12,'Manjinder','manjinder@gmail.com','manjinder@123','manjinder',true),
-    (13,'Bikram','bikram@gmail.com','bikram@123','bikram',true),
-    (14,'Arvinder','arvinder@gmail.com','arvinder@123','arvinder',true),
-    (15,'Manraj','manraj@gmail.com','manraj@123','manraj',true),
-    (16,'Dummy1','dummy1@gmail.com','dummy@123','dummy1',true),
-    (17,'Dummy2','dummy2@gmail.com','dummmy@123','dummy2',true);
+    (1, 'Devraj','devraj@gmail.com','devraj@123','devraj',true),
+    (2,'Manjinder','manjinder@gmail.com','manjinder@123','manjinder',false),
+    (3,'Bikram','bikram@gmail.com','bikram@123','bikram',true),
+    (4,'Arvinder','arvinder@gmail.com','arvinder@123','arvinder',false),
+    (5,'Manraj','manraj@gmail.com','manraj@123','manraj',true),
+    (6,'Driver1 Singh','driver1@gmail.com','driver1@123','driver1',true),
+    (7,'Driver2 Singh','driver2@gmail.com','driver2@123','driver2',false),
+    (8,'Driver3 Singh','driver3@gmail.com','driver3@123','driver3',true),
+    (9,'Driver4 Singh','driver4@gmail.com','driver4@123','driver4',false),
+    (10,'Driver5 Singh','driver5@gmail.com','driver5@123','driver5',true);
 
 CREATE TABLE IF NOT EXISTS customer (
     cust_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,6 +61,26 @@ CREATE TABLE IF NOT EXISTS customer (
     status BOOLEAN,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+insert into customer(
+    cust_id,
+    name,
+    email,
+    password,
+    username,
+    status
+)
+VALUES
+    (1, 'Customer1 Singh','cust1@gmail.com','cust1@123','cust1',true),
+    (2,'Customer2 Singh','cust2@gmail.com','cust2@123','cust2',true),
+    (3,'Customer3 Singh','cust3@gmail.com','cust3@123','cust3',true),
+    (4,'Customer4 Singh','cust4@gmail.com','cust4@123','cust4',true),
+    (5,'Customer5 Singh','cust5@gmail.com','cust5@123','cust5',true),
+    (6,'Customer6 Singh','cust6@gmail.com','cust6@123','cust6',true),
+    (7,'Customer7 Singh','cust7@gmail.com','cust7@123','cust7',true),
+    (8,'Customer8 Singh','cust8@gmail.com','cust8@123','cust8',true),
+    (9,'Customer9 Singh','cust9@gmail.com','cust9@123','cust9',true),
+    (10,'Customer10 Singh','cust10@gmail.com','cust10@123','cust10',true);
 
 CREATE TABLE IF NOT EXISTS places (
     place_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -65,6 +99,9 @@ CREATE TABLE IF NOT EXISTS bookings (
     estimated_price DOUBLE,
     source VARCHAR(255),
     destination VARCHAR(255),
+    is_cancelled BOOLEAN DEFAULT false,
+    has_driver_cancelled BOOLEAN DEFAULT false,
+    has_customer_cancelled BOOLEAN DEFAULT false,
     is_trip_done BOOLEAN DEFAULT false,
     FOREIGN KEY (cust_id) REFERENCES customer(cust_id),
     FOREIGN KEY (driver_id) REFERENCES driver(driver_id)
@@ -170,13 +207,13 @@ insert into cabs(
     driver_id
 )
 VALUES
-(101, 'Cab1', 24, 'high',30,'Male', 11),
-(102, 'Cab2', 30, 'low', 50,'Female', 12),
-(103, 'Cab3', 31, 'moderate',40,'Male', 13),
-(104, 'Cab4', 56, 'moderate',40,'Male', 14),
-(105, 'Cab5', 39, 'high',30,'Female', 15),
-(106, 'Cab6', 49, 'low',50,'Male', 16),
-(107, 'Cab7', 40, 'high',30,'Male', 17);
+(1, 'Cab1', 24, 'high',30,'Male', 1),
+(2, 'Cab2', 30, 'low', 50,'Female', 2),
+(3, 'Cab3', 31, 'moderate',40,'Male', 3),
+(4, 'Cab4', 56, 'moderate',40,'Male', 4),
+(5, 'Cab5', 39, 'high',30,'Female', 5),
+(6, 'Cab6', 49, 'low',50,'Male', 6),
+(7, 'Cab7', 40, 'high',30,'Male', 7);
 
 
 CREATE TABLE IF NOT EXISTS user_points (
@@ -214,3 +251,14 @@ CREATE TABLE IF NOT EXISTS user_coupons (
     user_type varchar(45) not null,
     coupon_id int not null
 );
+
+insert into bookings(driver_id, cust_id, cab_id, travel_time, estimated_price, source, destination, is_trip_done)
+values (1, 1, 1, "07/30/2021 12:30", 150.5, "Halifax", "Toronto", true),
+        (2, 2, 2, "07/31/2021 12:30", 90.5, "BedFord", "Sydney", true),
+        (3, 3, 3, "07/28/2021 12:30", 450.5, "Winnipeg", "Montreal", true);
+
+insert into trips(driver_id, cust_id, booking_id, trip_amount, distance_covered, trip_start_time, trip_end_time)
+values (1, 1, 1, 150.5, 1600, "07/30/2021 12:30", "07/30/2021 23:30"),
+        (2, 2, 2, 90.5, 200, "07/31/2021 12:30", "07/31/2021 16:30"),
+        (3, 3, 3, 450.5, 1200, "07/28/2021 12:30", "07/29/2021 08:30");
+
