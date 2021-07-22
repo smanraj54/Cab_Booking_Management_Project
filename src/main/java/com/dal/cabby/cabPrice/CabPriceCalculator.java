@@ -26,7 +26,7 @@ public class CabPriceCalculator {
     String Query;
     ResultSet resultSet;
 
-    public double priceCalculation(String source, String destination, int cabType) throws SQLException {
+    public double priceCalculation(String source, String destination, int cabType, double hour) throws SQLException {
         System.out.println("*** Select your Preferences ***");
         System.out.println("1. Normal Booking");
         System.out.println("2. Want to share ride with co-passenger");

@@ -1,5 +1,6 @@
 package com.dal.cabby.driver;
 
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.PredefinedInputs;
 import com.dal.cabby.util.Constants;
 import org.junit.jupiter.api.Assertions;
@@ -12,15 +13,17 @@ import java.util.UUID;
 import static com.dal.cabby.util.Constants.*;
 
 public class DriverTests {
+    DBHelper dbHelper = new DBHelper();
 
     @Test
-    void testExit() {
+    void testExit() throws SQLException {
+        dbHelper.initialize();
         System.out.println("Testing simple exit flow for driver");
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(EXIT);
         Driver driver;
         try {
-            driver = new Driver(inputs);
+            driver = new Driver(inputs, dbHelper);
             driver.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
@@ -40,7 +43,7 @@ public class DriverTests {
 
         Driver driver;
         try {
-            driver = new Driver(inputs);
+            driver = new Driver(inputs, dbHelper);
             driver.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
@@ -61,7 +64,7 @@ public class DriverTests {
 
         Driver driver;
         try {
-            driver = new Driver(inputs);
+            driver = new Driver(inputs, dbHelper);
             driver.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();

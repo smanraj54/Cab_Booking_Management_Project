@@ -42,11 +42,23 @@ public class CustomerTasks {
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
         System.out.println("Select travel time:");
         String travelTime = inputs.getStringInput();
-        Booking booking = cabSelectionService.preferredCab(custId);
+        //0 to 23:59
+        double hour = 13;
+        Booking booking = cabSelectionService.preferredCab(custId, hour);
         booking.setCustomerId(custId);
         booking.setTravelTime(travelTime);
         BookingService bookingService = new BookingService(dbHelper);
         bookingService.saveBooking(booking);
+    }
+
+    void cancelBooking() throws SQLException {
+        BookingService bookingService = new BookingService(dbHelper);
+        Booking booking = bookingService.getCustomerOpenBooking(LoggedInProfile.getLoggedInId());
+        if (booking == null) {
+            System.out.println("You have no booking to cancel.");
+            return;
+        }
+        bookingService.cancelBooking(booking.getBookingId(), UserType.CUSTOMER);
     }
 
     void showRides() throws SQLException {
