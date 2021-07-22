@@ -18,7 +18,6 @@ public class CabPriceCalculator {
         }
     }
     double price=0.0;
-    int hour=java.time.LocalTime.now().getHour();
     double sourceDistanceFromOrigin = 0.0;
     double destinationDistanceFromOrigin= 0.0;
     double cabDistanceFromOrigin=0.0;
@@ -35,11 +34,11 @@ public class CabPriceCalculator {
         distance=locationsDistanceFromOrigin(source,destination);
         switch(userInput){
             case 1:
-                return distanceFactor(source,distance,cabType);
+                return distanceFactor(source,distance,cabType,hour);
             case 2:
-                return rideSharing(source,distance,cabType);
+                return rideSharing(source,distance,cabType,hour);
             case 3:
-                return amenities(source,distance,cabType);
+                return amenities(source,distance,cabType,hour);
             case 4:
                 System.out.println("Invalid option selected");
         }
@@ -104,7 +103,7 @@ public class CabPriceCalculator {
         return distance;
     }
 
-    public double distanceFactor(String source,double distance,int cabType) throws SQLException {
+    public double distanceFactor(String source,double distance,int cabType, double hour) throws SQLException {
         double shortDistance=5; //For initial few kilometers 5 dollars would be charged per Km
         String rideArea=null;
         if(distance <= shortDistance){
@@ -147,12 +146,12 @@ public class CabPriceCalculator {
         return price;
     }
 
-    public double rideSharing(String source, double distance, int cabCategory) throws SQLException {
+    public double rideSharing(String source, double distance, int cabCategory, double hour) throws SQLException {
         System.out.println("Choose number of co-passengers: ");
         System.out.println("One co-passenger");
         System.out.println("Two co-passengers");
         int input= inputs.getIntegerInput();
-        double basicPrice=distanceFactor(source,distance,cabCategory);
+        double basicPrice=distanceFactor(source,distance,cabCategory,hour);
         System.out.println("Price without Co-passenger: $"+String.format("%.2f",basicPrice));
         double priceWithCoPassenger=basicPrice;
         double discount;
@@ -170,14 +169,14 @@ public class CabPriceCalculator {
         return discount;
     }
 
-    public double amenities(String source,double distance, int cabCategory) throws SQLException {
+    public double amenities(String source,double distance, int cabCategory, double hour) throws SQLException {
         // For every 30 minutes of ride we are charging extra $2 per amenity.
         System.out.println("Choose amenities:");
         System.out.println("1. CarTV");
         System.out.println("2. Wifi");
         System.out.println("3. Both");
         int input= inputs.getIntegerInput();
-        double basicPrice= distanceFactor(source,distance, cabCategory);
+        double basicPrice= distanceFactor(source,distance, cabCategory,hour);
         System.out.println("Price without amenities: $"+String.format("%.2f",basicPrice));
         double priceWithAmenities= basicPrice;
         double extraCharge=0;
