@@ -1,7 +1,8 @@
 package com.dal.cabby.incentives;
 
-public class DriverBonus {
+public class DriverBonus implements IDriverBonus {
 
+    @Override
     public int giveDriverBonus(int rating) {
         if (rating == 5) {
             System.out.println("Congratulations! You are eligible for a 2% bonus on your last trip.");
