@@ -18,7 +18,7 @@ public class ForgotPassword {
 
     public boolean passwordUpdateProcess(UserType userType){
 
-        DBOperations dbOperations = new DBOperations(userType);
+        IDBOperations IDBOperations = new DBOperations(userType);
         boolean authenticationPass = false;
         Scanner sc = new Scanner(System.in);
         String email = null;
@@ -27,7 +27,7 @@ public class ForgotPassword {
             System.out.print("\nEnter UserName or Email : ");
             String user = sc.next();
             sc.nextLine();
-            email = dbOperations.fetchEmailForAuthentication(user, userType);
+            email = IDBOperations.fetchEmailForAuthentication(user, userType);
             if(email!=null){
                 authenticationPass = true;
                 break;
@@ -73,7 +73,7 @@ public class ForgotPassword {
         if(newPass == null){
             return false;
         }
-        dbOperations.updateEmailPassword(email, newPass, userType);
+        IDBOperations.updateEmailPassword(email, newPass, userType);
         System.out.println("Password updated successfully");
 
         return true;

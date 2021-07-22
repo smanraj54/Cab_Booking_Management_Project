@@ -6,21 +6,24 @@ import com.dal.cabby.pojo.UserType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DBOperations {
+public class DBOperations implements IDBOperations {
 
     private String queryUser = "Select * from %s where username = '%s'";
     private String queryEmail = "Select * from %s where email = '%s'";
     UserType userType;
+
     DBOperations(UserType userType) {
 
         this.userType = userType;
     }
 
+    @Override
     public boolean dbUserNameValidation(String userName) {
 
         return dbContainsUserName(userName, userType);
     }
 
+    @Override
     public boolean dbContainsUserName(String userName, UserType userType) {
 
         boolean foundUser = false;
@@ -35,6 +38,7 @@ public class DBOperations {
         return foundUser;
     }
 
+    @Override
     public boolean dbContainsEmail(String email, UserType userType) {
 
         boolean foundUser = false;
@@ -74,6 +78,7 @@ public class DBOperations {
         return value;
     }
 
+    @Override
     public String getEmailValue(String email, String keywordSearch, UserType userType, String query) {
 
         String tableName = getTableName(userType);
@@ -94,6 +99,7 @@ public class DBOperations {
         return emailValue;
     }
 
+    @Override
     public void entryRegistration(DataNode dataNode) {
 
         DBHelper dbHelper = getDBInstance();
@@ -118,6 +124,7 @@ public class DBOperations {
         return dbHelper;
     }
 
+    @Override
     public boolean validateLoginUser(String userNameOrEmail, String password, UserType userType) {
 
         boolean userNameLogin = dbContainsUserName(userNameOrEmail, userType);
@@ -146,6 +153,7 @@ public class DBOperations {
         return false;
     }
 
+    @Override
     public String fetchEmailForAuthentication(String user, UserType userType) {
 
         String email = null;
@@ -163,6 +171,7 @@ public class DBOperations {
         return email;
     }
 
+    @Override
     public void updateEmailPassword(String email, String newPassword, UserType userType) {
 
         DBHelper dbHelper = new DBHelper();
@@ -178,6 +187,7 @@ public class DBOperations {
 
     }
 
+    @Override
     public String getTableName(UserType userType) {
 
         if (userType == UserType.ADMIN) {
@@ -191,6 +201,7 @@ public class DBOperations {
         }
     }
 
+    @Override
     public String getIDColumnName(UserType userType) {
 
         if (userType == UserType.ADMIN) {

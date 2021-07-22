@@ -21,7 +21,7 @@ public class Registration {
         //String confirmPassword = "";
         String userName = "";
         ValidateInput validateInput = new ValidateInput();
-        DBOperations db_operations = new DBOperations(userType);
+        IDBOperations db_operations = new DBOperations(userType);
 
         for (int t = 0; t < 3; t++) {
             System.out.print("\nEnter Email : ");
