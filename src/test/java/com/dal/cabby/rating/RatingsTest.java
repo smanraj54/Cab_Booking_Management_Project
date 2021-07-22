@@ -37,6 +37,16 @@ class RatingsTest {
         Assertions.assertThrows(RuntimeException.class, () ->ratings.addDriverRating(driverId, customerId, rating));
     }
 
+    @Test
+    void addInvalidCustomerRating() throws SQLException {
+        IRatings ratings = new Ratings();
+        int driverId = 1;
+        int customerId = 1;
+        int rating = -1;
+        // Expect a runtime exception because valid rating is between 1 to 5
+        Assertions.assertThrows(RuntimeException.class, () ->ratings.addDriverRating(driverId, customerId, rating));
+    }
+
 
 
     @Test
