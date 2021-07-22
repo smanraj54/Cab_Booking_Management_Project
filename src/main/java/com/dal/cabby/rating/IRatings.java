@@ -7,7 +7,7 @@ public interface IRatings {
 
     void addCustomerRating(int userId, int tripId, int rating) throws SQLException;
 
-    double getAverageRatingOfDriver() throws SQLException;
+    double getAverageRatingOfDriver(int driver_id) throws SQLException;
 
-    double getAverageRatingOfCustomer() throws SQLException;
+    double getAverageRatingOfCustomer(int cust_id) throws SQLException;
 }

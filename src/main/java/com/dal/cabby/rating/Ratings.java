@@ -34,16 +34,22 @@ public class Ratings implements IRatings {
     }
 
     @Override
-    public double getAverageRatingOfDriver() throws SQLException {
-        String q = "select avg(rating) as avg_rating from driver_ratings";
+    public double getAverageRatingOfDriver(int driver_id) throws SQLException {
+        String q = String.format("select avg(rating) as avg_rating from driver_ratings where driver_id=%d", driver_id);
         ResultSet resultSet = dbHelper.executeSelectQuery(q);
-        return resultSet.getDouble("avg_rating");
+        while (resultSet.next()) {
+            return resultSet.getDouble("avg_rating");
+        }
+        return 0.0;
     }
 
     @Override
-    public double getAverageRatingOfCustomer() throws SQLException {
-        String q = "select avg(rating) as avg_rating from customer_ratings";
+    public double getAverageRatingOfCustomer(int cust_id) throws SQLException {
+        String q = String.format("select avg(rating) as avg_rating from customer_ratings where cust_id=%d",cust_id);
         ResultSet resultSet = dbHelper.executeSelectQuery(q);
-        return resultSet.getDouble("avg_rating");
+        while(resultSet.next()) {
+            return resultSet.getDouble("avg_rating");
+        }
+       return 0.0;
     }
 }
