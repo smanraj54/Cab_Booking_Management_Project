@@ -2,6 +2,7 @@ package com.dal.cabby.cabSelection;
 
 public class CabSelectionDAO {
     public String cabName;
+    public int cabId;
     public double cabDistanceFromOrigin;
     public int driver_Id;
     public String routeTrafficDensity;
@@ -14,9 +15,10 @@ public class CabSelectionDAO {
         return result;
     }
 
-    public CabSelectionDAO(String cabName, double cabDistanceFromOrigin, int driver_Id,
+    public CabSelectionDAO(String cabName, int cabId, double cabDistanceFromOrigin, int driver_Id,
                            String routeTrafficDensity,int cabSpeedOnRoute, String driverGender){
         this.cabName=cabName;
+        this.cabId = cabId;
         this.cabDistanceFromOrigin=cabDistanceFromOrigin;
         this.driver_Id=driver_Id;
         this.routeTrafficDensity=routeTrafficDensity;
