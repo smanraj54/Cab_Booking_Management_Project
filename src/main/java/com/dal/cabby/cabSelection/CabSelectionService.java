@@ -9,9 +9,12 @@ import com.dal.cabby.pojo.Booking;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class CabSelectionService {
+    ArrayList<String> femaleArrayList = new ArrayList<>();
+    ArrayList<String> maleArrayList = new ArrayList<>();
+    String gender;
+    CabSelectionDAO bestCab;
     private DBHelper dbHelper;
     private Inputs inputs;
     private CabPriceCalculator cabPriceCalculator;
@@ -19,12 +22,8 @@ public class CabSelectionService {
     private double sourceDistance = 0.0;
     private ArrayList<CabSelectionDAO> cabDetails = new ArrayList<>();
     private ArrayList<String> arrayList = new ArrayList<>();
-    ArrayList<String> femaleArrayList=new ArrayList<>();
-    ArrayList<String> maleArrayList=new ArrayList<>();
     private String Query;
     private ResultSet resultSet;
-    String gender;
-    CabSelectionDAO bestCab;
 
     public CabSelectionService(Inputs inputs) throws SQLException {
         this.inputs = inputs;
@@ -35,6 +34,11 @@ public class CabSelectionService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        CabSelectionService cabSelectionService = new CabSelectionService(new InputFromUser());
+        cabSelectionService.preferredCab(1, 20);
     }
 
     public Booking preferredCab(int custId, double hour) throws SQLException {
@@ -62,6 +66,7 @@ public class CabSelectionService {
             sourceDistance = resultSet.getDouble("distanceFromOrigin");
         }
         return sourceDistance;
+
     }
 
     public ArrayList<CabSelectionDAO> getAllNearbyCabs() throws SQLException {
@@ -82,14 +87,14 @@ public class CabSelectionService {
             cabDetails.add(cabDetail);
         }
         System.out.println("Unfiltered List of nearby Cabs:");
-        for(int i=0;i<cabDetails.size();i++){
-            System.out.println(cabDetails.get(i).toString());
+        for (CabSelectionDAO cabDetail : cabDetails) {
+            System.out.println(cabDetail.toString());
         }
         System.out.println("Do you want to book cab based on Gender of Cab Driver??");
         System.out.println("1. YES ");
         System.out.println("2. No ");
         int input = inputs.getIntegerInput();
-        switch (input){
+        switch (input) {
             case 1:
                 bestCab = withGenderPreference();
                 break;
@@ -103,23 +108,23 @@ public class CabSelectionService {
         System.out.println("Select your gender preference");
         System.out.println("1. Male ");
         System.out.println("2. Female ");
-        int input =inputs.getIntegerInput();
-        switch (input){
+        int input = inputs.getIntegerInput();
+        switch (input) {
             case 1:
-                for(int i=0;i<cabDetails.size();i++){
-                    gender=cabDetails.get(i).driverGender;
-                    if(gender.equals("Male")){
+                for (int i = 0; i < cabDetails.size(); i++) {
+                    gender = cabDetails.get(i).driverGender;
+                    if (gender.equals("Male")) {
                         maleArrayList.add(cabDetails.get(i).cabName);
                     }
                 }
-                for (int i=0;i<maleArrayList.size();i++){
-                    cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation,maleArrayList.get(i));
+                for (int i = 0; i < maleArrayList.size(); i++) {
+                    cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation, maleArrayList.get(i));
                 }
                 return bestNearbyCabOfMaleDriver();
             case 2:
-                for (int i=0;i<cabDetails.size();i++){
-                    gender=cabDetails.get(i).driverGender;
-                    if(gender.equals("Female")){
+                for (int i = 0; i < cabDetails.size(); i++) {
+                    gender = cabDetails.get(i).driverGender;
+                    if (gender.equals("Female")) {
                         femaleArrayList.add(cabDetails.get(i).cabName);
                     }
                 }
@@ -133,57 +138,57 @@ public class CabSelectionService {
         }
     }
 
-    public CabSelectionDAO withoutGenderPreference() throws SQLException{
-        for(int i=0;i<cabDetails.size();i++){
+    public CabSelectionDAO withoutGenderPreference() throws SQLException {
+        for (int i = 0; i < cabDetails.size(); i++) {
             arrayList.add(cabDetails.get(i).cabName);
         } /*
         Created this arrayList to store names of Nearby cabs which will be passed to a function along with
         sourceLocation to calculate distance between cabs and source location.
         */
 
-        for(int i=0;i<arrayList.size();i++) {
-            cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation,arrayList.get(i));
+        for (int i = 0; i < arrayList.size(); i++) {
+            cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation, arrayList.get(i));
         }
         return bestNearbyCabWithoutFilter();
     }
 
     public CabSelectionDAO bestNearbyCabOfMaleDriver() throws SQLException {
-        ArrayList<Double> maleDriverTimeToReach=new ArrayList<>();
+        ArrayList<Double> maleDriverTimeToReach = new ArrayList<>();
         CabSelectionDAO selectedCab = null;
         double min = Double.MAX_VALUE;
-        for (int i=0;i<cabDetails.size();i++){
-            gender=cabDetails.get(i).driverGender;
-            if(gender.equals("Male")) {
+        for (int i = 0; i < cabDetails.size(); i++) {
+            gender = cabDetails.get(i).driverGender;
+            if (gender.equals("Male")) {
                 double timeOfCab = (cabDetails.get(i).cabDistanceFromOrigin) / (cabDetails.get(i).cabSpeedOnRoute);
                 maleDriverTimeToReach.add(timeOfCab);
-                if(timeOfCab < min) {
+                if (timeOfCab < min) {
                     selectedCab = cabDetails.get(i);
                     min = timeOfCab;
                 }
             }
         }
         System.out.println("Estimated Arrival time of each Cab:" + maleDriverTimeToReach);
-        System.out.println("Fastest cab is reaching your location in "+ String.format("%.2f", min) + " minutes");
+        System.out.println("Fastest cab is reaching your location in " + String.format("%.2f", min) + " minutes");
         return selectedCab;
     }
 
     public CabSelectionDAO bestNearbyCabOfFemaleDriver() throws SQLException {
-        ArrayList<Double> femaleDriverTimeToReach=new ArrayList<>();
+        ArrayList<Double> femaleDriverTimeToReach = new ArrayList<>();
         CabSelectionDAO selectedCab = null;
         double min = Double.MAX_VALUE;
-        for (int i=0;i<cabDetails.size();i++){
-            gender=cabDetails.get(i).driverGender;
-            if(gender.equals("Female")) {
+        for (int i = 0; i < cabDetails.size(); i++) {
+            gender = cabDetails.get(i).driverGender;
+            if (gender.equals("Female")) {
                 double timeOfCab = (cabDetails.get(i).cabDistanceFromOrigin) / (cabDetails.get(i).cabSpeedOnRoute);
                 femaleDriverTimeToReach.add(timeOfCab);
-                if(timeOfCab < min) {
+                if (timeOfCab < min) {
                     selectedCab = cabDetails.get(i);
                     min = timeOfCab;
                 }
             }
         }
         System.out.println("Estimated Arrival time of each Cab:" + femaleDriverTimeToReach);
-        System.out.println("Fastest cab is reaching your location in "+ String.format("%.2f", min) + " minutes");
+        System.out.println("Fastest cab is reaching your location in " + String.format("%.2f", min) + " minutes");
         return selectedCab;
     }
 
