@@ -25,4 +25,10 @@ public class InputFromUser implements Inputs {
         String value = scanner.nextLine();
         return Double.parseDouble(value);
     }
+
+    @Override
+    public String getWordInput() {
+        String value = scanner.next();
+        return value;
+    }
 }

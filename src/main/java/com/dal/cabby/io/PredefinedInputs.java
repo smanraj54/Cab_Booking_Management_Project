@@ -42,6 +42,21 @@ public class PredefinedInputs implements Inputs {
         }
     }
 
+    @Override
+    public String getWordInput() {
+        Object o = getElement();
+        if (o instanceof String) {
+            String value = (String) o;
+            String arr[] = value.split(" ");
+            if(arr.length==1){
+                return value;
+            }
+        } else {
+            throw new RuntimeException("String type not found in next element of predefined inputs.");
+        }
+        return null;
+    }
+
     private Object getElement() {
         if (currentIndex > preDefinedInputs.size() - 1) {
             throw new RuntimeException(String.format("Index %s is outside of current inputs size"));
