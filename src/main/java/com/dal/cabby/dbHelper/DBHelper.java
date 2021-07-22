@@ -28,7 +28,9 @@ public class DBHelper {
     }
 
     public void initialize() throws SQLException {
-        connection = DriverManager.getConnection(connUrl, user, password);
+        if(connection == null) {
+            connection = DriverManager.getConnection(connUrl, user, password);
+        }
     }
 
     public void close() throws SQLException {

@@ -1,7 +1,11 @@
 package com.dal.cabby.customer;
 
+import com.dal.cabby.booking.BookingService;
+import com.dal.cabby.cabSelection.CabSelectionService;
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.money.BuyCoupons;
+import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.rating.IRatings;
@@ -12,9 +16,11 @@ import java.sql.SQLException;
 
 public class CustomerTasks {
     private final Inputs inputs;
+    DBHelper dbHelper;
 
-    public CustomerTasks(Inputs inputs) {
+    public CustomerTasks(Inputs inputs, DBHelper dbHelper) {
         this.inputs = inputs;
+        this.dbHelper = dbHelper;
     }
 
     void rateDriver() throws SQLException {
@@ -31,8 +37,16 @@ public class CustomerTasks {
         IRatings.addCustomerRating(driver_id, trip_id, rating);
     }
 
-    void bookRides() {
-        System.out.println("Ride Booked");
+    void bookRides() throws SQLException {
+        int custId = LoggedInProfile.getLoggedInId();
+        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
+        System.out.println("Select travel time:");
+        String travelTime = inputs.getStringInput();
+        Booking booking = cabSelectionService.preferredCab(custId);
+        booking.setCustomerId(custId);
+        booking.setTravelTime(travelTime);
+        BookingService bookingService = new BookingService(dbHelper);
+        bookingService.saveBooking(booking);
     }
 
     void showRides() throws SQLException {

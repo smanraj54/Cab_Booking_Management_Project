@@ -39,7 +39,7 @@ public class DriverHelper {
             String travelTime = resultSet.getDate("travel_time").toString();
             String source = resultSet.getString("source");
             String destination = resultSet.getString("destination");
-            bookingsList.add(new Booking(bookingId, custId, driverId, cabId, source, destination, travelTime, price));
+            bookingsList.add(new Booking(bookingId, custId, driverId, cabId, source, destination, travelTime, price, false));
         }
         return bookingsList;
     }
