@@ -20,4 +20,12 @@ class DriverBonusTest {
         int bonus = driverBonus.giveDriverBonus(4);
         Assertions.assertEquals(1, bonus, "Incentive not correct.");
     }
+
+    @Test
+    void giveDriverBonusThreeStars() {
+        DriverBonus driverBonus = new DriverBonus();
+        int bonus = driverBonus.giveDriverBonus(3);
+        Assertions.assertEquals(0, bonus, "Incentive not correct.");
+    }
+
 }
