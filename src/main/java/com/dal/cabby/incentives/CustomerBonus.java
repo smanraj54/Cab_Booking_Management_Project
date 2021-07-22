@@ -1,7 +1,8 @@
 package com.dal.cabby.incentives;
 
-public class CustomerBonus {
+public class CustomerBonus implements ICustomerBonus {
 
+    @Override
     public int giveCustomerBonus(int rating) {
         if (rating == 5) {
             System.out.println("Congratulations! You are eligible for a 10% cashback on your last trip.");
