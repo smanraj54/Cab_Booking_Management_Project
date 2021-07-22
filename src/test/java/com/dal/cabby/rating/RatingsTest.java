@@ -47,16 +47,18 @@ class RatingsTest {
         Assertions.assertThrows(RuntimeException.class, () ->ratings.addDriverRating(driverId, customerId, rating));
     }
 
-
-
     @Test
-    void getAverageRatingOfDriver() {
+    void getAverageRatingOfDriver() throws SQLException {
+        IRatings ratings = new Ratings();
+        double average_rating = ratings.getAverageRatingOfDriver(1);
+        Assertions.assertTrue(average_rating <= 5 && average_rating >= 1, "Wrong rating of driver");
     }
 
     @Test
-    void getAverageRatingOfCustomer() {
-
+    void getAverageRatingOfCustomer() throws SQLException {
+        IRatings ratings = new Ratings();
+        double average_rating = ratings.getAverageRatingOfCustomer(1);
+        Assertions.assertTrue(average_rating <= 5 && average_rating >= 1, "Wrong rating of customer");
     }
-
 
 }
