@@ -1,5 +1,6 @@
 package com.dal.cabby.customer;
 
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.util.Common;
 
@@ -10,14 +11,16 @@ public class Customer implements ICustomer {
     private final Inputs inputs;
     private CustomerTasks customerTasks;
     private CustomerProfileManagement customerProfileManagement;
+    private DBHelper dbHelper;
 
-    public Customer(Inputs inputs) throws SQLException {
+    public Customer(Inputs inputs, DBHelper dbHelper) throws SQLException {
         this.inputs = inputs;
+        this.dbHelper = dbHelper;
         initialize();
     }
 
     private void initialize() {
-        customerTasks = new CustomerTasks(inputs);
+        customerTasks = new CustomerTasks(inputs, dbHelper);
         customerProfileManagement = new CustomerProfileManagement(inputs);
     }
 

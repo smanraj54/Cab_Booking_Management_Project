@@ -51,7 +51,7 @@ public class CabSelectionService {
         fetchSourceLocation();
         getAllNearbyCabs();
         double price = cabPriceCalculator.priceCalculation(sourceLocation, destinationLocation, cabType);
-        Booking booking = new Booking(-1, custId, bestCab.driver_Id, -1, sourceLocation, destinationLocation, "", price);
+        Booking booking = new Booking(-1, custId, bestCab.driver_Id, -1, sourceLocation, destinationLocation, "", price, false);
         return booking;
     }
 
