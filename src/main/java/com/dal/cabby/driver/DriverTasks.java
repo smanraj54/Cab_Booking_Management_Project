@@ -1,5 +1,6 @@
 package com.dal.cabby.driver;
 
+import com.dal.cabby.booking.BookingService;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.money.BuyCoupons;
 import com.dal.cabby.money.DriverEarnings;
@@ -80,5 +81,9 @@ public class DriverTasks {
     void buyCoupons() throws SQLException {
         BuyCoupons buyCoupons = new BuyCoupons(inputs);
         buyCoupons.getCoupons(LoggedInProfile.getLoggedInId(), UserType.DRIVER);
+    }
+
+    void cancelBooking() throws SQLException {
+
     }
 }

@@ -40,8 +40,6 @@ public class BookingService {
             Booking booking = new Booking(booking_id, customerId, driverId, cabId, source, destination, travelTime, price, isCancelled);
             booking.setHasDriverCancelled(hasDriverCancelled);
             booking.setCancelled(hasCustomerCancelled);
-            System.out.println("Debug: "+ booking.isCancelled());
-            System.out.println("Debug2: "+ isCancelled);
             return booking;
         }
         return null;

@@ -1,5 +1,6 @@
 package com.dal.cabby.driver;
 
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.util.Common;
 
@@ -11,14 +12,16 @@ public class Driver implements IDriver {
     private final Inputs inputs;
     private DriverTasks driverTasks;
     private DriverProfileManagement driverProfileManagement;
+    private DBHelper dbHelper;
 
-    public Driver(Inputs inputs) throws SQLException, ParseException {
+    public Driver(Inputs inputs, DBHelper dbHelper) throws SQLException, ParseException {
         this.inputs = inputs;
+        this.dbHelper = dbHelper;
         intialiaze();
     }
 
     private void intialiaze() throws SQLException {
-        driverHelper = new DriverHelper();
+        driverHelper = new DriverHelper(dbHelper);
         driverTasks = new DriverTasks(driverHelper, inputs);
         driverProfileManagement = new DriverProfileManagement(driverHelper, inputs);
     }
@@ -71,6 +74,7 @@ public class Driver implements IDriver {
             System.out.println("5. View your current rating");
             System.out.println("6. Buy Coupons");
             System.out.println("7. Logout");
+            System.out.println("8. Cancel booking");
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:

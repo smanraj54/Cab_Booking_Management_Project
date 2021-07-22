@@ -1,7 +1,10 @@
 package com.dal.cabby.driver;
 
+import com.dal.cabby.booking.BookingService;
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.pojo.Booking;
+import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.profileManagement.LoggedInProfile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,15 +18,8 @@ import java.util.List;
 public class DriverHelper {
     DBHelper dbHelper;
 
-    DriverHelper() throws SQLException {
-        dbHelper = new DBHelper();
-        dbHelper.initialize();
-    }
-
-    public static void main(String[] args) throws SQLException, ParseException {
-        DriverHelper driverHelper = new DriverHelper();
-        driverHelper.completeTrip(1, 1, 1, 5.6, 9.8,
-                "2021-01-24 12:35:16", "2021-01-24 12:55:16");
+    DriverHelper(DBHelper dbHelper) throws SQLException {
+        this.dbHelper = dbHelper;
     }
 
     List<Booking> getUnfinishedBookingLists(int driverId) throws SQLException {
@@ -64,5 +60,15 @@ public class DriverHelper {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = formatter.parse(dateInStr);
         return new java.sql.Date(date.getTime());
+    }
+
+    void cancelBooking() throws SQLException {
+        BookingService bookingService = new BookingService(dbHelper);
+        Booking booking = bookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
+        if (booking == null) {
+            System.out.println("You have no booking to cancel.");
+            return;
+        }
+        bookingService.cancelBooking(booking.getBookingId(), UserType.DRIVER);
     }
 }

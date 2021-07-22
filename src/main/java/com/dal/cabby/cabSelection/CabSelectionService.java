@@ -37,7 +37,7 @@ public class CabSelectionService {
         }
     }
 
-    public Booking preferredCab(int custId) throws SQLException {
+    public Booking preferredCab(int custId, double hour) throws SQLException {
         System.out.println("Enter your Cab preference");
         System.out.println("1. Micro and Mini");
         System.out.println("2. Prime Sedan");
@@ -50,7 +50,7 @@ public class CabSelectionService {
         destinationLocation = inputs.getStringInput();
         fetchSourceLocation();
         getAllNearbyCabs();
-        double price = cabPriceCalculator.priceCalculation(sourceLocation, destinationLocation, cabType);
+        double price = cabPriceCalculator.priceCalculation(sourceLocation, destinationLocation, cabType, hour);
         Booking booking = new Booking(-1, custId, bestCab.driver_Id, -1, sourceLocation, destinationLocation, "", price, false);
         return booking;
     }
@@ -202,11 +202,6 @@ public class CabSelectionService {
         System.out.println("Estimated Arrival time of each Cab:" + timeToReach);
         System.out.println("Fastest cab is reaching your location in " + String.format("%.2f", min) + " minutes");
         return selectedCab;
-    }
-
-    public static void main(String[] args) throws SQLException {
-        CabSelectionService cabSelectionService = new CabSelectionService(new InputFromUser());
-        cabSelectionService.preferredCab(1);
     }
 }
 
