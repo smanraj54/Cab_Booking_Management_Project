@@ -17,10 +17,15 @@ class RatingsTest {
         ratings.addDriverRating(driverId, tripId, rating);
     }
 
-
     @Test
-    void addCustomerRating() {
+    void addCustomerRating() throws SQLException {
+        IRatings ratings = new Ratings();
+        int driverId = 1;
+        int tripId = 1;
+        int rating = 5;
+        ratings.addCustomerRating(driverId, tripId, rating);
     }
+
 
     @Test
     void getAverageRatingOfDriver() {
