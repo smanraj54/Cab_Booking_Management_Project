@@ -10,8 +10,9 @@ public class DataNode {
     private String password;
     private UserType userType;
 
-    public DataNode(String user, String name, String email, String password, UserType userType) {
-        
+    public DataNode(String user, String name, String email, String password,
+                    UserType userType) {
+
         this.user = user;
         this.name = name;
         this.email = email;
