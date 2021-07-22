@@ -48,9 +48,8 @@ public class CabSelectionService {
         sourceLocation = inputs.getStringInput();
         System.out.println("Enter Destination location");
         destinationLocation = inputs.getStringInput();
-        double sourceDistance = fetchSourceLocation();
-        ArrayList<CabSelectionDAO> cabs = getAllNearbyCabs();
-        //CabSelectionDAO bestCab = bestNearbyCabWithoutFilter();
+        fetchSourceLocation();
+        getAllNearbyCabs();
         double price = cabPriceCalculator.priceCalculation(sourceLocation, destinationLocation, cabType);
         Booking booking = new Booking(-1, custId, bestCab.driver_Id, -1, sourceLocation, destinationLocation, hour + "", price);
         return booking;
@@ -69,7 +68,7 @@ public class CabSelectionService {
         double lowerRangeOfCabs = (sourceDistance - 5);
         double upperRangeOfCabs = (sourceDistance + 5);
         Query = String.format("Select cabName, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
-                        "cabSpeedOnRoute from cabs where cabDistanceFromOrigin BETWEEN '%f' AND '%f'"
+                        "cabSpeedOnRoute,driverGender from cabs where cabDistanceFromOrigin BETWEEN '%f' AND '%f'"
                 , lowerRangeOfCabs, upperRangeOfCabs);
         resultSet = dbHelper.executeSelectQuery(Query);
         while (resultSet.next()) {
@@ -91,10 +90,10 @@ public class CabSelectionService {
         int input = inputs.getIntegerInput();
         switch (input){
             case 1:
-                withGenderPreference();
+                bestCab = withGenderPreference();
                 break;
             case 2:
-                withoutGenderPreference();
+                bestCab = withoutGenderPreference();
         }
         return cabDetails;
     }
