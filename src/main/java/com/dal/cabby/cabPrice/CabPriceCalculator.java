@@ -163,8 +163,8 @@ public class CabPriceCalculator {
         }
         discount=basicPrice-priceWithCoPassenger;
         System.out.println("You got a discount of $"+ String.format("%.2f",discount)+" on sharing ride with co-passenger");
-        System.out.println("Total Price for this ride is: $"+String.format("%.2f",priceWithCoPassenger));
-        return discount;
+        System.out.println("Total Price for this ride is: $"+ priceWithCoPassenger);
+        return priceWithCoPassenger;
     }
 
     private double amenities(String source,double distance, int cabCategory, double hour) throws SQLException {
@@ -204,7 +204,7 @@ public class CabPriceCalculator {
                 priceWithAmenities+=extraCharge;
                 break;
         }
-        System.out.println("Total Price for this ride is: $"+ String.format("%.2f",priceWithAmenities));
+        System.out.println("Total Price for this ride is: $"+ priceWithAmenities);
         return priceWithAmenities;
     }
 }
