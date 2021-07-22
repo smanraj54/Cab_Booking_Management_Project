@@ -21,4 +21,11 @@ class CustomerBonusTest {
         Assertions.assertEquals(5, bonus, "Cashback not correct.");
     }
 
+    @Test
+    void giveCustomerBonusThreeStars() {
+        CustomerBonus customerBonus = new CustomerBonus();
+        int bonus = customerBonus.giveCustomerBonus(3);
+        Assertions.assertEquals(0, bonus, "Cashback not correct.");
+    }
+
 }
