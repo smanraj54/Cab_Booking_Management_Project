@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS bookings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     driver_id INT,
     cust_id INT,
+    cab_id INT,
     travel_time VARCHAR(30),
     estimated_price DOUBLE,
     source VARCHAR(255),

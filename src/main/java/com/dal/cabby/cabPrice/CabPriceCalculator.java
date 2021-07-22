@@ -26,7 +26,7 @@ public class CabPriceCalculator {
     String Query;
     ResultSet resultSet;
 
-    public int priceCalculation(String source, String destination, int cabType) throws SQLException {
+    public double priceCalculation(String source, String destination, int cabType) throws SQLException {
         System.out.println("*** Select your Preferences ***");
         System.out.println("1. Normal Booking");
         System.out.println("2. Want to share ride with co-passenger");
@@ -35,17 +35,15 @@ public class CabPriceCalculator {
         distance=locationsDistanceFromOrigin(source,destination);
         switch(userInput){
             case 1:
-                distanceFactor(source,distance,cabType);
-                System.out.println("Total Price for the ride is: $" + String.format("%.2f",price));
-                break;
+                return distanceFactor(source,distance,cabType);
             case 2:
-                rideSharing(source,distance,cabType);
-                break;
+                return rideSharing(source,distance,cabType);
             case 3:
-                amenities(source,distance,cabType);
-                break;
+                return amenities(source,distance,cabType);
+            case 4:
+                System.out.println("Invalid option selected");
         }
-        return 0;
+        return -1.0;
     }
 
     public double locationsDistanceFromOrigin(String source,String destination) throws SQLException {
@@ -149,7 +147,7 @@ public class CabPriceCalculator {
         return price;
     }
 
-    public void rideSharing(String source, double distance, int cabCategory) throws SQLException {
+    public double rideSharing(String source, double distance, int cabCategory) throws SQLException {
         System.out.println("Choose number of co-passengers: ");
         System.out.println("One co-passenger");
         System.out.println("Two co-passengers");
@@ -169,9 +167,10 @@ public class CabPriceCalculator {
         discount=basicPrice-priceWithCoPassenger;
         System.out.println("You got a discount of $"+ String.format("%.2f",discount)+" on sharing ride with co-passenger");
         System.out.println("Total Price for this ride is: $"+String.format("%.2f",priceWithCoPassenger));
+        return discount;
     }
 
-    public void amenities(String source,double distance, int cabCategory) throws SQLException {
+    public double amenities(String source,double distance, int cabCategory) throws SQLException {
         // For every 30 minutes of ride we are charging extra $2 per amenity.
         System.out.println("Choose amenities:");
         System.out.println("1. CarTV");
@@ -209,5 +208,6 @@ public class CabPriceCalculator {
                 break;
         }
         System.out.println("Total Price for this ride is: $"+ String.format("%.2f",priceWithAmenities));
+        return priceWithAmenities;
     }
 }
