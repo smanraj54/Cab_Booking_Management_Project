@@ -21,4 +21,9 @@ public interface Inputs {
      * @return double input either from predefined or from user.
      */
     double getDoubleInput();
+
+    /**
+     * @return word input either from predefined or from user.
+     */
+    String getWordInput();
 }

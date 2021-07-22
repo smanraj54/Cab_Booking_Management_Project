@@ -3,26 +3,28 @@ package com.dal.cabby.profileManagement;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
 
-import java.util.Scanner;
-
 import static java.lang.Thread.sleep;
 
 public class ForgotPassword {
+
     Inputs inputs;
+
     public ForgotPassword(Inputs inputs) {
+
         this.inputs = inputs;
     }
 
     public boolean passwordUpdateProcess(UserType userType){
-        DB_Operations dbOperations = new DB_Operations(userType);
+
+        IDBOperations IDBOperations = new DBOperations(userType);
         boolean authenticationPass = false;
-        Scanner sc = new Scanner(System.in);
         String email = null;
+
         for(int t=0; t<3; t++) {
             System.out.print("\nEnter UserName or Email : ");
-            String user = sc.next();
-            sc.nextLine();
-            email = dbOperations.fetchEmailForAuthentication(user, userType);
+            String user = this.inputs.getWordInput();
+            this.inputs.getStringInput();
+            email = IDBOperations.fetchEmailForAuthentication(user, userType);
             if(email!=null){
                 authenticationPass = true;
                 break;
@@ -48,7 +50,7 @@ public class ForgotPassword {
 
         authenticationPass = false;
         for(int t=0; t<3; t++) {
-            if (validateTempPass(tempPass, sc)) {
+            if (validateTempPass(tempPass)) {
                 authenticationPass = true;
                 break;
             }
@@ -63,27 +65,29 @@ public class ForgotPassword {
         if(!authenticationPass){
             return false;
         }
-        String newPass = getNewPassword(sc);
+        String newPass = getNewPassword();
 
         if(newPass == null){
             return false;
         }
-        dbOperations.updateEmailPassword(email, newPass, userType);
+        IDBOperations.updateEmailPassword(email, newPass, userType);
         System.out.println("Password updated successfully");
+
         return true;
     }
 
-    private boolean validateTempPass(int tempPass, Scanner sc){
+    private boolean validateTempPass(int tempPass){
+
         System.out.print("\nEnter temp password sent to your registered email : ");
 
         int enteredPass = -1;
         try{
-            enteredPass = sc.nextInt();
+            enteredPass = inputs.getIntegerInput();
         }catch(Exception e){
             System.err.print("Authentication Fail !!!!");
             return false;
         }finally {
-            sc.nextLine();
+            inputs.getStringInput();
         }
         if(tempPass == enteredPass){
             System.out.println("\nAuthentication Passed");
@@ -96,10 +100,12 @@ public class ForgotPassword {
                 e.printStackTrace();
             }
         }
+
         return tempPass == enteredPass;
     }
 
-    private String getNewPassword(Scanner sc){
+    private String getNewPassword(){
+
         //System.out.print("\nEnter new Password : ");
         Registration registration = new Registration(inputs);
         String newPassword = registration.getPassword(new ValidateInput());
@@ -111,6 +117,7 @@ public class ForgotPassword {
                 e.printStackTrace();
             }
         }
+
         return newPassword;
     }
 
