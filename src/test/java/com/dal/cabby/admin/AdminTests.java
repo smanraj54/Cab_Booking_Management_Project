@@ -14,10 +14,10 @@ import java.util.UUID;
 import static com.dal.cabby.util.Constants.*;
 
 public class AdminTests {
-    IPersistence IPersistence = new DBHelper();
+    IPersistence IPersistence;
     @Test
     void testExit() throws SQLException {
-        IPersistence.initialize();
+        IPersistence = DBHelper.getInstance();
         System.out.println("Testing simple exit flow for Admin");
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(EXIT);
@@ -37,7 +37,7 @@ public class AdminTests {
 
     @Test
     void testRegistration() throws SQLException {
-        IPersistence.initialize();
+        IPersistence = DBHelper.getInstance();
         System.out.println("Testing resgitration flow for Admin");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -62,7 +62,7 @@ public class AdminTests {
 
     @Test
     void testLogin() throws SQLException {
-        IPersistence.initialize();
+        IPersistence = DBHelper.getInstance();
         System.out.println("Testing login flow for Admin");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -70,7 +70,7 @@ public class AdminTests {
         String password = UUID.randomUUID().toString();
         String email = String.format("%s@gmail.com", name);
         inputs.add(REGISTRATION).add(name).add(email).add(userName).add(password)
-                .add(password).add(LOGIN).add(userName).add(password).add(LOGOUT).add("y").add(EXIT);
+                .add(password).add(LOGIN).add(userName).add(password).add(ADMIN_LOGOUT).add("y").add(EXIT);
 
         Admin admin;
         try {

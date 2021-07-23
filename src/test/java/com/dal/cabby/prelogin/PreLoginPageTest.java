@@ -11,10 +11,10 @@ import java.util.UUID;
 import static com.dal.cabby.util.Constants.*;
 
 public class PreLoginPageTest {
-    IPersistence IPersistence = new DBHelper();
+    IPersistence IPersistence;
     @Test
     void testFlowOfAdmin() throws SQLException {
-        IPersistence.initialize();
+        IPersistence = DBHelper.getInstance();
         System.out.println("Testing complete flow for Admin");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -22,7 +22,7 @@ public class PreLoginPageTest {
         String password = UUID.randomUUID().toString();
         String email = String.format("%s@gmail.com", name);
         inputs.add(ADMIN).add(REGISTRATION).add(name).add(email).add(userName).add(password).add(password)
-                .add(LOGIN).add(userName).add(password).add(LOGOUT).add("y").add(EXIT);
+                .add(LOGIN).add(userName).add(password).add(ADMIN_LOGOUT).add("y").add(EXIT);
 
         PreLoginPage preLoginPage;
         preLoginPage = new PreLoginPage(inputs, IPersistence);
@@ -38,7 +38,7 @@ public class PreLoginPageTest {
         String password = UUID.randomUUID().toString();
         String email = String.format("%s@gmail.com", name);
         inputs.add(DRIVER).add(REGISTRATION).add(name).add(email).add(userName).add(password).add(password)
-                .add(LOGIN).add(userName).add(password).add(LOGOUT).add("y").add(EXIT);
+                .add(LOGIN).add(userName).add(password).add(DRIVER_LOGOUT).add("y").add(EXIT);
 
         PreLoginPage preLoginPage;
         preLoginPage = new PreLoginPage(inputs, IPersistence);
@@ -54,7 +54,7 @@ public class PreLoginPageTest {
         String password = UUID.randomUUID().toString();
         String email = String.format("%s@gmail.com", name);
         inputs.add(DRIVER).add(REGISTRATION).add(name).add(email).add(userName).add(password).add(password)
-                .add(LOGIN).add(userName).add(password).add(LOGOUT).add("y").add(EXIT);
+                .add(LOGIN).add(userName).add(password).add(CUSTOMER_LOGOUT).add("y").add(EXIT);
 
         PreLoginPage preLoginPage;
         preLoginPage = new PreLoginPage(inputs, IPersistence);

@@ -20,8 +20,7 @@ public class BuyCoupons {
 
   public BuyCoupons(Inputs inputs) throws SQLException {
     this.inputs = inputs;
-    IPersistence = new DBHelper();
-    IPersistence.initialize();
+    IPersistence = DBHelper.getInstance();
   }
 
   public void getCoupons(int userID, UserType userType) throws SQLException {

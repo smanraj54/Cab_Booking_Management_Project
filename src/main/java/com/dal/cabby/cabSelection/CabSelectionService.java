@@ -20,9 +20,8 @@ public class CabSelectionService {
     public CabSelectionService(Inputs inputs) throws SQLException {
         this.inputs = inputs;
         cabPriceCalculator = new CabPriceCalculator(inputs);
-        IPersistence = new DBHelper();
         try {
-            IPersistence.initialize();
+            IPersistence = DBHelper.getInstance();
         } catch (SQLException e) {
             e.printStackTrace();
         }
