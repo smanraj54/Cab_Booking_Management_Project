@@ -27,6 +27,10 @@ public class DataNode {
 
     public void setUser(String user) {
 
+        if(user == null){
+            throw new NullPointerException();
+        }
+
         this.user = user;
     }
 
@@ -42,6 +46,10 @@ public class DataNode {
 
     public void setName(String name) {
 
+        if(name == null){
+            throw new NullPointerException();
+        }
+
         this.name = name;
     }
 
@@ -52,6 +60,10 @@ public class DataNode {
 
     public void setEmail(String email) {
 
+        if(email == null){
+            throw new NullPointerException();
+        }
+
         this.email = email;
     }
 
@@ -61,6 +73,10 @@ public class DataNode {
     }
 
     public void setPassword(String password) {
+
+        if(password == null){
+            throw new NullPointerException();
+        }
 
         this.password = password;
     }

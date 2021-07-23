@@ -7,7 +7,7 @@ import javax.mail.MessagingException;
 
 import static java.lang.Thread.sleep;
 
-public class ForgotPassword {
+public class ForgotPassword implements IForgotPassword {
 
     Inputs inputs;
 
@@ -16,6 +16,7 @@ public class ForgotPassword {
         this.inputs = inputs;
     }
 
+    @Override
     public boolean passwordUpdateProcess(UserType userType) throws InterruptedException, MessagingException {
 
         IDBOperations IDBOperations = new DBOperations(userType);
