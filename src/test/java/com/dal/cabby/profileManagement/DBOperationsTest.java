@@ -14,6 +14,7 @@ class DBOperationsTest {
     private String password = "manu123";
     private UserType userType = UserType.CUSTOMER;
     private String queryEmail = "Select * from %s where email = '%s'";
+    private String tableName = "customer";
 
     @Test
     void dbUserNameValidationTest() {
@@ -128,7 +129,18 @@ class DBOperationsTest {
 
     @Test
     void getTableName() {
+        IDBOperations idbOperations = new DBOperations(userType);
+        String table = idbOperations.getTableName(userType);
 
+        if(!table.equals(tableName)){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            table = idbOperations.getTableName(userType);
+        }
+
+        assertTrue(table.equals(tableName), "table name is wrong while fetching from db");
     }
 
     @Test
