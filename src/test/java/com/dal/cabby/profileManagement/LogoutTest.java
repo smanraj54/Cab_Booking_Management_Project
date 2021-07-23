@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LogoutTest {
     @Test
-    void logout() throws SQLException {
+    void logout() {
         System.out.println("Testing logout flow");
         PredefinedInputs inputs = new PredefinedInputs();
         String userName = "driver1";

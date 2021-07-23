@@ -14,11 +14,11 @@ class AdminTasks {
     private IPersistence iPersistence;
     ProfileStatus profileStatus;
 
-    public AdminTasks(AdminHelper adminHelper, Inputs inputs, IPersistence iPersistence) {
+    public AdminTasks(AdminHelper adminHelper, Inputs inputs, IPersistence iPersistence) throws SQLException {
         this.adminHelper = adminHelper;
         this.inputs = inputs;
         this.iPersistence = iPersistence;
-        profileStatus = new ProfileStatus(iPersistence);
+        profileStatus = new ProfileStatus();
     }
 
     void approveDriverAccounts() throws SQLException {

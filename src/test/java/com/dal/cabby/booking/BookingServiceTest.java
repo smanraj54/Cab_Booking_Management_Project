@@ -37,7 +37,7 @@ class BookingServiceTest {
         }
     }
 
-    //@Test
+    @Test
     void cancelBooking() throws SQLException {
         BookingService bookingService = new BookingService();
         bookingService.cancelBooking(1, UserType.DRIVER);
