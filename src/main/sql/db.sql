@@ -50,7 +50,11 @@ VALUES
     (7,'Driver2 Singh','driver2@gmail.com','driver2@123','driver2',false),
     (8,'Driver3 Singh','driver3@gmail.com','driver3@123','driver3',true),
     (9,'Driver4 Singh','driver4@gmail.com','driver4@123','driver4',false),
-    (10,'Driver5 Singh','driver5@gmail.com','driver5@123','driver5',true);
+    (10,'Driver5 Singh','driver5@gmail.com','driver5@123','driver5',true),
+    (11,'Driver6 Singh','driver6@gmail.com','driver6@123','driver6',false ),
+    (12,'Driver7 Singh','driver7@gmail.com','driver7@123','driver7',true),
+    (13,'Driver8 Singh','driver8@gmail.com','driver8@123','driver8',false ),
+    (14,'Driver9 Singh','driver9@gmail.com','driver9@123','driver9',true);
 
 CREATE TABLE IF NOT EXISTS customer (
     cust_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -80,7 +84,8 @@ VALUES
     (7,'Customer7 Singh','cust7@gmail.com','cust7@123','cust7',true),
     (8,'Customer8 Singh','cust8@gmail.com','cust8@123','cust8',true),
     (9,'Customer9 Singh','cust9@gmail.com','cust9@123','cust9',true),
-    (10,'Customer10 Singh','cust10@gmail.com','cust10@123','cust10',true);
+    (10,'Customer10 Singh','cust10@gmail.com','cust10@123','cust10',true),
+
 
 CREATE TABLE IF NOT EXISTS places (
     place_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -213,7 +218,15 @@ VALUES
 (4, 'Cab4', 56, 'moderate',40,'Male', 4),
 (5, 'Cab5', 39, 'high',30,'Female', 5),
 (6, 'Cab6', 49, 'low',50,'Male', 6),
-(7, 'Cab7', 40, 'high',30,'Male', 7);
+(7, 'Cab7', 40, 'high',30,'Male', 7),
+(8, 'Cab8', 21, 'high',30,'Male', 8),
+(9, 'Cab9', 13, 'low', 50,'Female', 9),
+(10, 'Cab10', 59, 'moderate',40,'Male', 10),
+(11, 'Cab11', 56, 'moderate',40,'Male', 11),
+(12, 'Cab12', 61, 'high',30,'Female', 12),
+(13, 'Cab13', 151, 'low',50,'Female', 13),
+(14, 'Cab14', 146, 'high',30,'Male', 14);
+
 
 
 CREATE TABLE IF NOT EXISTS user_points (
