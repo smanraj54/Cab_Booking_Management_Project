@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.List;
 
 class BookingServiceTest {
     @Test
@@ -55,8 +56,8 @@ class BookingServiceTest {
     @Test
     void getDriverOpenBookings() throws SQLException {
         BookingService bookingService = new BookingService();
-        Booking booking = bookingService.getDriverOpenBookings(1);
-        Assertions.assertNotNull(booking, "Wrong value");
+        List<Booking> bookingList = bookingService.getDriverOpenBookings(1);
+        Assertions.assertTrue(bookingList.size() >= 1, "Wrong value");
     }
 
     @Test

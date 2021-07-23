@@ -11,6 +11,7 @@ import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 import com.dal.cabby.rides.DisplayRides;
 import com.dal.cabby.util.Common;
+import com.dal.cabby.util.ConsolePrinter;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -20,11 +21,15 @@ class DriverTasks {
     private final DriverHelper driverHelper;
     private final Inputs inputs;
     private final int driverId;
+    private IRatings iRatings;
+    private BookingService bookingService;
 
-    public DriverTasks(DriverHelper driverHelper, Inputs inputs) {
+    public DriverTasks(DriverHelper driverHelper, Inputs inputs) throws SQLException {
         this.driverHelper = driverHelper;
         this.inputs = inputs;
         driverId = LoggedInProfile.getLoggedInId();
+        iRatings = new Ratings();
+        bookingService = new BookingService();
     }
 
     void startTrip() throws SQLException, ParseException {
@@ -74,8 +79,13 @@ class DriverTasks {
         IRatings.addCustomerRating(cust_id, trip_id, rating);
     }
 
-    void viewRatings() {
-        System.out.println("You current rating is: <NA>");
+    void viewRatings() throws SQLException {
+        double avgRating = iRatings.getAverageRatingOfDriver(LoggedInProfile.getLoggedInId());
+        if (avgRating == 0) {
+            System.out.println("You don't have any rating at the moment");
+            return;
+        }
+        System.out.println("Your average rating is: " + avgRating);
     }
 
     void buyCoupons() throws SQLException {
@@ -84,6 +94,21 @@ class DriverTasks {
     }
 
     void cancelBooking() throws SQLException {
-
+        BookingService bookingService = new BookingService();
+        List<Booking> bookingList = bookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
+        if (bookingList.size() == 0) {
+            System.out.println("You have no booking to cancel.");
+            return;
+        }
+        System.out.println("These are new bookings:");
+        for (Booking booking : bookingList) {
+            System.out.printf("BookingId: %d, Source: %s, Destination: %s\n",
+                    booking.getBookingId(), booking.getSource(), booking.getDestination());
+        }
+        System.out.println("Now, select the booking-id you want to cancel:");
+        int bookingId = inputs.getIntegerInput();
+        bookingService.cancelBooking(bookingId, UserType.DRIVER);
+        ConsolePrinter.printSuccessMsg(
+                String.format("Your booking with bookingId: %d is cancelled", bookingId));
     }
 }

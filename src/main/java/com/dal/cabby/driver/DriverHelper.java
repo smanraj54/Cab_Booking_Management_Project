@@ -61,14 +61,4 @@ class DriverHelper {
         Date date = formatter.parse(dateInStr);
         return new java.sql.Date(date.getTime());
     }
-
-    void cancelBooking() throws SQLException {
-        BookingService bookingService = new BookingService();
-        Booking booking = bookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
-        if (booking == null) {
-            System.out.println("You have no booking to cancel.");
-            return;
-        }
-        bookingService.cancelBooking(booking.getBookingId(), UserType.DRIVER);
-    }
 }

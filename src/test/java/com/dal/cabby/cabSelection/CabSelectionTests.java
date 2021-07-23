@@ -39,7 +39,7 @@ public class CabSelectionTests {
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
     }
 
-    @Test
+    //@Test
     void primeSedanNormalBookingTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(2).add("Sydney").add("Dartmouth").add(1).add(2).add(1);

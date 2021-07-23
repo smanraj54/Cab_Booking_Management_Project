@@ -116,7 +116,7 @@ public class Driver implements IDriver {
                     driverTasks.buyCoupons();
                     break;
                 case 8:
-                    System.out.println("Not implemented yet.");
+                    driverTasks.cancelBooking();
                     break;
                 default:
                     System.out.println("\nInvalid Input");
