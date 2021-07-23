@@ -18,23 +18,11 @@ public class ForgotPassword {
 
         IDBOperations IDBOperations = new DBOperations(userType);
         boolean authenticationPass = false;
-        String email = null;
 
-        for(int t=0; t<3; t++) {
-            System.out.print("\nEnter UserName or Email : ");
-            String user = this.inputs.getWordInput();
-            this.inputs.getStringInput();
-            email = IDBOperations.fetchEmailForAuthentication(user, userType);
-            if(email!=null){
-                authenticationPass = true;
-                break;
-            }
-            System.err.println("Enter Correct Username or Email");
-            try {
-                sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        String email = getEmailfromUser(IDBOperations, userType);
+
+        if(email != null){
+            authenticationPass = true;
         }
         if(!authenticationPass){
             return false;
@@ -119,6 +107,26 @@ public class ForgotPassword {
         }
 
         return newPassword;
+    }
+
+    private String getEmailfromUser(IDBOperations idbOperations, UserType userType){
+        String email = null;
+        for(int t=0; t<3; t++) {
+            System.out.print("\nEnter UserName or Email : ");
+            String user = this.inputs.getWordInput();
+            this.inputs.getStringInput();
+            email = idbOperations.fetchEmailForAuthentication(user, userType);
+            if(email!=null){
+                break;
+            }
+            System.err.println("Enter Correct Username or Email");
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return email;
     }
 
 }
