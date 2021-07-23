@@ -55,7 +55,7 @@ public class CabPriceCalculator {
         }
         double distanceBetweenSourceAndDestination= calculateDistance(sourceDistanceFromOrigin,destinationDistanceFromOrigin);
         System.out.println("Distance between "+ source + " and "+ destination +" is: " + distance+" KM");
-        return distanceBetweenSourceAndDestination;
+        return (Math.round(distanceBetweenSourceAndDestination*100.0)/100.0);
     }
 
     public double locationAndCabDistanceFromOrigin(String source,String destination) throws SQLException {
@@ -74,7 +74,7 @@ public class CabPriceCalculator {
         }
         double distanceBetweenSourceAndCab=calculateDistance(sourceDistanceFromOrigin,cabDistanceFromOrigin);
         System.out.println("Distance between "+ source + " and "+ destination +" is: " + distance+" KM");
-        return distanceBetweenSourceAndCab;
+        return (Math.round(distanceBetweenSourceAndCab*100.0)/100.0);
     }
 
     private double calculateDistance(Double source,Double destination) throws SQLException {
@@ -98,7 +98,7 @@ public class CabPriceCalculator {
         else if (source > 0 && destination < 0) {
             distance = source - destination;
         }
-        return distance;
+        return (Math.round(distance*100.0)/100.0);
     }
     private double distanceFactor(String source,double distance,int cabType, double hour) throws SQLException {
         double shortDistance = 5; //For initial few kilometers 5 dollars would be charged per Km
@@ -141,7 +141,7 @@ public class CabPriceCalculator {
         if(cabType==4) {
             price += (.40 * price);  //40% price would be higher for PLuxury Class Cabs
         }
-        return price;
+        return (Math.round(price*100.0)/100.0);
     }
 
     private double rideSharing(String source, double distance, int cabCategory, double hour) throws SQLException {
@@ -163,8 +163,8 @@ public class CabPriceCalculator {
         }
         discount=basicPrice-priceWithCoPassenger;
         System.out.println("You got a discount of $"+ String.format("%.2f",discount)+" on sharing ride with co-passenger");
-        System.out.println("Total Price for this ride is: $"+ priceWithCoPassenger);
-        return priceWithCoPassenger;
+        System.out.println("Total Price for this ride is: $"+ String.format("%.2f",priceWithCoPassenger));
+        return (Math.round(priceWithCoPassenger*100.0)/100.0);
     }
 
     private double amenities(String source,double distance, int cabCategory, double hour) throws SQLException {
@@ -190,21 +190,29 @@ public class CabPriceCalculator {
         switch (input){
             case 1:
                 extraCharge=(2*rideInMinutes);
-                System.out.println("Extra charges: $"+extraCharge);
+                System.out.println("Extra charges: $"+String.format("%.2f",extraCharge));
                 priceWithAmenities+=extraCharge;
                 break;
             case 2:
                 extraCharge=(2*rideInMinutes);
-                System.out.println("Extra charges: $"+extraCharge);
+                System.out.println("Extra charges: $"+String.format("%.2f",extraCharge));
                 priceWithAmenities+=extraCharge;
                 break;
             case 3:
                 extraCharge=(2*(2*rideInMinutes));
-                System.out.println("Extra charges: $"+extraCharge);
+                System.out.println("Extra charges: $"+String.format("%.2f",extraCharge));
                 priceWithAmenities+=extraCharge;
                 break;
         }
-        System.out.println("Total Price for this ride is: $"+ priceWithAmenities);
-        return priceWithAmenities;
+        System.out.println("Total Price for this ride is: $"+ String.format("%.2f",priceWithAmenities));
+        return (Math.round(priceWithAmenities*100.0)/100.0);
+    }
+
+    public static void main(String[] args) {
+        double num=2.45678;
+        double num1=(double)Math.round(num*100)/100;
+
+        System.out.println(num1);
+        System.out.println(Math.round(num*100.0)/100.0);
     }
 }
