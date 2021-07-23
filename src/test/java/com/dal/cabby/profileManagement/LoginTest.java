@@ -19,15 +19,16 @@ class LoginTest {
     void attemptLogin() throws InterruptedException {
         PredefinedInputs predefinedInputs1 = new PredefinedInputs();
         predefinedInputs1.add(userName).add(password);
-        Login login = new Login(predefinedInputs1);
+        ILogin ilogin = new Login(predefinedInputs1);
         boolean loggedIn = false;
+        loggedIn = ilogin.attemptLogin(userType);
 
-        if(!login.attemptLogin(userType)){
+        if(!loggedIn){
             PredefinedInputs predefinedInputs2 = new PredefinedInputs();
             predefinedInputs2.add(name).add(email).add(userName).add(password).add(password);
             IRegistration iregistration = new Registration(predefinedInputs2);
             iregistration.registerUser(userType);
-            loggedIn = login.attemptLogin(userType);
+            loggedIn = ilogin.attemptLogin(userType);
         }
 
         assertTrue(loggedIn, "Login failed with correct Credentials");
