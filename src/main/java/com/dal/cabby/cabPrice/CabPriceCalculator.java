@@ -2,6 +2,8 @@ package com.dal.cabby.cabPrice;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
@@ -17,13 +19,10 @@ public class CabPriceCalculator {
             e.printStackTrace();
         }
     }
-    double price=0.0;
-    double sourceDistanceFromOrigin = 0.0;
-    double destinationDistanceFromOrigin= 0.0;
-    double cabDistanceFromOrigin=0.0;
     double distance=0.0;
 
     public double priceCalculation(String source, String destination, int cabType, double hour) throws SQLException {
+        double distance=0.0;
         System.out.println("*** Select your Preferences ***");
         System.out.println("1. Normal Booking");
         System.out.println("2. Want to share ride with co-passenger");
@@ -44,6 +43,8 @@ public class CabPriceCalculator {
     }
 
     public double locationsDistanceFromOrigin(String source,String destination) throws SQLException {
+        double sourceDistanceFromOrigin = 0.0;
+        double destinationDistanceFromOrigin= 0.0;
         String query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", source);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
@@ -61,6 +62,8 @@ public class CabPriceCalculator {
     }
 
     public double locationAndCabDistanceFromOrigin(String source,String destination) throws SQLException {
+        double sourceDistanceFromOrigin = 0.0;
+        double cabDistanceFromOrigin=0.0;
         String query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", source);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
@@ -100,10 +103,10 @@ public class CabPriceCalculator {
         }
         return distance;
     }
-
     private double distanceFactor(String source,double distance,int cabType, double hour) throws SQLException {
         double shortDistance = 5; //For initial few kilometers 5 dollars would be charged per Km
         String rideArea = null;
+        double price=0.0;
         if(distance <= shortDistance){
             for(int initialKilometers=1; initialKilometers<=distance; initialKilometers++){
                 price += 5;
