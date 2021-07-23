@@ -84,7 +84,7 @@ VALUES
     (7,'Customer7 Singh','cust7@gmail.com','cust7@123','cust7',true),
     (8,'Customer8 Singh','cust8@gmail.com','cust8@123','cust8',true),
     (9,'Customer9 Singh','cust9@gmail.com','cust9@123','cust9',true),
-    (10,'Customer10 Singh','cust10@gmail.com','cust10@123','cust10',true),
+    (10,'Customer10 Singh','cust10@gmail.com','cust10@123','cust10',true);
 
 
 CREATE TABLE IF NOT EXISTS places (
