@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class LogoutTest {
     @Test
     void logout() throws SQLException {
-        IPersistence iPersistence = DBHelper.getInstance();
         System.out.println("Testing logout flow");
         PredefinedInputs inputs = new PredefinedInputs();
         String userName = "driver1";
@@ -26,7 +25,7 @@ class LogoutTest {
         inputs.add(LOGIN).add(userName).add(password)
                 .add(DRIVER_LOGOUT).add("y").add(EXIT);
         try {
-            Driver driver = new Driver(inputs, iPersistence);
+            Driver driver = new Driver(inputs);
             driver.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();

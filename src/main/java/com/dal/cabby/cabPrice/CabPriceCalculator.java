@@ -7,12 +7,12 @@ import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 
 public class CabPriceCalculator {
-    IPersistence IPersistence;
+    IPersistence iPersistence;
     Inputs inputs;
     public CabPriceCalculator(Inputs inputs){
         this.inputs=inputs;
         try {
-            IPersistence = DBHelper.getInstance();
+            iPersistence = DBHelper.getInstance();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -45,13 +45,13 @@ public class CabPriceCalculator {
 
     public double locationsDistanceFromOrigin(String source,String destination) throws SQLException {
         String query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", source);
-        ResultSet resultSet = IPersistence.executeSelectQuery(query);
+        ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             sourceDistanceFromOrigin = resultSet.getDouble("distanceFromOrigin");
         }
 
         String query1 = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", destination);
-        ResultSet resultSet1 = IPersistence.executeSelectQuery(query1);
+        ResultSet resultSet1 = iPersistence.executeSelectQuery(query1);
         while (resultSet1.next()) {
             destinationDistanceFromOrigin = resultSet1.getDouble("distanceFromOrigin");
         }
@@ -62,13 +62,13 @@ public class CabPriceCalculator {
 
     public double locationAndCabDistanceFromOrigin(String source,String destination) throws SQLException {
         String query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", source);
-        ResultSet resultSet = IPersistence.executeSelectQuery(query);
+        ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             sourceDistanceFromOrigin = resultSet.getDouble("distanceFromOrigin");
         }
 
         String query1 = String.format("Select cabDistanceFromOrigin from cabs where cabName='%s'",destination);
-        ResultSet resultSet1 = IPersistence.executeSelectQuery(query1);
+        ResultSet resultSet1 = iPersistence.executeSelectQuery(query1);
         while (resultSet1.next()) {
             cabDistanceFromOrigin = resultSet1.getDouble("cabDistanceFromOrigin");
         }
@@ -124,7 +124,7 @@ public class CabPriceCalculator {
         }
         // rides in urban area would be bit costlier
         String query = String.format("Select sourceArea from price_Calculation where sourceName='%s'",source);
-        ResultSet resultSet = IPersistence.executeSelectQuery(query);
+        ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()){
             rideArea = resultSet.getString("sourceArea");
         }
@@ -180,7 +180,7 @@ public class CabPriceCalculator {
         double extraCharge=0;
         double speed=0.0;
         String query=String.format("Select averageSpeed from price_Calculation where sourceName='%s'",source);
-        ResultSet resultSet= IPersistence.executeSelectQuery(query);
+        ResultSet resultSet= iPersistence.executeSelectQuery(query);
         while(resultSet.next()){
             speed=resultSet.getDouble("averageSpeed");
         }

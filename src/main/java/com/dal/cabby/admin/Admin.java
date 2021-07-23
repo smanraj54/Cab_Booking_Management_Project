@@ -13,17 +13,17 @@ public class Admin implements IAdmin {
     private final Inputs inputs;
     private AdminTasks adminTasks;
     private AdminProfileManagement adminProfileManagement;
-    private final IPersistence IPersistence;
+    private final IPersistence iPersistence;
 
-    public Admin(Inputs inputs, IPersistence IPersistence) throws SQLException {
+    public Admin(Inputs inputs, IPersistence iPersistence) throws SQLException {
         this.inputs = inputs;
-        this.IPersistence = IPersistence;
+        this.iPersistence = iPersistence;
         initialize();
     }
 
     private void initialize() throws SQLException {
-        adminHelper = new AdminHelper(IPersistence);
-        adminTasks = new AdminTasks(adminHelper, inputs, IPersistence);
+        adminHelper = new AdminHelper(iPersistence);
+        adminTasks = new AdminTasks(adminHelper, inputs, iPersistence);
         adminProfileManagement = new AdminProfileManagement(adminHelper, inputs);
     }
 
@@ -66,7 +66,7 @@ public class Admin implements IAdmin {
     }
 
     @Override
-    public void performAdminTasks() throws SQLException, ParseException {
+    public void performAdminTasks() throws SQLException {
         while (true) {
             System.out.println("1. Logout");
             System.out.println("2. Approve Drivers");

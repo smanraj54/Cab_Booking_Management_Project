@@ -12,17 +12,15 @@ import java.util.List;
   This is a utility class for Admin class.
  */
 class AdminHelper {
-    static String driverProfile = "driver";
-    static String customerProfile = "customer";
-    IPersistence IPersistence;
+    IPersistence iPersistence;
 
-    AdminHelper(IPersistence IPersistence) throws SQLException {
-        this.IPersistence = IPersistence;
+    AdminHelper(IPersistence iPersistence) {
+        this.iPersistence = iPersistence;
     }
 
     List<Profile> listOfDriversToBeApproved() throws SQLException {
         String query = "select driver_id, name from driver where status = false order by driver_id desc";
-        ResultSet resultSet = IPersistence.executeSelectQuery(query);
+        ResultSet resultSet = iPersistence.executeSelectQuery(query);
         List<Profile> profileList = new ArrayList<>();
         while (resultSet.next()) {
             int driverId = resultSet.getInt("driver_id");
@@ -34,7 +32,7 @@ class AdminHelper {
 
     List<Profile> listOfCustomersToBeApproved() throws SQLException {
         String query = "select cust_id, name from customer where status = false order by cust_id desc";
-        ResultSet resultSet = IPersistence.executeSelectQuery(query);
+        ResultSet resultSet = iPersistence.executeSelectQuery(query);
         List<Profile> profileList = new ArrayList<>();
         while (resultSet.next()) {
             int custId = resultSet.getInt("cust_id");

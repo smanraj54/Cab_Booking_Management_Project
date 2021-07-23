@@ -7,10 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Ratings implements IRatings {
-    IPersistence IPersistence;
+    IPersistence iPersistence;
 
     public Ratings() throws SQLException {
-        IPersistence = DBHelper.getInstance();
+        iPersistence = DBHelper.getInstance();
     }
 
     @Override
@@ -20,7 +20,7 @@ public class Ratings implements IRatings {
         }
         String q = String.format("insert into driver_ratings(driver_id, trip_id, rating) values (%d, %d, %d)",
                 driverId, tripId, rating);
-        IPersistence.executeCreateOrUpdateQuery(q);
+        iPersistence.executeCreateOrUpdateQuery(q);
     }
 
     @Override
@@ -30,13 +30,13 @@ public class Ratings implements IRatings {
         }
         String q = String.format("insert into customer_ratings(cust_id, trip_id, rating) values (%d, %d, %d)",
                 userId, tripId, rating);
-        IPersistence.executeCreateOrUpdateQuery(q);
+        iPersistence.executeCreateOrUpdateQuery(q);
     }
 
     @Override
     public double getAverageRatingOfDriver(int driver_id) throws SQLException {
         String q = String.format("select avg(rating) as avg_rating from driver_ratings where driver_id=%d", driver_id);
-        ResultSet resultSet = IPersistence.executeSelectQuery(q);
+        ResultSet resultSet = iPersistence.executeSelectQuery(q);
         while (resultSet.next()) {
             return resultSet.getDouble("avg_rating");
         }
@@ -46,7 +46,7 @@ public class Ratings implements IRatings {
     @Override
     public double getAverageRatingOfCustomer(int cust_id) throws SQLException {
         String q = String.format("select avg(rating) as avg_rating from customer_ratings where cust_id=%d",cust_id);
-        ResultSet resultSet = IPersistence.executeSelectQuery(q);
+        ResultSet resultSet = iPersistence.executeSelectQuery(q);
         while(resultSet.next()) {
             return resultSet.getDouble("avg_rating");
         }

@@ -1,5 +1,6 @@
 package com.dal.cabby.customer;
 
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.profileManagement.LoggedInProfile;
@@ -19,18 +20,18 @@ public class Customer implements ICustomer {
     private CustomerTasks customerTasks;
     private CustomerProfileManagement customerProfileManagement;
     private ProfileStatus profileStatus;
-    private IPersistence IPersistence;
+    private IPersistence iPersistence;
 
-    public Customer(Inputs inputs, IPersistence IPersistence) throws SQLException {
+    public Customer(Inputs inputs) throws SQLException {
         this.inputs = inputs;
-        this.IPersistence = IPersistence;
+        this.iPersistence = DBHelper.getInstance();
         initialize();
     }
 
     private void initialize() {
-        customerTasks = new CustomerTasks(inputs, IPersistence);
+        customerTasks = new CustomerTasks(inputs, iPersistence);
         customerProfileManagement = new CustomerProfileManagement(inputs);
-        profileStatus = new ProfileStatus(IPersistence);
+        profileStatus = new ProfileStatus(iPersistence);
     }
 
     @Override

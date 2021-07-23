@@ -11,8 +11,7 @@ public class Application {
     public static void main(String[] args) {
         try{
             Inputs inputs = new InputFromUser();
-            IPersistence IPersistence = DBHelper.getInstance();
-            PreLoginPage preLoginPage = new PreLoginPage(inputs, IPersistence);
+            PreLoginPage preLoginPage = new PreLoginPage(inputs);
             preLoginPage.start();
         } catch (Exception e) {
             e.printStackTrace();

@@ -14,17 +14,17 @@ import java.util.UUID;
 import static com.dal.cabby.util.Constants.*;
 
 public class DriverTests {
-    IPersistence IPersistence;
+    IPersistence iPersistence;
 
     @Test
     void testExit() throws SQLException {
-        IPersistence = DBHelper.getInstance();
+        iPersistence = DBHelper.getInstance();
         System.out.println("Testing simple exit flow for driver");
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(EXIT);
         Driver driver;
         try {
-            driver = new Driver(inputs, IPersistence);
+            driver = new Driver(inputs);
             driver.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
@@ -38,7 +38,7 @@ public class DriverTests {
 
     @Test
     void testRegistration() throws SQLException {
-        IPersistence = DBHelper.getInstance();
+        iPersistence = DBHelper.getInstance();
         System.out.println("Testing resgitration flow for Driver");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -49,7 +49,7 @@ public class DriverTests {
 
         Driver driver;
         try {
-            driver = new Driver(inputs, IPersistence);
+            driver = new Driver(inputs);
             driver.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
@@ -63,7 +63,7 @@ public class DriverTests {
 
     @Test
     void testLogin() throws SQLException {
-        IPersistence = DBHelper.getInstance();
+        iPersistence = DBHelper.getInstance();
         System.out.println("Testing login flow for Driver");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -75,7 +75,7 @@ public class DriverTests {
 
         Driver driver;
         try {
-            driver = new Driver(inputs, IPersistence);
+            driver = new Driver(inputs);
             driver.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();

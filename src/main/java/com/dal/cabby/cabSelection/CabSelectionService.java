@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class CabSelectionService {
     CabSelectionDAO bestCab;
-    private IPersistence IPersistence;
+    private IPersistence iPersistence;
     private Inputs inputs;
     private CabPriceCalculator cabPriceCalculator;
     private String sourceLocation, destinationLocation;
@@ -21,7 +21,7 @@ public class CabSelectionService {
         this.inputs = inputs;
         cabPriceCalculator = new CabPriceCalculator(inputs);
         try {
-            IPersistence = DBHelper.getInstance();
+            iPersistence = DBHelper.getInstance();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -48,7 +48,7 @@ public class CabSelectionService {
     private double fetchSourceLocation() throws SQLException {
         double sourceDistance=0.0;
         String query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", sourceLocation);
-        ResultSet resultSet = IPersistence.executeSelectQuery(query);
+        ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             sourceDistance = resultSet.getDouble("distanceFromOrigin");
         }
@@ -61,7 +61,7 @@ public class CabSelectionService {
         String query = String.format("Select cabName, cabId, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
                         "cabSpeedOnRoute,driverGender from cabs where cabDistanceFromOrigin BETWEEN '%f' AND '%f'"
                 , lowerRangeOfCabs, upperRangeOfCabs);
-        ResultSet resultSet = IPersistence.executeSelectQuery(query);
+        ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             CabSelectionDAO cabDetail = new CabSelectionDAO(resultSet.getString("cabName"),
                     resultSet.getInt("cabId"), resultSet.getDouble("cabDistanceFromOrigin"),

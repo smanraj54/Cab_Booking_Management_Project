@@ -1,5 +1,6 @@
 package com.dal.cabby.driver;
 
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.profileManagement.LoggedInProfile;
@@ -19,19 +20,19 @@ public class Driver implements IDriver {
     private DriverTasks driverTasks;
     private DriverProfileManagement driverProfileManagement;
     private ProfileStatus profileStatus;
-    private IPersistence IPersistence;
+    private final IPersistence iPersistence;
 
-    public Driver(Inputs inputs, IPersistence IPersistence) throws SQLException, ParseException {
+    public Driver(Inputs inputs) throws SQLException, ParseException {
         this.inputs = inputs;
-        this.IPersistence = IPersistence;
+        this.iPersistence = DBHelper.getInstance();
         intialiaze();
     }
 
     private void intialiaze() throws SQLException {
-        driverHelper = new DriverHelper(IPersistence);
+        driverHelper = new DriverHelper(iPersistence);
         driverTasks = new DriverTasks(driverHelper, inputs);
         driverProfileManagement = new DriverProfileManagement(driverHelper, inputs);
-        profileStatus = new ProfileStatus(IPersistence);
+        profileStatus = new ProfileStatus(iPersistence);
     }
 
     @Override

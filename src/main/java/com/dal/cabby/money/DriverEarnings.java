@@ -9,14 +9,14 @@ import java.sql.SQLException;
 
 // this class will show the earning of driver for a specific period
 public class DriverEarnings {
-    IPersistence IPersistence;
+    IPersistence iPersistence;
     int userID;
     Inputs inputs;
 
     public DriverEarnings(Inputs inputs) {
         this.inputs = inputs;
         try {
-            IPersistence = DBHelper.getInstance();
+            iPersistence = DBHelper.getInstance();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -137,7 +137,7 @@ public class DriverEarnings {
                 "from trips \n" +
                 "where driver_id = %d and cast(created_at as date) = '%s'\n" +
                 "group by driver_id", driverID, date);
-        ResultSet output = IPersistence.executeSelectQuery(query);
+        ResultSet output = iPersistence.executeSelectQuery(query);
         while (output.next()) {
             totalRides = output.getInt("total_rides");
             travelDistance = output.getDouble("total_distance_covered");
@@ -152,7 +152,7 @@ public class DriverEarnings {
     private int getDateDifference(String startDate, String endDate) throws SQLException {
         int dateDifference = 0;
         String query = String.format("select datediff('%s','%s') as date_difference", endDate, startDate);
-        ResultSet result = IPersistence.executeSelectQuery(query);
+        ResultSet result = iPersistence.executeSelectQuery(query);
         while (result.next()) {
             dateDifference = result.getInt("date_difference");
         }
@@ -162,7 +162,7 @@ public class DriverEarnings {
     private String getNextDay(String inputDate) throws SQLException {
         String date = "";
         String query = String.format("select adddate('%s',1) as next_day", inputDate);
-        ResultSet result = IPersistence.executeSelectQuery(query);
+        ResultSet result = iPersistence.executeSelectQuery(query);
         while (result.next()){
             date = result.getString("next_day");
         }
@@ -172,7 +172,7 @@ public class DriverEarnings {
     private String getLastDayOfMonth(String inputDate) throws SQLException {
         String date = "";
         String query = String.format("select last_day('%s') as last_date", inputDate);
-        ResultSet result = IPersistence.executeSelectQuery(query);
+        ResultSet result = iPersistence.executeSelectQuery(query);
         while (result.next()) {
             date = result.getString("last_date");
         }
