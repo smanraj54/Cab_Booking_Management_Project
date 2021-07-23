@@ -2,7 +2,7 @@ package com.dal.cabby.profileManagement;
 
 import com.dal.cabby.io.Inputs;
 
-public class Logout {
+public class Logout implements ILogout {
 
     private final Inputs inputs;
 

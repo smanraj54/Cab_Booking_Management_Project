@@ -18,6 +18,10 @@ public class LoggedInProfile {
 
     public static void setLoggedInId(int id) {
 
+        if(id < 0){
+            throw new IndexOutOfBoundsException();
+        }
+
         loggedInId = id;
     }
 
@@ -27,6 +31,10 @@ public class LoggedInProfile {
     }
 
     public static void setLoggedInName(String loggedInName) {
+
+        if(loggedInName == null){
+            throw new NullPointerException();
+        }
 
         LoggedInProfile.loggedInName = loggedInName;
     }

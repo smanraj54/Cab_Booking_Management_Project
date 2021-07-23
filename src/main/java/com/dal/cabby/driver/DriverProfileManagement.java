@@ -16,10 +16,10 @@ public class DriverProfileManagement {
         this.inputs = inputs;
     }
 
-    public boolean login() {
+    public boolean login() throws InterruptedException {
         System.out.println("Welcome to Driver login page");
-        Login login = new Login(inputs);
-        if (login.attemptLogin(UserType.DRIVER)) {
+        ILogin ILogin = new Login(inputs);
+        if (ILogin.attemptLogin(UserType.DRIVER)) {
             System.out.println("Login successful");
             System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
                     LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
@@ -31,8 +31,8 @@ public class DriverProfileManagement {
 
     public boolean register() {
         System.out.println("Welcome to Driver registration page");
-        Registration registration = new Registration(inputs);
-        return registration.registerUser(UserType.DRIVER);
+        IRegistration IRegistration = new Registration(inputs);
+        return IRegistration.registerUser(UserType.DRIVER);
     }
 
     public boolean forgotPassword() throws MessagingException, InterruptedException {

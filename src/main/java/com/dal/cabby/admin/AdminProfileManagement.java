@@ -16,10 +16,10 @@ public class AdminProfileManagement {
         this.inputs = inputs;
     }
 
-    boolean login() throws SQLException {
+    boolean login() throws SQLException, InterruptedException {
         System.out.println("Welcome to Admin login page");
-        Login login = new Login(inputs);
-        if (login.attemptLogin(UserType.ADMIN)) {
+        ILogin ILogin = new Login(inputs);
+        if (ILogin.attemptLogin(UserType.ADMIN)) {
             System.out.println("Login successful");
             System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
                     LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
@@ -31,8 +31,8 @@ public class AdminProfileManagement {
 
     boolean register() {
         System.out.println("Welcome to Admin registration page");
-        Registration registration = new Registration(inputs);
-        return registration.registerUser(UserType.ADMIN);
+        IRegistration IRegistration = new Registration(inputs);
+        return IRegistration.registerUser(UserType.ADMIN);
     }
 
     boolean forgotPassword() throws MessagingException, InterruptedException {

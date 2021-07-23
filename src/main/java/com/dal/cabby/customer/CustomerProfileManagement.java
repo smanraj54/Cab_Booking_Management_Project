@@ -13,10 +13,10 @@ public class CustomerProfileManagement {
         this.inputs = inputs;
     }
 
-    boolean login() {
+    boolean login() throws InterruptedException {
         System.out.println("Welcome to Customer login page");
-        Login login = new Login(inputs);
-        if (login.attemptLogin(UserType.CUSTOMER)) {
+        ILogin ILogin = new Login(inputs);
+        if (ILogin.attemptLogin(UserType.CUSTOMER)) {
             System.out.println("Login successful");
             System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
                     LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
@@ -28,8 +28,8 @@ public class CustomerProfileManagement {
 
     boolean register() {
         System.out.println("Welcome to Customer registration page");
-        Registration registration = new Registration(inputs);
-        return registration.registerUser(UserType.CUSTOMER);
+        IRegistration IRegistration = new Registration(inputs);
+        return IRegistration.registerUser(UserType.CUSTOMER);
     }
 
     boolean forgotPassword() throws MessagingException, InterruptedException {
