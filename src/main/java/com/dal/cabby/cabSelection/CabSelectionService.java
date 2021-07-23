@@ -7,7 +7,6 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Booking;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class CabSelectionService {
