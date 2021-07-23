@@ -18,22 +18,18 @@ import java.text.ParseException;
 import java.util.List;
 
 class DriverTasks {
-    private final DriverHelper driverHelper;
     private final Inputs inputs;
-    private final int driverId;
     private IRatings iRatings;
     private BookingService bookingService;
 
-    public DriverTasks(DriverHelper driverHelper, Inputs inputs) throws SQLException {
-        this.driverHelper = driverHelper;
+    public DriverTasks(Inputs inputs) throws SQLException {
         this.inputs = inputs;
-        driverId = LoggedInProfile.getLoggedInId();
         iRatings = new Ratings();
         bookingService = new BookingService();
     }
 
     void startTrip() throws SQLException, ParseException {
-        List<Booking> bookingsList = driverHelper.getUnfinishedBookingLists(driverId);
+        List<Booking> bookingsList = bookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
         if (bookingsList.size() == 0) {
             System.out.println("You have no new bookings\n");
             return;
@@ -45,11 +41,11 @@ class DriverTasks {
         }
         System.out.println("Enter the bookingId for which you want to start the trip: ");
         int input = inputs.getIntegerInput();
-        driverHelper.markBookingComplete(input);
+        bookingService.markBookingComplete(input);
         Common.simulateCabTrip();
         for (Booking b : bookingsList) {
             if (b.getBookingId() == input) {
-                driverHelper.completeTrip(input, driverId, b.getCustomerId(), 5.6, 9.8,
+                bookingService.completeTrip(input, LoggedInProfile.getLoggedInId(), b.getCustomerId(), 5.6, 9.8,
                         "2021-01-24 12:35:16", "2021-01-24 12:55:16");
             }
         }
@@ -97,7 +93,7 @@ class DriverTasks {
         BookingService bookingService = new BookingService();
         List<Booking> bookingList = bookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
         if (bookingList.size() == 0) {
-            System.out.println("You have no booking to cancel.");
+            ConsolePrinter.printOutput("You have no booking to cancel.");
             return;
         }
         System.out.println("These are new bookings:");
