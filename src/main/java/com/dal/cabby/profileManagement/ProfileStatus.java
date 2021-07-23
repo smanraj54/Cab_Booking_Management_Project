@@ -1,5 +1,6 @@
 package com.dal.cabby.profileManagement;
 
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.pojo.UserType;
 
@@ -9,8 +10,8 @@ import java.sql.SQLException;
 public class ProfileStatus {
     private IPersistence iPersistence;
 
-    public ProfileStatus(IPersistence iPersistence) {
-        this.iPersistence = iPersistence;
+    public ProfileStatus() throws SQLException {
+        this.iPersistence = DBHelper.getInstance();
     }
 
     public boolean isDriverAproved(int driver_id) throws SQLException {

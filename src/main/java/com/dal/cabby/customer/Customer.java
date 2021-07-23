@@ -28,10 +28,10 @@ public class Customer implements ICustomer {
         initialize();
     }
 
-    private void initialize() {
+    private void initialize() throws SQLException {
         customerTasks = new CustomerTasks(inputs, iPersistence);
         customerProfileManagement = new CustomerProfileManagement(inputs);
-        profileStatus = new ProfileStatus(iPersistence);
+        profileStatus = new ProfileStatus();
     }
 
     @Override

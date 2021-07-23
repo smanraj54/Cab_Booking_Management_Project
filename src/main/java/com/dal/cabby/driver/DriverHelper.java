@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DriverHelper {
+class DriverHelper {
     IPersistence iPersistence;
 
     DriverHelper(IPersistence iPersistence) throws SQLException {
