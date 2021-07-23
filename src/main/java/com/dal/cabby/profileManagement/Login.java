@@ -14,8 +14,8 @@ public class Login {
 
     public boolean attemptLogin(UserType userType){
         IDBOperations db_operations = new DBOperations(userType);
-        String userNameOrEmail = null;
-        String password = null;
+        String userNameOrEmail;
+        String password;
         System.out.print("\nEnter UserName or Email : ");
         userNameOrEmail = inputs.getStringInput();
 
