@@ -6,7 +6,7 @@ import com.dal.cabby.profileManagement.*;
 
 import javax.mail.MessagingException;
 
-public class CustomerProfileManagement {
+class CustomerProfileManagement {
     final private Inputs inputs;
 
     public CustomerProfileManagement(Inputs inputs) {

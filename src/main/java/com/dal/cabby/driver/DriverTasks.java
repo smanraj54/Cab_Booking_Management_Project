@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 
-public class DriverTasks {
+class DriverTasks {
     private final DriverHelper driverHelper;
     private final Inputs inputs;
     private final int driverId;

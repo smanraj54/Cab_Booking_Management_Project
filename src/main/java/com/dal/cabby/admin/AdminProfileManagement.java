@@ -7,7 +7,7 @@ import com.dal.cabby.profileManagement.*;
 import javax.mail.MessagingException;
 import java.sql.SQLException;
 
-public class AdminProfileManagement {
+class AdminProfileManagement {
     private final AdminHelper adminHelper;
     private final Inputs inputs;
 

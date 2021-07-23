@@ -32,7 +32,7 @@ public class Driver implements IDriver {
         driverHelper = new DriverHelper(iPersistence);
         driverTasks = new DriverTasks(driverHelper, inputs);
         driverProfileManagement = new DriverProfileManagement(driverHelper, inputs);
-        profileStatus = new ProfileStatus(iPersistence);
+        profileStatus = new ProfileStatus();
     }
 
     @Override

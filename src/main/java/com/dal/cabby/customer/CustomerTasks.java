@@ -14,7 +14,7 @@ import com.dal.cabby.rides.DisplayRides;
 
 import java.sql.SQLException;
 
-public class CustomerTasks {
+class CustomerTasks {
     private final Inputs inputs;
     IPersistence iPersistence;
 

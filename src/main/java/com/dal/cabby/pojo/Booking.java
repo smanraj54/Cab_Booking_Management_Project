@@ -12,12 +12,27 @@ public class Booking {
     boolean hasDriverCancelled;
     boolean hasCustomerCancelled;
 
-    public boolean isCancelled() {
-        return isCancelled;
+    public Booking() {
+
     }
 
+    public Booking(int booking_id, int customerId, int driverid, int cabId, String source, String destination, String travelTime, double price, boolean isCancelled) {
+        this.bookingId = booking_id;
+        this.customerId = customerId;
+        this.driverId = driverid;
+        this.cabId = cabId;
+        this.source = source;
+        this.destination = destination;
+        this.travelTime = travelTime;
+        this.price = price;
+        this.isCancelled = isCancelled;
+    }
+
+    public boolean isCancelled() {
+        return this.isCancelled;
+    }
     public void setCancelled(boolean cancelled) {
-        isCancelled = cancelled;
+        this.isCancelled = cancelled;
     }
 
     public boolean isHasDriverCancelled() {
@@ -68,21 +83,7 @@ public class Booking {
         this.price = price;
     }
 
-    public Booking() {
 
-    }
-
-    public Booking(int booking_id, int customerId, int driverid, int cabId, String source, String destination, String travelTime, double price, boolean isCancelled) {
-        this.bookingId = booking_id;
-        this.customerId = customerId;
-        this.driverId = driverid;
-        this.cabId = cabId;
-        this.source = source;
-        this.destination = destination;
-        this.travelTime = travelTime;
-        this.price = price;
-        this.isCancelled = isCancelled;
-    }
 
     public int getBookingId() {
         return bookingId;
