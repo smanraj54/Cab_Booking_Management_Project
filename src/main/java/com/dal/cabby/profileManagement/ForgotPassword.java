@@ -30,28 +30,14 @@ public class ForgotPassword {
 
         int tempPass = generateTemporaryPassword(100000);
 
-        if(sendTemporaryPasswordViaEmail(email, tempPass)) {
+        if(!sendTemporaryPasswordViaEmail(email, tempPass)) {
             return false;
         }
 
-        authenticationPass = false;
-
-        for(int t=0; t<3; t++) {
-            if (validateTempPass(tempPass)) {
-                authenticationPass = true;
-                break;
-            }
-            System.err.println("\n\t\tEnter Correct temporary password!!!!");
-            try {
-                sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if(!authenticationPass){
+        if(!checkTemporaryPass(tempPass)){
             return false;
-        }
+        };
+
         String newPass = getNewPassword();
 
         if(newPass == null){
@@ -142,6 +128,21 @@ public class ForgotPassword {
         }
         catch (Exception ee){
             System.out.println(ee);
+        }
+        return false;
+    }
+
+    private boolean checkTemporaryPass(int tempPass ){
+        for(int t=0; t<3; t++) {
+            if (validateTempPass(tempPass)) {
+                return true;
+            }
+            System.err.println("\n\t\tEnter Correct temporary password!!!!");
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
