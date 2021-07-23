@@ -14,16 +14,14 @@ import java.util.UUID;
 import static com.dal.cabby.util.Constants.*;
 
 public class CustomerTests {
-    IPersistence IPersistence;
     @Test
     void testExit() throws SQLException {
-        IPersistence = DBHelper.getInstance();
         System.out.println("Testing simple exit flow for customer");
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(EXIT);
         Customer customer;
         try {
-            customer = new Customer(inputs, IPersistence);
+            customer = new Customer(inputs);
             customer.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
@@ -37,7 +35,6 @@ public class CustomerTests {
 
     @Test
     void testRegistration() throws SQLException {
-        IPersistence = DBHelper.getInstance();
         System.out.println("Testing resgitration flow for Customer");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -48,7 +45,7 @@ public class CustomerTests {
 
         Customer customer;
         try {
-            customer = new Customer(inputs, IPersistence);
+            customer = new Customer(inputs);
             customer.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
@@ -62,8 +59,7 @@ public class CustomerTests {
 
     @Test
     void testLogin() throws SQLException {
-        IPersistence = DBHelper.getInstance();
-        System.out.println("Testing login flow for Customer");
+        System.out.println("Testing login flowq for Customer");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
         String userName = UUID.randomUUID().toString();
@@ -74,7 +70,7 @@ public class CustomerTests {
 
         Customer customer;
         try {
-            customer = new Customer(inputs, IPersistence);
+            customer = new Customer(inputs);
             customer.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();

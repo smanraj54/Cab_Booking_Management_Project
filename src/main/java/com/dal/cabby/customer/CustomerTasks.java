@@ -16,11 +16,11 @@ import java.sql.SQLException;
 
 public class CustomerTasks {
     private final Inputs inputs;
-    IPersistence IPersistence;
+    IPersistence iPersistence;
 
-    public CustomerTasks(Inputs inputs, IPersistence IPersistence) {
+    public CustomerTasks(Inputs inputs, IPersistence iPersistence) {
         this.inputs = inputs;
-        this.IPersistence = IPersistence;
+        this.iPersistence = iPersistence;
     }
 
     void rateDriver() throws SQLException {
@@ -47,12 +47,12 @@ public class CustomerTasks {
         Booking booking = cabSelectionService.preferredCab(custId, hour);
         booking.setCustomerId(custId);
         booking.setTravelTime(travelTime);
-        BookingService bookingService = new BookingService(IPersistence);
+        BookingService bookingService = new BookingService();
         bookingService.saveBooking(booking);
     }
 
     void cancelBooking() throws SQLException {
-        BookingService bookingService = new BookingService(IPersistence);
+        BookingService bookingService = new BookingService();
         Booking booking = bookingService.getCustomerOpenBooking(LoggedInProfile.getLoggedInId());
         if (booking == null) {
             System.out.println("You have no booking to cancel.");

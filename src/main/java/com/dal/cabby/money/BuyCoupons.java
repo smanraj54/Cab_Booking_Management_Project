@@ -13,14 +13,14 @@ import java.sql.SQLException;
  * earned points.
  */
 public class BuyCoupons {
-  IPersistence IPersistence;
+  IPersistence iPersistence;
   int requesterID;
   UserType requesterType;
   Inputs inputs;
 
   public BuyCoupons(Inputs inputs) throws SQLException {
     this.inputs = inputs;
-    IPersistence = DBHelper.getInstance();
+    iPersistence = DBHelper.getInstance();
   }
 
   public void getCoupons(int userID, UserType userType) throws SQLException {
@@ -49,7 +49,7 @@ public class BuyCoupons {
   private void displayCoupons() throws SQLException {
     String query = "select coupon_id, coupon_name, coupon_value," +
         "price_in_points from coupons;";
-    ResultSet result = IPersistence.executeSelectQuery(query);
+    ResultSet result = iPersistence.executeSelectQuery(query);
     while (result.next()) {
       int couponID = result.getInt("coupon_id");
       String couponName = result.getString("coupon_name");
@@ -65,7 +65,7 @@ public class BuyCoupons {
         "from user_points \n" +
         "where user_id = %d and upper(user_type) = '%s';",
         requesterID, requesterType);
-    ResultSet resultSet = IPersistence.executeSelectQuery(query);
+    ResultSet resultSet = iPersistence.executeSelectQuery(query);
     int points = 0;
     while (resultSet.next()) {
       points = resultSet.getInt("total_points");
@@ -86,7 +86,7 @@ public class BuyCoupons {
     String query = String.format("select price_in_points \n" +
         "from coupons\n" +
         "where coupon_id = %d;", couponID);
-    ResultSet result = IPersistence.executeSelectQuery(query);
+    ResultSet result = iPersistence.executeSelectQuery(query);
     int points = 0;
     while (result.next()) {
       points = result.getInt("price_in_points");
@@ -113,10 +113,10 @@ public class BuyCoupons {
     String query4 = "commit;";
 
     // executing queries in order
-    IPersistence.executeCreateOrUpdateQuery(query1);
-    IPersistence.executeCreateOrUpdateQuery(query2);
-    IPersistence.executeCreateOrUpdateQuery(query3);
-    IPersistence.executeCreateOrUpdateQuery(query4);
+    iPersistence.executeCreateOrUpdateQuery(query1);
+    iPersistence.executeCreateOrUpdateQuery(query2);
+    iPersistence.executeCreateOrUpdateQuery(query3);
+    iPersistence.executeCreateOrUpdateQuery(query4);
     System.out.println("\nCoupon added in your account successfully");
   }
 }

@@ -59,10 +59,10 @@ public class DBOperations implements IDBOperations {
         String tableName = getTableName(userType);
         query = String.format(query, tableName, userName);
         String value = null;
-        IPersistence IPersistence;
+        IPersistence iPersistence;
         try {
-            IPersistence = DBHelper.getInstance();
-            ResultSet resultSet = IPersistence.executeSelectQuery(query);
+            iPersistence = DBHelper.getInstance();
+            ResultSet resultSet = iPersistence.executeSelectQuery(query);
             while (resultSet.next()) {
                 value = resultSet.getString(columnName);
                 String idColumnName = getIDColumnName(userType);
@@ -84,10 +84,10 @@ public class DBOperations implements IDBOperations {
         String tableName = getTableName(userType);
         query = String.format(query, tableName, email);
         String emailValue = null;
-        IPersistence IPersistence;
+        IPersistence iPersistence;
         try {
-            IPersistence = DBHelper.getInstance();
-            ResultSet resultSet = IPersistence.executeSelectQuery(query);
+            iPersistence = DBHelper.getInstance();
+            ResultSet resultSet = iPersistence.executeSelectQuery(query);
             while (resultSet.next()) {
                 emailValue = resultSet.getString(keywordSearch);
             }
@@ -101,24 +101,24 @@ public class DBOperations implements IDBOperations {
     @Override
     public void entryRegistration(DataNode dataNode) {
 
-        IPersistence IPersistence = getDBInstance();
+        IPersistence iPersistence = getDBInstance();
         String tableName = getTableName(dataNode.getUserType());
         String query = String.format("insert into %s (username, name, email, password) value ('%s','%s', '%s', '%s')", tableName, dataNode.getUser(), dataNode.getName(), dataNode.getEmail(), dataNode.getPassword());
         try {
-            IPersistence.executeCreateOrUpdateQuery(query);
+            iPersistence.executeCreateOrUpdateQuery(query);
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
     }
 
     private IPersistence getDBInstance() {
-        IPersistence IPersistence=null;
+        IPersistence iPersistence=null;
         try {
-            IPersistence = DBHelper.getInstance();
+            iPersistence = DBHelper.getInstance();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-        return IPersistence;
+        return iPersistence;
     }
 
     @Override
@@ -171,12 +171,12 @@ public class DBOperations implements IDBOperations {
     @Override
     public void updateEmailPassword(String email, String newPassword, UserType userType) {
 
-        IPersistence IPersistence = null;
+        IPersistence iPersistence = null;
         String tableName = getTableName(userType);
         String query = String.format("UPDATE %s set password = '%s'where email = '%s'", tableName, newPassword, email);
         try {
-            IPersistence = DBHelper.getInstance();
-            IPersistence.executeCreateOrUpdateQuery(query);
+            iPersistence = DBHelper.getInstance();
+            iPersistence.executeCreateOrUpdateQuery(query);
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }

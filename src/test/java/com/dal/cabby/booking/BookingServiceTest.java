@@ -1,7 +1,5 @@
 package com.dal.cabby.booking;
 
-import com.dal.cabby.dbHelper.DBHelper;
-import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
 import org.junit.jupiter.api.Assertions;
@@ -12,8 +10,7 @@ import java.sql.SQLException;
 class BookingServiceTest {
     @Test
     void saveBooking() throws SQLException {
-        IPersistence IPersistence = DBHelper.getInstance();
-        BookingService bookingService = new BookingService(IPersistence);
+        BookingService bookingService = new BookingService();
         Booking booking = new Booking();
         booking.setDriverId(1);
         booking.setCustomerId(1);
@@ -31,8 +28,7 @@ class BookingServiceTest {
 
     @Test
     void getBooking() throws SQLException {
-        IPersistence IPersistence = DBHelper.getInstance();
-        BookingService bookingService = new BookingService(IPersistence);
+        BookingService bookingService = new BookingService();
         try {
             Booking booking = bookingService.getBooking(1);
             Assertions.assertEquals(1, booking.getBookingId(), "Wrong booking id");
@@ -43,8 +39,7 @@ class BookingServiceTest {
 
     //@Test
     void cancelBooking() throws SQLException {
-        IPersistence IPersistence = DBHelper.getInstance();
-        BookingService bookingService = new BookingService(IPersistence);
+        BookingService bookingService = new BookingService();
         bookingService.cancelBooking(1, UserType.DRIVER);
         Booking booking = bookingService.getBooking(1);
         Assertions.assertEquals(true, booking.isCancelled(), "Wrong value");
@@ -52,32 +47,28 @@ class BookingServiceTest {
 
     @Test
     void getCustomerOpenBooking() throws SQLException {
-        IPersistence IPersistence = DBHelper.getInstance();
-        BookingService bookingService = new BookingService(IPersistence);
+        BookingService bookingService = new BookingService();
         Booking booking = bookingService.getCustomerOpenBooking(1);
         Assertions.assertNotNull(booking, "Wrong value");
     }
 
     @Test
     void getDriverOpenBookings() throws SQLException {
-        IPersistence IPersistence = DBHelper.getInstance();
-        BookingService bookingService = new BookingService(IPersistence);
+        BookingService bookingService = new BookingService();
         Booking booking = bookingService.getDriverOpenBookings(1);
         Assertions.assertNotNull(booking, "Wrong value");
     }
 
     @Test
     void getCustomerTotalBookings() throws SQLException {
-        IPersistence IPersistence = DBHelper.getInstance();
-        BookingService bookingService = new BookingService(IPersistence);
+        BookingService bookingService = new BookingService();
         int totalBooking = bookingService.getCustomerTotalBookings(1);
         Assertions.assertTrue(totalBooking >= 1, "Wrong value");
     }
 
     @Test
     void getDriverTotalBookings() throws SQLException {
-        IPersistence IPersistence = DBHelper.getInstance();
-        BookingService bookingService = new BookingService(IPersistence);
+        BookingService bookingService = new BookingService();
         int totalBooking = bookingService.getDriverTotalBookings(1);
         Assertions.assertTrue(totalBooking >= 1, "Wrong value");
     }

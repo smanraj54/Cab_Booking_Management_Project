@@ -16,16 +16,16 @@ import java.util.Date;
 import java.util.List;
 
 public class DriverHelper {
-    IPersistence IPersistence;
+    IPersistence iPersistence;
 
-    DriverHelper(IPersistence IPersistence) throws SQLException {
-        this.IPersistence = IPersistence;
+    DriverHelper(IPersistence iPersistence) throws SQLException {
+        this.iPersistence = iPersistence;
     }
 
     List<Booking> getUnfinishedBookingLists(int driverId) throws SQLException {
         String q = String.format("select booking_id, cust_id, travel_time, estimated_price, source, destination from bookings where driver_id=%d and is_trip_done=false",
                 driverId);
-        ResultSet resultSet = IPersistence.executeSelectQuery(q);
+        ResultSet resultSet = iPersistence.executeSelectQuery(q);
         List<Booking> bookingsList = new ArrayList<>();
         while (resultSet.next()) {
             int bookingId = resultSet.getInt("booking_id");
@@ -42,7 +42,7 @@ public class DriverHelper {
 
     void markBookingComplete(int bookingId) throws SQLException {
         String q = String.format("update bookings set is_trip_done=true where booking_id=%d", bookingId);
-        IPersistence.executeCreateOrUpdateQuery(q);
+        iPersistence.executeCreateOrUpdateQuery(q);
     }
 
     void completeTrip(int bookingId, int driverId, int custId, double tripAmount, double distanceCovered,
@@ -53,7 +53,7 @@ public class DriverHelper {
                         "driver_id, cust_id, booking_id, trip_amount, distance_covered, " +
                         "trip_start_time, trip_end_time) values(%d, %d, %d, %f, %f, '%s', '%s')",
                 driverId, custId, bookingId, tripAmount, distanceCovered, tripStartTime, tripEndTime);
-        IPersistence.executeCreateOrUpdateQuery(q);
+        iPersistence.executeCreateOrUpdateQuery(q);
     }
 
     java.sql.Date getSQLFormatDate(String dateInStr) throws ParseException {
@@ -63,7 +63,7 @@ public class DriverHelper {
     }
 
     void cancelBooking() throws SQLException {
-        BookingService bookingService = new BookingService(IPersistence);
+        BookingService bookingService = new BookingService();
         Booking booking = bookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
         if (booking == null) {
             System.out.println("You have no booking to cancel.");

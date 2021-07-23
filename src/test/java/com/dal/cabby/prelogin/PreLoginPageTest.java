@@ -11,10 +11,10 @@ import java.util.UUID;
 import static com.dal.cabby.util.Constants.*;
 
 public class PreLoginPageTest {
-    IPersistence IPersistence;
+    IPersistence iPersistence;
     @Test
     void testFlowOfAdmin() throws SQLException {
-        IPersistence = DBHelper.getInstance();
+        iPersistence = DBHelper.getInstance();
         System.out.println("Testing complete flow for Admin");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -25,12 +25,12 @@ public class PreLoginPageTest {
                 .add(LOGIN).add(userName).add(password).add(ADMIN_LOGOUT).add("y").add(EXIT);
 
         PreLoginPage preLoginPage;
-        preLoginPage = new PreLoginPage(inputs, IPersistence);
+        preLoginPage = new PreLoginPage(inputs);
         preLoginPage.start();
     }
 
     @Test
-    void testFlowOfDriver() {
+    void testFlowOfDriver() throws SQLException {
         System.out.println("Testing complete flow for Driver");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -41,12 +41,12 @@ public class PreLoginPageTest {
                 .add(LOGIN).add(userName).add(password).add(DRIVER_LOGOUT).add("y").add(EXIT);
 
         PreLoginPage preLoginPage;
-        preLoginPage = new PreLoginPage(inputs, IPersistence);
+        preLoginPage = new PreLoginPage(inputs);
         preLoginPage.start();
     }
 
     @Test
-    void testFlowOfCustomer() {
+    void testFlowOfCustomer() throws SQLException {
         System.out.println("Testing complete flow for Customer");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -57,7 +57,7 @@ public class PreLoginPageTest {
                 .add(LOGIN).add(userName).add(password).add(CUSTOMER_LOGOUT).add("y").add(EXIT);
 
         PreLoginPage preLoginPage;
-        preLoginPage = new PreLoginPage(inputs, IPersistence);
+        preLoginPage = new PreLoginPage(inputs);
         preLoginPage.start();
     }
 }

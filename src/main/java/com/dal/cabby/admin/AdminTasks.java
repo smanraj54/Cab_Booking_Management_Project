@@ -11,14 +11,14 @@ import java.util.List;
 class AdminTasks {
     private final AdminHelper adminHelper;
     private final Inputs inputs;
-    private IPersistence IPersistence;
+    private IPersistence iPersistence;
     ProfileStatus profileStatus;
 
-    public AdminTasks(AdminHelper adminHelper, Inputs inputs, IPersistence IPersistence) {
+    public AdminTasks(AdminHelper adminHelper, Inputs inputs, IPersistence iPersistence) {
         this.adminHelper = adminHelper;
         this.inputs = inputs;
-        this.IPersistence = IPersistence;
-        profileStatus = new ProfileStatus(IPersistence);
+        this.iPersistence = iPersistence;
+        profileStatus = new ProfileStatus(iPersistence);
     }
 
     void approveDriverAccounts() throws SQLException {
