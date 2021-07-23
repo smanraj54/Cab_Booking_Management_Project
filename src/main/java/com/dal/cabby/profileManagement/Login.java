@@ -2,6 +2,7 @@ package com.dal.cabby.profileManagement;
 
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.util.ConsolePrinter;
 
 import static java.lang.Thread.sleep;
 
@@ -24,11 +25,10 @@ public class Login implements ILogin {
         password = inputPassword();
 
         if(db_operations.validateLoginUser(userNameOrEmail, password, userType)){
-            System.out.println("\n\t\tLogin Successful !!");
             return true;
         }
 
-        System.err.println("\n\t\tLogin Failed !!");
+        ConsolePrinter.printErrorMsg("Login Failed due to invalid credentials.");
         try {
             sleep(100);
         } catch (InterruptedException e) {
@@ -36,7 +36,6 @@ public class Login implements ILogin {
             throw e;
         }
         return false;
-
     }
 
     private String inputUserName(){

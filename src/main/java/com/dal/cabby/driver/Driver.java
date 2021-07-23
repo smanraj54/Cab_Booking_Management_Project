@@ -2,17 +2,23 @@ package com.dal.cabby.driver;
 
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
+import com.dal.cabby.profileManagement.LoggedInProfile;
+import com.dal.cabby.profileManagement.ProfileStatus;
 import com.dal.cabby.util.Common;
 
 import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
+import static com.dal.cabby.util.ConsolePrinter.printErrorMsg;
+import static com.dal.cabby.util.ConsolePrinter.printSuccessMsg;
+
 public class Driver implements IDriver {
     DriverHelper driverHelper;
     private final Inputs inputs;
     private DriverTasks driverTasks;
     private DriverProfileManagement driverProfileManagement;
+    private ProfileStatus profileStatus;
     private IPersistence IPersistence;
 
     public Driver(Inputs inputs, IPersistence IPersistence) throws SQLException, ParseException {
@@ -25,6 +31,7 @@ public class Driver implements IDriver {
         driverHelper = new DriverHelper(IPersistence);
         driverTasks = new DriverTasks(driverHelper, inputs);
         driverProfileManagement = new DriverProfileManagement(driverHelper, inputs);
+        profileStatus = new ProfileStatus(IPersistence);
     }
 
     @Override
@@ -41,7 +48,12 @@ public class Driver implements IDriver {
                 case 1:
                     boolean isLoginSuccessful = driverProfileManagement.login();
                     if (isLoginSuccessful) {
-                        System.out.println("Login successful");
+                        printSuccessMsg("Login successful");
+                        if(!profileStatus.isDriverAproved(LoggedInProfile.getLoggedInId())) {
+                            printErrorMsg("You are in deactivated state rigth now. " +
+                                    "Please contact Fincare customer care: fincare@dal.ca");
+                            return;
+                        }
                         performDriverTasks();
                     }
                     break;

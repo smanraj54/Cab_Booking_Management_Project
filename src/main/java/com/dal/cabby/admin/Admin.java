@@ -13,7 +13,7 @@ public class Admin implements IAdmin {
     private final Inputs inputs;
     private AdminTasks adminTasks;
     private AdminProfileManagement adminProfileManagement;
-    private IPersistence IPersistence;
+    private final IPersistence IPersistence;
 
     public Admin(Inputs inputs, IPersistence IPersistence) throws SQLException {
         this.inputs = inputs;

@@ -2,16 +2,23 @@ package com.dal.cabby.customer;
 
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
+import com.dal.cabby.profileManagement.LoggedInProfile;
+import com.dal.cabby.profileManagement.ProfileStatus;
 import com.dal.cabby.util.Common;
+import com.dal.cabby.util.ConsolePrinter;
 
 import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
+import static com.dal.cabby.util.ConsolePrinter.printErrorMsg;
+import static com.dal.cabby.util.ConsolePrinter.printSuccessMsg;
+
 public class Customer implements ICustomer {
     private final Inputs inputs;
     private CustomerTasks customerTasks;
     private CustomerProfileManagement customerProfileManagement;
+    private ProfileStatus profileStatus;
     private IPersistence IPersistence;
 
     public Customer(Inputs inputs, IPersistence IPersistence) throws SQLException {
@@ -23,6 +30,7 @@ public class Customer implements ICustomer {
     private void initialize() {
         customerTasks = new CustomerTasks(inputs, IPersistence);
         customerProfileManagement = new CustomerProfileManagement(inputs);
+        profileStatus = new ProfileStatus(IPersistence);
     }
 
     @Override
@@ -39,7 +47,12 @@ public class Customer implements ICustomer {
                 case 1:
                     boolean isLoginSuccessful = customerProfileManagement.login();
                     if (isLoginSuccessful) {
-                        System.out.println("Login successful");
+                        printSuccessMsg("Login successful");
+                        if(!profileStatus.isCustomerApproved(LoggedInProfile.getLoggedInId())) {
+                            printErrorMsg("You are in deactivated state rigth now. " +
+                                    "Please contact Fincare customer care: fincare@dal.ca");
+                            return;
+                        }
                         performCustomerTasks();
                     }
                     break;
