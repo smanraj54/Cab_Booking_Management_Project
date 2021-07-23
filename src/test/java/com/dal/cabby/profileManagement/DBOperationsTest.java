@@ -15,6 +15,7 @@ class DBOperationsTest {
     private UserType userType = UserType.CUSTOMER;
     private String queryEmail = "Select * from %s where email = '%s'";
     private String tableName = "customer";
+    private String columnId = "cust_id";
 
     @Test
     void dbUserNameValidationTest() {
@@ -55,7 +56,7 @@ class DBOperationsTest {
             predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
             IRegistration iregistration = new Registration(predefinedInputs);
             iregistration.registerUser(userType);
-            validation = idbOperations.dbContainsEmail(userName, userType);
+            validation = idbOperations.dbContainsEmail(email, userType);
         }
         assertTrue(validation, "db check for email failed");
     }
@@ -113,7 +114,6 @@ class DBOperationsTest {
     void updateEmailPasswordTest() {
 
         IDBOperations idbOperations = new DBOperations(userType);
-        password = Integer.toString((int)(Math.random()*10000));
         idbOperations.updateEmailPassword(email, password, userType);
         boolean validation = idbOperations.validateLoginUser(userName, password, userType);
         if(!validation){
@@ -145,5 +145,18 @@ class DBOperationsTest {
 
     @Test
     void getIDColumnName() {
+
+        IDBOperations idbOperations = new DBOperations(userType);
+        String columnName = idbOperations.getIDColumnName(userType);
+
+        if(!columnName.equals(columnId)){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            columnName = idbOperations.getIDColumnName(userType);
+        }
+
+        assertTrue(columnName.equals(columnId), "column id is wrong while fetching from db");
     }
 }
