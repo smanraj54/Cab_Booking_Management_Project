@@ -15,7 +15,6 @@ import static com.dal.cabby.util.ConsolePrinter.printErrorMsg;
 import static com.dal.cabby.util.ConsolePrinter.printSuccessMsg;
 
 public class Driver implements IDriver {
-    DriverHelper driverHelper;
     private final Inputs inputs;
     private DriverTasks driverTasks;
     private DriverProfileManagement driverProfileManagement;
@@ -29,9 +28,8 @@ public class Driver implements IDriver {
     }
 
     private void intialiaze() throws SQLException {
-        driverHelper = new DriverHelper(iPersistence);
-        driverTasks = new DriverTasks(driverHelper, inputs);
-        driverProfileManagement = new DriverProfileManagement(driverHelper, inputs);
+        driverTasks = new DriverTasks(inputs);
+        driverProfileManagement = new DriverProfileManagement(inputs);
         profileStatus = new ProfileStatus();
     }
 
@@ -50,7 +48,7 @@ public class Driver implements IDriver {
                     boolean isLoginSuccessful = driverProfileManagement.login();
                     if (isLoginSuccessful) {
                         printSuccessMsg("Login successful");
-                        if(!profileStatus.isDriverAproved(LoggedInProfile.getLoggedInId())) {
+                        if (!profileStatus.isDriverAproved(LoggedInProfile.getLoggedInId())) {
                             printErrorMsg("You are in deactivated state rigth now. " +
                                     "Please contact Fincare customer care: fincare@dal.ca");
                             return;
