@@ -3,6 +3,8 @@ package com.dal.cabby.profileManagement;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
 
+import javax.mail.MessagingException;
+
 import static java.lang.Thread.sleep;
 
 public class ForgotPassword {
@@ -14,7 +16,7 @@ public class ForgotPassword {
         this.inputs = inputs;
     }
 
-    public boolean passwordUpdateProcess(UserType userType){
+    public boolean passwordUpdateProcess(UserType userType) throws InterruptedException, MessagingException {
 
         IDBOperations IDBOperations = new DBOperations(userType);
         boolean authenticationPass = false;
@@ -94,7 +96,7 @@ public class ForgotPassword {
         return newPassword;
     }
 
-    private String getEmailfromUser(IDBOperations idbOperations, UserType userType){
+    private String getEmailfromUser(IDBOperations idbOperations, UserType userType) throws InterruptedException {
         String email = null;
         for(int t=0; t<3; t++) {
             System.out.print("\nEnter UserName or Email : ");
@@ -109,17 +111,27 @@ public class ForgotPassword {
                 sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                throw e;
             }
         }
         return email;
     }
 
     private int generateTemporaryPassword(int rangeOfPassword){
+        if(rangeOfPassword<0 || rangeOfPassword > Integer.MAX_VALUE){
+            throw new IndexOutOfBoundsException();
+        }
+
         int tempPass = (int)(Math.random()*rangeOfPassword);
         return tempPass;
     }
 
-    private boolean sendTemporaryPasswordViaEmail(String email, int tempPass){
+    private boolean sendTemporaryPasswordViaEmail(String email, int tempPass) throws MessagingException {
+
+        if(email == null){
+            throw new NullPointerException();
+        }
+
         try{
             SendEmail.sendEmail(email,
                     "Temporary password for RESET!!",
@@ -128,11 +140,11 @@ public class ForgotPassword {
         }
         catch (Exception ee){
             System.out.println(ee);
+            throw ee;
         }
-        return false;
     }
 
-    private boolean checkTemporaryPass(int tempPass ){
+    private boolean checkTemporaryPass(int tempPass ) throws InterruptedException {
         for(int t=0; t<3; t++) {
             if (validateTempPass(tempPass)) {
                 return true;
@@ -142,6 +154,7 @@ public class ForgotPassword {
                 sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                throw e;
             }
         }
         return false;

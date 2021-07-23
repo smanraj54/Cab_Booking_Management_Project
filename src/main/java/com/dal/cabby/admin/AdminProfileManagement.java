@@ -1,10 +1,10 @@
 package com.dal.cabby.admin;
 
-import com.dal.cabby.driver.DriverHelper;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.*;
 
+import javax.mail.MessagingException;
 import java.sql.SQLException;
 
 public class AdminProfileManagement {
@@ -35,7 +35,7 @@ public class AdminProfileManagement {
         return registration.registerUser(UserType.ADMIN);
     }
 
-    boolean forgotPassword() {
+    boolean forgotPassword() throws MessagingException, InterruptedException {
         System.out.println("Welcome to Admin forgot password page");
         ForgotPassword forgotPassword = new ForgotPassword(inputs);
         return forgotPassword.passwordUpdateProcess(UserType.ADMIN);

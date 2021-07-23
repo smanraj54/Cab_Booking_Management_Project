@@ -5,6 +5,7 @@ import com.dal.cabby.io.PredefinedInputs;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.UUID;
@@ -26,6 +27,10 @@ public class CustomerTests {
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
             Assertions.fail(throwables.getMessage());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -47,6 +52,10 @@ public class CustomerTests {
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
             Assertions.fail(throwables.getMessage());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -69,6 +78,10 @@ public class CustomerTests {
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
             Assertions.fail(throwables.getMessage());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -4,8 +4,7 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.*;
 
-import java.sql.SQLException;
-import java.text.ParseException;
+import javax.mail.MessagingException;
 
 public class DriverProfileManagement {
 
@@ -36,7 +35,7 @@ public class DriverProfileManagement {
         return registration.registerUser(UserType.DRIVER);
     }
 
-    public boolean forgotPassword() {
+    public boolean forgotPassword() throws MessagingException, InterruptedException {
         System.out.println("Welcome to Driver forgot password page");
         ForgotPassword forgotPassword = new ForgotPassword(inputs);
         return forgotPassword.passwordUpdateProcess(UserType.DRIVER);
