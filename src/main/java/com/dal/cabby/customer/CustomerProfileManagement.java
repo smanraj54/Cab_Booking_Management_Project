@@ -13,7 +13,7 @@ public class CustomerProfileManagement {
         this.inputs = inputs;
     }
 
-    boolean login() {
+    boolean login() throws InterruptedException {
         System.out.println("Welcome to Customer login page");
         Login login = new Login(inputs);
         if (login.attemptLogin(UserType.CUSTOMER)) {

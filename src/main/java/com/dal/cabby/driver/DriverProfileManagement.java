@@ -16,7 +16,7 @@ public class DriverProfileManagement {
         this.inputs = inputs;
     }
 
-    public boolean login() {
+    public boolean login() throws InterruptedException {
         System.out.println("Welcome to Driver login page");
         Login login = new Login(inputs);
         if (login.attemptLogin(UserType.DRIVER)) {

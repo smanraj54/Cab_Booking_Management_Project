@@ -8,19 +8,19 @@ import static java.lang.Thread.sleep;
 public class Login {
 
     Inputs inputs;
+
     public Login(Inputs inputs){
         this.inputs = inputs;
     }
 
-    public boolean attemptLogin(UserType userType){
+    public boolean attemptLogin(UserType userType) throws InterruptedException {
+
         IDBOperations db_operations = new DBOperations(userType);
         String userNameOrEmail;
         String password;
-        System.out.print("\nEnter UserName or Email : ");
-        userNameOrEmail = inputs.getStringInput();
 
-        System.out.print("\nEnter Password : ");
-        password = inputs.getStringInput();
+        userNameOrEmail = inputUserName();
+        password = inputPassword();
 
         if(db_operations.validateLoginUser(userNameOrEmail, password, userType)){
             System.out.println("\n\t\tLogin Successful !!");
@@ -32,8 +32,25 @@ public class Login {
             sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            throw e;
         }
         return false;
+
+    }
+
+    private String inputUserName(){
+
+        System.out.print("\nEnter UserName or Email : ");
+
+        return(inputs.getStringInput());
+
+    }
+
+    private String inputPassword(){
+
+        System.out.print("\nEnter Password : ");
+
+        return(inputs.getStringInput());
 
     }
 

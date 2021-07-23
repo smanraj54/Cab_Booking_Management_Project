@@ -16,7 +16,7 @@ public class AdminProfileManagement {
         this.inputs = inputs;
     }
 
-    boolean login() throws SQLException {
+    boolean login() throws SQLException, InterruptedException {
         System.out.println("Welcome to Admin login page");
         Login login = new Login(inputs);
         if (login.attemptLogin(UserType.ADMIN)) {
