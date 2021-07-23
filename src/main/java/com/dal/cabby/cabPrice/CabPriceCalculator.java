@@ -6,7 +6,7 @@ import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 
-public class CabPriceCalculator {
+public class CabPriceCalculator implements ICabPriceCalculator{
     IPersistence iPersistence;
     Inputs inputs;
     public CabPriceCalculator(Inputs inputs){
@@ -19,6 +19,7 @@ public class CabPriceCalculator {
     }
     double distance=0.0;
 
+    @Override
     public double priceCalculation(String source, String destination, int cabType, double hour) throws SQLException {
         System.out.println("*** Select your Preferences ***");
         System.out.println("1. Normal Booking");
@@ -39,6 +40,7 @@ public class CabPriceCalculator {
         return -1.0;
     }
 
+    @Override
     public double locationsDistanceFromOrigin(String source,String destination) throws SQLException {
         double sourceDistanceFromOrigin = 0.0;
         double destinationDistanceFromOrigin= 0.0;
@@ -58,6 +60,7 @@ public class CabPriceCalculator {
         return (Math.round(distanceBetweenSourceAndDestination*100.0)/100.0);
     }
 
+    @Override
     public double locationAndCabDistanceFromOrigin(String source,String destination) throws SQLException {
         double sourceDistanceFromOrigin = 0.0;
         double cabDistanceFromOrigin=0.0;
@@ -215,4 +218,5 @@ public class CabPriceCalculator {
         System.out.println(num1);
         System.out.println(Math.round(num*100.0)/100.0);
     }
+
 }
