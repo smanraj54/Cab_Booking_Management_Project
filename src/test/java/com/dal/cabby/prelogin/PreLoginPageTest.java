@@ -1,22 +1,20 @@
 package com.dal.cabby.prelogin;
 
-import com.dal.cabby.admin.Admin;
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.PredefinedInputs;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.UUID;
 
 import static com.dal.cabby.util.Constants.*;
 
 public class PreLoginPageTest {
-    DBHelper dbHelper = new DBHelper();
+    IPersistence IPersistence = new DBHelper();
     @Test
     void testFlowOfAdmin() throws SQLException {
-        dbHelper.initialize();
+        IPersistence.initialize();
         System.out.println("Testing complete flow for Admin");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -27,7 +25,7 @@ public class PreLoginPageTest {
                 .add(LOGIN).add(userName).add(password).add(LOGOUT).add("y").add(EXIT);
 
         PreLoginPage preLoginPage;
-        preLoginPage = new PreLoginPage(inputs, dbHelper);
+        preLoginPage = new PreLoginPage(inputs, IPersistence);
         preLoginPage.start();
     }
 
@@ -43,7 +41,7 @@ public class PreLoginPageTest {
                 .add(LOGIN).add(userName).add(password).add(LOGOUT).add("y").add(EXIT);
 
         PreLoginPage preLoginPage;
-        preLoginPage = new PreLoginPage(inputs, dbHelper);
+        preLoginPage = new PreLoginPage(inputs, IPersistence);
         preLoginPage.start();
     }
 
@@ -59,7 +57,7 @@ public class PreLoginPageTest {
                 .add(LOGIN).add(userName).add(password).add(LOGOUT).add("y").add(EXIT);
 
         PreLoginPage preLoginPage;
-        preLoginPage = new PreLoginPage(inputs, dbHelper);
+        preLoginPage = new PreLoginPage(inputs, IPersistence);
         preLoginPage.start();
     }
 }

@@ -1,16 +1,17 @@
 package com.dal.cabby.rating;
 
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Ratings implements IRatings {
-    DBHelper dbHelper;
+    IPersistence IPersistence;
 
     public Ratings() throws SQLException {
-        dbHelper = new DBHelper();
-        dbHelper.initialize();
+        IPersistence = new DBHelper();
+        IPersistence.initialize();
     }
 
     @Override
@@ -20,7 +21,7 @@ public class Ratings implements IRatings {
         }
         String q = String.format("insert into driver_ratings(driver_id, trip_id, rating) values (%d, %d, %d)",
                 driverId, tripId, rating);
-        dbHelper.executeCreateOrUpdateQuery(q);
+        IPersistence.executeCreateOrUpdateQuery(q);
     }
 
     @Override
@@ -30,13 +31,13 @@ public class Ratings implements IRatings {
         }
         String q = String.format("insert into customer_ratings(cust_id, trip_id, rating) values (%d, %d, %d)",
                 userId, tripId, rating);
-        dbHelper.executeCreateOrUpdateQuery(q);
+        IPersistence.executeCreateOrUpdateQuery(q);
     }
 
     @Override
     public double getAverageRatingOfDriver(int driver_id) throws SQLException {
         String q = String.format("select avg(rating) as avg_rating from driver_ratings where driver_id=%d", driver_id);
-        ResultSet resultSet = dbHelper.executeSelectQuery(q);
+        ResultSet resultSet = IPersistence.executeSelectQuery(q);
         while (resultSet.next()) {
             return resultSet.getDouble("avg_rating");
         }
@@ -46,7 +47,7 @@ public class Ratings implements IRatings {
     @Override
     public double getAverageRatingOfCustomer(int cust_id) throws SQLException {
         String q = String.format("select avg(rating) as avg_rating from customer_ratings where cust_id=%d",cust_id);
-        ResultSet resultSet = dbHelper.executeSelectQuery(q);
+        ResultSet resultSet = IPersistence.executeSelectQuery(q);
         while(resultSet.next()) {
             return resultSet.getDouble("avg_rating");
         }

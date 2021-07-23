@@ -1,31 +1,29 @@
 package com.dal.cabby.booking;
 
-import com.dal.cabby.dbHelper.DBHelper;
-import com.dal.cabby.io.Inputs;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.pojo.Booking;
-import com.dal.cabby.pojo.Profile;
 import com.dal.cabby.pojo.UserType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BookingService {
-    private DBHelper dbHelper;
+    private IPersistence IPersistence;
 
-    public BookingService(DBHelper dbHelper) {
-        this.dbHelper = dbHelper;
+    public BookingService(IPersistence IPersistence) {
+        this.IPersistence = IPersistence;
     }
 
     public void saveBooking(Booking booking) throws SQLException {
         String query = String.format("insert into bookings(driver_id, cust_id, cab_id, travel_time, estimated_price, source, destination) values(%d, %d, %d, '%s', %f, '%s', '%s')",
                 booking.getDriverId(), booking.getCustomerId(), booking.getCabId(), booking.getTravelTime(), booking.getPrice(), booking.getSource(), booking.getDestination());
-        dbHelper.executeCreateOrUpdateQuery(query);
+        IPersistence.executeCreateOrUpdateQuery(query);
         System.out.println("Congratulations!. Your booking is confirmed!");
     }
 
     public Booking getBooking(int booking_id) throws SQLException {
         String query = String.format("select * from bookings where booking_id=%d;", booking_id);
-        ResultSet resultSet = dbHelper.executeSelectQuery(query);
+        ResultSet resultSet = IPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             int customerId = resultSet.getInt("cust_id");
             int driverId = resultSet.getInt("driver_id");
@@ -57,12 +55,12 @@ public class BookingService {
         }
         String query = String.format("update bookings set is_cancelled=%b, has_driver_cancelled=%b, has_customer_cancelled=%b where booking_id=%d;",
                 true, hasDriverCancelled, hasCustomerCancelled, booking_id);
-        dbHelper.executeCreateOrUpdateQuery(query);
+        IPersistence.executeCreateOrUpdateQuery(query);
     }
 
     public Booking getCustomerOpenBooking(int cust_id) throws SQLException {
         String query = String.format("select * from bookings where cust_id=%d and is_trip_done=false;", cust_id);
-        ResultSet resultSet = dbHelper.executeSelectQuery(query);
+        ResultSet resultSet = IPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             int bookingId = resultSet.getInt("booking_id");;
             int customerId = resultSet.getInt("cust_id");
@@ -80,7 +78,7 @@ public class BookingService {
 
     public Booking getDriverOpenBookings(int driver_id) throws SQLException {
         String query = String.format("select * from bookings where driver_id=%d and is_trip_done=false;", driver_id);
-        ResultSet resultSet = dbHelper.executeSelectQuery(query);
+        ResultSet resultSet = IPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             int bookingId = resultSet.getInt("booking_id");;
             int customerId = resultSet.getInt("cust_id");
@@ -97,7 +95,7 @@ public class BookingService {
 
     public int getCustomerTotalBookings(int cust_id) throws SQLException {
         String query = String.format("select count(*) from bookings where cust_id=%d;", cust_id);
-        ResultSet resultSet = dbHelper.executeSelectQuery(query);
+        ResultSet resultSet = IPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             return resultSet.getInt(1);
 
@@ -107,7 +105,7 @@ public class BookingService {
 
     public int getDriverTotalBookings(int driver_id) throws SQLException {
         String query = String.format("select count(*) from bookings where driver_id=%d;", driver_id);
-        ResultSet resultSet = dbHelper.executeSelectQuery(query);
+        ResultSet resultSet = IPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             return resultSet.getInt(1);
         }

@@ -1,6 +1,7 @@
 package com.dal.cabby.admin;
 
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.pojo.Profile;
 
 import java.sql.ResultSet;
@@ -15,24 +16,24 @@ public class AdminHelper {
 
     static String driverProfile = "driver";
     static String customerProfile = "customer";
-    DBHelper dbHelper;
+    IPersistence IPersistence;
 
-    AdminHelper(DBHelper dbHelper) throws SQLException {
-        this.dbHelper = dbHelper;
-        dbHelper.initialize();
+    AdminHelper(IPersistence IPersistence) throws SQLException {
+        this.IPersistence = IPersistence;
+        IPersistence.initialize();
     }
 
     boolean updateStatus(String profileType, boolean newStatus, int id) throws SQLException {
-        DBHelper dbHelper = new DBHelper();
+        IPersistence IPersistence = new DBHelper();
         String query = getQuery(profileType, id, newStatus);
         try {
-            dbHelper.initialize();
-            dbHelper.executeCreateOrUpdateQuery(query);
+            IPersistence.initialize();
+            IPersistence.executeCreateOrUpdateQuery(query);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return false;
         } finally {
-            dbHelper.close();
+            IPersistence.close();
         }
         return true;
     }
@@ -49,7 +50,7 @@ public class AdminHelper {
 
     List<Profile> listOfDriversToBeApproved() throws SQLException {
         String query = "select driver_id, name from driver where status = false order by driver_id desc";
-        ResultSet resultSet = dbHelper.executeSelectQuery(query);
+        ResultSet resultSet = IPersistence.executeSelectQuery(query);
         List<Profile> profileList = new ArrayList<>();
         while (resultSet.next()) {
             int driverId = resultSet.getInt("driver_id");
@@ -61,7 +62,7 @@ public class AdminHelper {
 
     List<Profile> listOfCustomersToBeApproved() throws SQLException {
         String query = "select cust_id, name from customer where status = false order by cust_id desc";
-        ResultSet resultSet = dbHelper.executeSelectQuery(query);
+        ResultSet resultSet = IPersistence.executeSelectQuery(query);
         List<Profile> profileList = new ArrayList<>();
         while (resultSet.next()) {
             int custId = resultSet.getInt("cust_id");

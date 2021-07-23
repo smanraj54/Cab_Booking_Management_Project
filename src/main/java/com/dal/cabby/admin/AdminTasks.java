@@ -1,7 +1,6 @@
 package com.dal.cabby.admin;
 
-import com.dal.cabby.dbHelper.DBHelper;
-import com.dal.cabby.driver.DriverHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Profile;
 
@@ -11,12 +10,12 @@ import java.util.List;
 public class AdminTasks {
     private final AdminHelper adminHelper;
     private final Inputs inputs;
-    private DBHelper dbHelper;
+    private IPersistence IPersistence;
 
-    public AdminTasks(AdminHelper adminHelper, Inputs inputs, DBHelper dbHelper) {
+    public AdminTasks(AdminHelper adminHelper, Inputs inputs, IPersistence IPersistence) {
         this.adminHelper = adminHelper;
         this.inputs = inputs;
-        this.dbHelper = dbHelper;
+        this.IPersistence = IPersistence;
     }
 
     void approveDriverAccounts() throws SQLException {
@@ -31,7 +30,7 @@ public class AdminTasks {
         }
         System.out.println("Enter the driver_id which you want to approve:");
         int driver_id = inputs.getIntegerInput();
-        ApproveProfiles approveProfiles = new ApproveProfiles(dbHelper);
+        ApproveProfiles approveProfiles = new ApproveProfiles(IPersistence);
         approveProfiles.approveProfile(driver_id, AdminHelper.driverProfile);
         System.out.printf("Driver with id: %d is approved in the system\n", driver_id);
     }
@@ -49,7 +48,7 @@ public class AdminTasks {
 
         System.out.println("Enter the customer_id which you want to approve:");
         int cust_id = inputs.getIntegerInput();
-        ApproveProfiles approveProfiles = new ApproveProfiles(dbHelper);
+        ApproveProfiles approveProfiles = new ApproveProfiles(IPersistence);
         approveProfiles.approveProfile(cust_id, AdminHelper.customerProfile);
         System.out.printf("Customer with id: %d is approved in the system\n", cust_id);
     }
@@ -57,7 +56,7 @@ public class AdminTasks {
     void deRegisterCustomer() {
         System.out.println("Enter the customer id:");
         int cust_id = inputs.getIntegerInput();
-        DeRegisterProfiles deRegisterProfile = new DeRegisterProfiles(dbHelper);
+        DeRegisterProfiles deRegisterProfile = new DeRegisterProfiles(IPersistence);
         deRegisterProfile.deRegisterCustomer(cust_id);
         System.out.printf("Customer with id: %d is de-registered in the system\n", cust_id);
     }
@@ -65,7 +64,7 @@ public class AdminTasks {
     void deRegisterDriver() {
         System.out.println("Enter the driver id:");
         int driver_id = inputs.getIntegerInput();
-        DeRegisterProfiles deRegisterProfile = new DeRegisterProfiles(dbHelper);
+        DeRegisterProfiles deRegisterProfile = new DeRegisterProfiles(IPersistence);
         deRegisterProfile.deRegisterDriver(driver_id);
         System.out.printf("Driver with id: %d is de-registered in the system\n", driver_id);
     }

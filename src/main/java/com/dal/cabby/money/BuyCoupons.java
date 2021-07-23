@@ -1,6 +1,7 @@
 package com.dal.cabby.money;
 
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
 
@@ -12,15 +13,15 @@ import java.sql.SQLException;
  * earned points.
  */
 public class BuyCoupons {
-  DBHelper dbHelper;
+  IPersistence IPersistence;
   int requesterID;
   UserType requesterType;
   Inputs inputs;
 
   public BuyCoupons(Inputs inputs) throws SQLException {
     this.inputs = inputs;
-    dbHelper = new DBHelper();
-    dbHelper.initialize();
+    IPersistence = new DBHelper();
+    IPersistence.initialize();
   }
 
   public void getCoupons(int userID, UserType userType) throws SQLException {
@@ -49,7 +50,7 @@ public class BuyCoupons {
   private void displayCoupons() throws SQLException {
     String query = "select coupon_id, coupon_name, coupon_value," +
         "price_in_points from coupons;";
-    ResultSet result = dbHelper.executeSelectQuery(query);
+    ResultSet result = IPersistence.executeSelectQuery(query);
     while (result.next()) {
       int couponID = result.getInt("coupon_id");
       String couponName = result.getString("coupon_name");
@@ -65,7 +66,7 @@ public class BuyCoupons {
         "from user_points \n" +
         "where user_id = %d and upper(user_type) = '%s';",
         requesterID, requesterType);
-    ResultSet resultSet = dbHelper.executeSelectQuery(query);
+    ResultSet resultSet = IPersistence.executeSelectQuery(query);
     int points = 0;
     while (resultSet.next()) {
       points = resultSet.getInt("total_points");
@@ -86,7 +87,7 @@ public class BuyCoupons {
     String query = String.format("select price_in_points \n" +
         "from coupons\n" +
         "where coupon_id = %d;", couponID);
-    ResultSet result = dbHelper.executeSelectQuery(query);
+    ResultSet result = IPersistence.executeSelectQuery(query);
     int points = 0;
     while (result.next()) {
       points = result.getInt("price_in_points");
@@ -113,10 +114,10 @@ public class BuyCoupons {
     String query4 = "commit;";
 
     // executing queries in order
-    dbHelper.executeCreateOrUpdateQuery(query1);
-    dbHelper.executeCreateOrUpdateQuery(query2);
-    dbHelper.executeCreateOrUpdateQuery(query3);
-    dbHelper.executeCreateOrUpdateQuery(query4);
+    IPersistence.executeCreateOrUpdateQuery(query1);
+    IPersistence.executeCreateOrUpdateQuery(query2);
+    IPersistence.executeCreateOrUpdateQuery(query3);
+    IPersistence.executeCreateOrUpdateQuery(query4);
     System.out.println("\nCoupon added in your account successfully");
   }
 }

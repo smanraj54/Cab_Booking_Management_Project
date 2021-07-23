@@ -2,7 +2,7 @@ package com.dal.cabby.dbHelper;
 
 import java.sql.*;
 
-public class DBHelper {
+public class DBHelper implements IPersistence {
     String database;
     String user;
     String password;
@@ -27,16 +27,19 @@ public class DBHelper {
         connUrl = String.format(url, "localhost", this.database);
     }
 
+    @Override
     public void initialize() throws SQLException {
         if(connection == null) {
             connection = DriverManager.getConnection(connUrl, user, password);
         }
     }
 
+    @Override
     public void close() throws SQLException {
         connection.close();
     }
 
+    @Override
     public void executeCreateOrUpdateQuery(String query) throws SQLException {
         if (connection == null) {
             throw new RuntimeException("Please call initialize method in DBHelper before calling this method.");
@@ -45,6 +48,7 @@ public class DBHelper {
         st.executeUpdate(query);
     }
 
+    @Override
     public ResultSet executeSelectQuery(String query) throws SQLException {
         Statement statement = connection.createStatement();
         return statement.executeQuery(query);

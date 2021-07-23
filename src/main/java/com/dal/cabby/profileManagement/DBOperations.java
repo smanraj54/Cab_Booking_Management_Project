@@ -1,6 +1,7 @@
 package com.dal.cabby.profileManagement;
 
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.pojo.UserType;
 
 import java.sql.ResultSet;
@@ -58,10 +59,10 @@ public class DBOperations implements IDBOperations {
         String tableName = getTableName(userType);
         query = String.format(query, tableName, userName);
         String value = null;
-        DBHelper dbHelper = new DBHelper();
+        IPersistence IPersistence = new DBHelper();
         try {
-            dbHelper.initialize();
-            ResultSet resultSet = dbHelper.executeSelectQuery(query);
+            IPersistence.initialize();
+            ResultSet resultSet = IPersistence.executeSelectQuery(query);
             while (resultSet.next()) {
                 value = resultSet.getString(columnName);
                 String idColumnName = getIDColumnName(userType);
@@ -70,7 +71,7 @@ public class DBOperations implements IDBOperations {
                 LoggedInProfile.setLoggedInId(id);
                 LoggedInProfile.setLoggedInName(loggedInName);
             }
-            dbHelper.close();
+            IPersistence.close();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
@@ -84,14 +85,14 @@ public class DBOperations implements IDBOperations {
         String tableName = getTableName(userType);
         query = String.format(query, tableName, email);
         String emailValue = null;
-        DBHelper dbHelper = new DBHelper();
+        IPersistence IPersistence = new DBHelper();
         try {
-            dbHelper.initialize();
-            ResultSet resultSet = dbHelper.executeSelectQuery(query);
+            IPersistence.initialize();
+            ResultSet resultSet = IPersistence.executeSelectQuery(query);
             while (resultSet.next()) {
                 emailValue = resultSet.getString(keywordSearch);
             }
-            dbHelper.close();
+            IPersistence.close();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
@@ -102,26 +103,26 @@ public class DBOperations implements IDBOperations {
     @Override
     public void entryRegistration(DataNode dataNode) {
 
-        DBHelper dbHelper = getDBInstance();
+        IPersistence IPersistence = getDBInstance();
         String tableName = getTableName(dataNode.getUserType());
         String query = String.format("insert into %s (username, name, email, password) value ('%s','%s', '%s', '%s')", tableName, dataNode.getUser(), dataNode.getName(), dataNode.getEmail(), dataNode.getPassword());
         try {
-            dbHelper.executeCreateOrUpdateQuery(query);
-            dbHelper.close();
+            IPersistence.executeCreateOrUpdateQuery(query);
+            IPersistence.close();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
     }
 
-    private DBHelper getDBInstance() {
+    private IPersistence getDBInstance() {
 
-        DBHelper dbHelper = new DBHelper();
+        IPersistence IPersistence = new DBHelper();
         try {
-            dbHelper.initialize();
+            IPersistence.initialize();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-        return dbHelper;
+        return IPersistence;
     }
 
     @Override
@@ -174,13 +175,13 @@ public class DBOperations implements IDBOperations {
     @Override
     public void updateEmailPassword(String email, String newPassword, UserType userType) {
 
-        DBHelper dbHelper = new DBHelper();
+        IPersistence IPersistence = new DBHelper();
         String tableName = getTableName(userType);
         String query = String.format("UPDATE %s set password = '%s'where email = '%s'", tableName, newPassword, email);
         try {
-            dbHelper.initialize();
-            dbHelper.executeCreateOrUpdateQuery(query);
-            dbHelper.close();
+            IPersistence.initialize();
+            IPersistence.executeCreateOrUpdateQuery(query);
+            IPersistence.close();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }

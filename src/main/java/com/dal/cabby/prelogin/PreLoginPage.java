@@ -2,7 +2,7 @@ package com.dal.cabby.prelogin;
 
 import com.dal.cabby.admin.Admin;
 import com.dal.cabby.customer.Customer;
-import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.driver.Driver;
 import com.dal.cabby.io.Inputs;
 
@@ -13,11 +13,11 @@ import java.text.ParseException;
 // Prelogin page when user visit the Cabby app
 public class PreLoginPage {
     Inputs inputs;
-    DBHelper dbHelper;
+    IPersistence IPersistence;
 
-    public PreLoginPage(Inputs inputs, DBHelper dbHelper) {
+    public PreLoginPage(Inputs inputs, IPersistence IPersistence) {
         this.inputs = inputs;
-        this.dbHelper = dbHelper;
+        this.IPersistence = IPersistence;
     }
 
     /* Starting point of Prelogin page. */
@@ -41,15 +41,15 @@ public class PreLoginPage {
 
         switch (input) {
             case 1:
-                Admin admin = new Admin(inputs, dbHelper);
+                Admin admin = new Admin(inputs, IPersistence);
                 admin.performTasks();
                 break;
             case 2:
-                Driver driver = new Driver(inputs, dbHelper);
+                Driver driver = new Driver(inputs, IPersistence);
                 driver.performTasks();
                 break;
             case 3:
-                Customer customer = new Customer(inputs, dbHelper);
+                Customer customer = new Customer(inputs, IPersistence);
                 customer.performTasks();
                 break;
             default:

@@ -1,6 +1,7 @@
 package com.dal.cabby.cabSelection;
 import com.dal.cabby.cabPrice.CabPriceCalculator;
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.InputFromUser;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Booking;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 public class CabSelectionService {
     CabSelectionDAO bestCab;
-    private DBHelper dbHelper;
+    private IPersistence IPersistence;
     private Inputs inputs;
     private CabPriceCalculator cabPriceCalculator;
     private String sourceLocation, destinationLocation;
@@ -19,9 +20,9 @@ public class CabSelectionService {
     public CabSelectionService(Inputs inputs) throws SQLException {
         this.inputs = inputs;
         cabPriceCalculator = new CabPriceCalculator(inputs);
-        dbHelper = new DBHelper();
+        IPersistence = new DBHelper();
         try {
-            dbHelper.initialize();
+            IPersistence.initialize();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -48,7 +49,7 @@ public class CabSelectionService {
     private double fetchSourceLocation() throws SQLException {
         double sourceDistance=0.0;
         String query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", sourceLocation);
-        ResultSet resultSet = dbHelper.executeSelectQuery(query);
+        ResultSet resultSet = IPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             sourceDistance = resultSet.getDouble("distanceFromOrigin");
         }
@@ -61,7 +62,7 @@ public class CabSelectionService {
         String query = String.format("Select cabName, cabId, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
                         "cabSpeedOnRoute,driverGender from cabs where cabDistanceFromOrigin BETWEEN '%f' AND '%f'"
                 , lowerRangeOfCabs, upperRangeOfCabs);
-        ResultSet resultSet = dbHelper.executeSelectQuery(query);
+        ResultSet resultSet = IPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             CabSelectionDAO cabDetail = new CabSelectionDAO(resultSet.getString("cabName"),
                     resultSet.getInt("cabId"), resultSet.getDouble("cabDistanceFromOrigin"),

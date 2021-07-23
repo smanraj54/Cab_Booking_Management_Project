@@ -1,14 +1,14 @@
 package com.dal.cabby.admin;
 
-import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 
 import java.sql.SQLException;
 
 public class ApproveProfiles {
-    private DBHelper dbHelper;
+    private IPersistence IPersistence;
 
-    public ApproveProfiles(DBHelper dbHelper) {
-        this.dbHelper = dbHelper;
+    public ApproveProfiles(IPersistence IPersistence) {
+        this.IPersistence = IPersistence;
     }
 
     /*
@@ -20,7 +20,7 @@ public class ApproveProfiles {
      */
     public boolean approveProfile(int id, String profileType) {
         try {
-            AdminHelper adminHelper = new AdminHelper(dbHelper);
+            AdminHelper adminHelper = new AdminHelper(IPersistence);
             adminHelper.updateStatus(profileType, true, id);
         } catch (SQLException e) {
             e.printStackTrace();
