@@ -7,12 +7,9 @@ import com.dal.cabby.profileManagement.*;
 import javax.mail.MessagingException;
 
 class DriverProfileManagement {
-
-    private final DriverHelper driverHelper;
     private final Inputs inputs;
 
-    public DriverProfileManagement(DriverHelper driverHelper, Inputs inputs) {
-        this.driverHelper = driverHelper;
+    public DriverProfileManagement(Inputs inputs) {
         this.inputs = inputs;
     }
 

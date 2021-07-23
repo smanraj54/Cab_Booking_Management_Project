@@ -7,7 +7,11 @@ import com.dal.cabby.pojo.UserType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BookingService {
@@ -21,7 +25,6 @@ public class BookingService {
         String query = String.format("insert into bookings(driver_id, cust_id, cab_id, travel_time, estimated_price, source, destination) values(%d, %d, %d, '%s', %f, '%s', '%s')",
                 booking.getDriverId(), booking.getCustomerId(), booking.getCabId(), booking.getTravelTime(), booking.getPrice(), booking.getSource(), booking.getDestination());
         iPersistence.executeCreateOrUpdateQuery(query);
-        System.out.println("Congratulations!. Your booking is confirmed!");
     }
 
     public Booking getBooking(int booking_id) throws SQLException {
@@ -63,7 +66,7 @@ public class BookingService {
     }
 
     public Booking getCustomerOpenBooking(int cust_id) throws SQLException {
-        String query = String.format("select * from bookings where cust_id=%d and is_trip_done=false and and is_cancelled=false;", cust_id);
+        String query = String.format("select * from bookings where cust_id=%d and is_trip_done=false and is_cancelled=false;", cust_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             int bookingId = resultSet.getInt("booking_id");;
@@ -116,5 +119,27 @@ public class BookingService {
             return resultSet.getInt(1);
         }
         return -1;
+    }
+
+    public void markBookingComplete(int bookingId) throws SQLException {
+        String q = String.format("update bookings set is_trip_done=true where booking_id=%d", bookingId);
+        iPersistence.executeCreateOrUpdateQuery(q);
+    }
+
+    public void completeTrip(int bookingId, int driverId, int custId, double tripAmount, double distanceCovered,
+                             String tripStartTime, String tripEndTime) throws SQLException, ParseException {
+        java.sql.Date startTime = getSQLFormatDate(tripStartTime);
+        java.sql.Date endTime = getSQLFormatDate(tripEndTime);
+        String q = String.format("insert into trips(" +
+                        "driver_id, cust_id, booking_id, trip_amount, distance_covered, " +
+                        "trip_start_time, trip_end_time) values(%d, %d, %d, %f, %f, '%s', '%s')",
+                driverId, custId, bookingId, tripAmount, distanceCovered, tripStartTime, tripEndTime);
+        iPersistence.executeCreateOrUpdateQuery(q);
+    }
+
+    java.sql.Date getSQLFormatDate(String dateInStr) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = formatter.parse(dateInStr);
+        return new java.sql.Date(date.getTime());
     }
 }

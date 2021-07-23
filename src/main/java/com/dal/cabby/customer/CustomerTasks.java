@@ -64,16 +64,29 @@ class CustomerTasks {
         booking.setTravelTime(travelTime);
         BookingService bookingService = new BookingService();
         bookingService.saveBooking(booking);
+        ConsolePrinter.printSuccessMsg("Congratulations!. Your booking is confirmed!");
+        String bookingDetails = String.format("Booking details: Source: %s , Destination: %s , Travel time: %s, Fare: %f" ,
+                booking.getSource(), booking.getDestination(), booking.getTravelTime(), booking.getPrice());
+        ConsolePrinter.printOutput(bookingDetails);
     }
 
     void cancelBooking() throws SQLException {
         BookingService bookingService = new BookingService();
         Booking booking = bookingService.getCustomerOpenBooking(LoggedInProfile.getLoggedInId());
         if (booking == null) {
-            System.out.println("You have no booking to cancel.");
+            ConsolePrinter.printOutput("You have no booking to cancel.");
+            return;
+        }
+        System.out.println("Do you want to cancel this booking?(y/n)");
+        String bookingDetails = String.format("Booking details: Source: %s , Destination: %s , Travel time: %s, Fare: %f" ,
+                booking.getSource(), booking.getDestination(), booking.getTravelTime(), booking.getPrice());
+        ConsolePrinter.printOutput(bookingDetails);
+        String input = inputs.getStringInput();
+        if (!input.equalsIgnoreCase("y")) {
             return;
         }
         bookingService.cancelBooking(booking.getBookingId(), UserType.CUSTOMER);
+        ConsolePrinter.printSuccessMsg("Your booking is cancelled successfully");
     }
 
     void showRides() throws SQLException {
