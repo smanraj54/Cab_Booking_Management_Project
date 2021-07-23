@@ -3,14 +3,16 @@ package com.dal.cabby.booking;
 import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.util.List;
 
 class BookingServiceTest {
-    @Test
-    void saveBooking() throws SQLException {
+
+    @BeforeAll
+    static void saveBooking() throws SQLException {
         BookingService bookingService = new BookingService();
         Booking booking = new Booking();
         booking.setDriverId(1);
