@@ -7,6 +7,7 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Booking;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ArrayList;
 
 public class CabSelectionService {
@@ -15,7 +16,7 @@ public class CabSelectionService {
     private Inputs inputs;
     private CabPriceCalculator cabPriceCalculator;
     private String sourceLocation, destinationLocation;
-    private ArrayList<CabSelectionDAO> cabDetails = new ArrayList<>();
+    private List<CabSelectionDAO> cabDetails = new ArrayList<>();
 
     public CabSelectionService(Inputs inputs) throws SQLException {
         this.inputs = inputs;
@@ -55,7 +56,7 @@ public class CabSelectionService {
         return sourceDistance;
     }
 
-    private ArrayList<CabSelectionDAO> getAllNearbyCabs() throws SQLException {
+    private List<CabSelectionDAO> getAllNearbyCabs() throws SQLException {
         double lowerRangeOfCabs = (fetchSourceLocation() - 5);
         double upperRangeOfCabs = (fetchSourceLocation() + 5);
         String query = String.format("Select cabName, cabId, cabDistanceFromOrigin, driver_id, routeTrafficDensity, " +
@@ -88,8 +89,8 @@ public class CabSelectionService {
     }
 
     private CabSelectionDAO withGenderPreference() throws SQLException {
-        ArrayList<String> maleArrayList = new ArrayList<>();
-        ArrayList<String> femaleArrayList = new ArrayList<>();
+        List<String> maleArrayList = new ArrayList<>();
+        List<String> femaleArrayList = new ArrayList<>();
         String gender;
         System.out.println("Select your gender preference");
         System.out.println("1. Male ");
@@ -125,7 +126,7 @@ public class CabSelectionService {
     }
 
     private CabSelectionDAO withoutGenderPreference() throws SQLException {
-        ArrayList<String> arrayList = new ArrayList<>();
+        List<String> arrayList = new ArrayList<>();
         for (CabSelectionDAO cabDetail : cabDetails) {
             arrayList.add(cabDetail.cabName);
         } /*
@@ -140,7 +141,7 @@ public class CabSelectionService {
     }
 
     private CabSelectionDAO bestNearbyCabOfMaleDriver() throws SQLException {
-        ArrayList<Double> maleDriverTimeToReach = new ArrayList<>();
+        List<Double> maleDriverTimeToReach = new ArrayList<>();
         String gender;
         CabSelectionDAO selectedCab = null;
         double min = Double.MAX_VALUE;
@@ -161,7 +162,7 @@ public class CabSelectionService {
     }
 
     private CabSelectionDAO bestNearbyCabOfFemaleDriver() throws SQLException {
-        ArrayList<Double> femaleDriverTimeToReach = new ArrayList<>();
+        List<Double> femaleDriverTimeToReach = new ArrayList<>();
         String gender;
         CabSelectionDAO selectedCab = null;
         double min = Double.MAX_VALUE;
@@ -182,7 +183,7 @@ public class CabSelectionService {
     }
 
     private CabSelectionDAO bestNearbyCabWithoutFilter() {
-        ArrayList<Double> timeToReach = new ArrayList<>();
+        List<Double> timeToReach = new ArrayList<>();
         CabSelectionDAO selectedCab = null;
         double min = Double.MAX_VALUE;
         for (CabSelectionDAO cabDetail : cabDetails) {

@@ -20,7 +20,6 @@ public class CabPriceCalculator {
     double distance=0.0;
 
     public double priceCalculation(String source, String destination, int cabType, double hour) throws SQLException {
-        double distance=0.0;
         System.out.println("*** Select your Preferences ***");
         System.out.println("1. Normal Booking");
         System.out.println("2. Want to share ride with co-passenger");
