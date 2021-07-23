@@ -4,6 +4,8 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.*;
 
+import javax.mail.MessagingException;
+
 public class CustomerProfileManagement {
     final private Inputs inputs;
 
@@ -30,7 +32,7 @@ public class CustomerProfileManagement {
         return registration.registerUser(UserType.CUSTOMER);
     }
 
-    boolean forgotPassword() {
+    boolean forgotPassword() throws MessagingException, InterruptedException {
         System.out.println("Welcome to Customer forgot password page");
         ForgotPassword forgotPassword = new ForgotPassword(inputs);
         return forgotPassword.passwordUpdateProcess(UserType.CUSTOMER);

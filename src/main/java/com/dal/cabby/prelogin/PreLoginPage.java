@@ -6,6 +6,7 @@ import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.driver.Driver;
 import com.dal.cabby.io.Inputs;
 
+import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
@@ -34,7 +35,7 @@ public class PreLoginPage {
         System.out.println("***** Cabby App: A one stop app for your cab booking *****\n");
     }
 
-    private void page1() throws SQLException, ParseException {
+    private void page1() throws SQLException, ParseException, MessagingException, InterruptedException {
         System.out.println("Are you: \n1: Admin\n2: Driver\n3: Customer");
         int input = inputs.getIntegerInput();
 

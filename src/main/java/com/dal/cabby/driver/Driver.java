@@ -4,6 +4,7 @@ import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.util.Common;
 
+import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
@@ -27,12 +28,12 @@ public class Driver implements IDriver {
     }
 
     @Override
-    public void performTasks() throws SQLException, ParseException {
+    public void performTasks() throws SQLException, ParseException, MessagingException, InterruptedException {
         profileManagementTasks();
     }
 
     @Override
-    public void profileManagementTasks() throws SQLException, ParseException {
+    public void profileManagementTasks() throws SQLException, ParseException, MessagingException, InterruptedException {
         while (true) {
             Common.page1Options();
             int input = inputs.getIntegerInput();
