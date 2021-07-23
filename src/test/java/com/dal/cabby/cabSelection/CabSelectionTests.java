@@ -48,7 +48,7 @@ public class CabSelectionTests {
         /*
           a. Total distance = 39KM (Price for distance= 144)
           b. 10% extra charge for Prime Sedan Cab type  => (10% of 144)= 14.4
-          c. 5% extra charge for Urban area as Sydney comes in Urban area
+          c. 5% extra charge for Urban area as Sydney comes in Urban area=7.92
           d. Ride is not during office hours so no extra charge for this parameters
          */
         double expectedPrice=166.32;
@@ -64,8 +64,9 @@ public class CabSelectionTests {
         /*
           a. Total distance = 91KM (Price for distance= 326)
           b. Cab type is prime Sedan so 10% extra charge => (10% of 326)= 32.6
-          c. Ride is not during office hours and Source area is also Rural so no extra charge for these parameters
-          d. 10% of discount on total amount, upon sharing ride with co passenger
+          c. Ride is not during office hours so no extra charge for this parameter.
+          d. Source area is Rural so no extra charge for this parameter.
+          e. 10% of discount on sharing ride with 1 co-passenger = 35.86
          */
         double expectedPrice=322.74;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
@@ -79,8 +80,9 @@ public class CabSelectionTests {
         Booking booking=cabSelectionService.preferredCab(1,20);
         /* a. Total distance = 12KM (Price for distance= 49.5)
            b. Cab type is prime Sedan so 10% extra charge => (10% of 49.5)= 4.95
-           c. Ride is not during office hours and Source area is also Rural so no extra charge for these parameters
-           d. Extra charge for availing both amenities = 3.5555555555555554
+           c. Ride is not during office hours so no extra charge for this parameter.
+           d. Source area is Rural so no extra charge for this parameter.
+           e. Extra charge for availing both amenities = 3.5555555555555554
         */
         double expectedPrice=58.00555555555556;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
@@ -94,7 +96,7 @@ public class CabSelectionTests {
         Booking booking=cabSelectionService.preferredCab(1,20);
         /* a. Total distance = 113KM (Price for distance= 403)
            b. Cab type is prime SUV so 25% extra charge => (25% of 403 )= 100.75
-           c. 5% extra charge for Urban area as Toronto comes in Urban area
+           c. 5% extra charge for Urban area as Toronto comes in Urban area = 25.1875
            d. Ride is not during office hours so no extra charge for this parameters
         */
         double expectedPrice=528.9375;
@@ -109,9 +111,9 @@ public class CabSelectionTests {
         Booking booking=cabSelectionService.preferredCab(1,20);
         /* a. Total distance = 26KM (Price for distance= 98.5)
            b. Cab type is prime SUV so 25% extra charge => (25% of 98.5 )= 24.625
-           c. 5% extra charge for Urban area as Sydney comes in Urban area
+           c. 5% extra charge for Urban area as Sydney comes in Urban area = 6.15625
            d. Ride is not during office hours so no extra charge for this parameters
-           e. 15% discount on sharing ride with co-passenger
+           e. 15% discount on sharing ride with 2 co-passengers = 19.39
         */
         double expectedPrice=109.8890625;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
@@ -125,11 +127,43 @@ public class CabSelectionTests {
         Booking booking=cabSelectionService.preferredCab(1,20);
         /* a. Total distance = 45KM (Price for distance= 165)
            b. Cab type is prime SUV so 25% extra charge => (25% of 165 )= 41.25
-           c. 5% extra charge for Urban area as Halifax comes in Urban area
+           c. 5% extra charge for Urban area as Halifax comes in Urban area =10.3125
            d. Ride is not during office hours so no extra charge for this parameters
-           e. 2% extra charge per 30 minutes of ride as availing Wifi service during ride
+           e. Extra charge for availing Wifi service during ride = 7.2
         */
         double expectedPrice=223.7625;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
     }
+
+    @Test
+    void luxuryClassNormalBookingTest() throws SQLException {
+        PredefinedInputs inputs = new PredefinedInputs();
+        inputs.add(4).add("Toronto").add("Montreal").add(1).add(2).add(1);
+        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
+        Booking booking=cabSelectionService.preferredCab(1,20);
+        /* a. Total distance = 338 KM (Price for distance= 1190.5)
+           b. Cab type is LUXURY Class so 40% extra charge => (40% of 1190.5 )= 476.2
+           c. 5% extra charge for Urban area as Toronto comes in Urban area = 83.335
+           d. Ride is not during office hours so no extra charge for this parameters
+        */
+        double expectedPrice=1750.035;
+        Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
+    }
+
+    @Test
+    void luxuryClassRideSharingTest() throws SQLException {
+        PredefinedInputs inputs = new PredefinedInputs();
+        inputs.add(4).add("Halifax").add("Winnipeg").add(1).add(2).add(2).add(2);
+        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
+        Booking booking=cabSelectionService.preferredCab(1,20);
+        /* a. Total distance = 45KM (Price for distance= 165)
+           b. Cab type is LUXURY Class so 40% extra charge => (40% of 165 )= 66
+           c. 5% extra charge for Urban area as Halifax comes in Urban area = 11.55
+           d. Ride is not during office hours so no extra charge for this parameters
+           e. 15% discount on sharing ride with 2 co-passengers = 36.38
+        */
+        double expectedPrice=206.16750000000002;
+        Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
+    }
+
 }
