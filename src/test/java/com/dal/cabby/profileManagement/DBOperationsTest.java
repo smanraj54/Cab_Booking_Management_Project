@@ -88,12 +88,24 @@ class DBOperationsTest {
             validation = idbOperations.validateLoginUser(userName, password, userType);
         }
 
-        assertTrue(validation, "email extraction from db failed");
+        assertTrue(validation, "user validation failed with correct credentials");
 
     }
 
     @Test
-    void fetchEmailForAuthentication() {
+    void fetchEmailForAuthenticationTest() {
+
+        IDBOperations idbOperations = new DBOperations(userType);
+        String emailForAuthentication = idbOperations.fetchEmailForAuthentication(userName, userType);
+        if(!emailForAuthentication.equals(email)){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            emailForAuthentication = idbOperations.fetchEmailForAuthentication(userName, userType);
+        }
+
+        assertTrue(emailForAuthentication.equals(email), "email extraction using username failed from db");
     }
 
     @Test
