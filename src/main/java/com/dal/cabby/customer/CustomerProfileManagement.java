@@ -34,8 +34,8 @@ public class CustomerProfileManagement {
 
     boolean forgotPassword() throws MessagingException, InterruptedException {
         System.out.println("Welcome to Customer forgot password page");
-        ForgotPassword forgotPassword = new ForgotPassword(inputs);
-        return forgotPassword.passwordUpdateProcess(UserType.CUSTOMER);
+        IForgotPassword IForgotPassword = new ForgotPassword(inputs);
+        return IForgotPassword.passwordUpdateProcess(UserType.CUSTOMER);
     }
 
     boolean logout() {

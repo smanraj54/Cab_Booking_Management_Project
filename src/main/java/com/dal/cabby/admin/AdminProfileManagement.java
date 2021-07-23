@@ -37,8 +37,8 @@ public class AdminProfileManagement {
 
     boolean forgotPassword() throws MessagingException, InterruptedException {
         System.out.println("Welcome to Admin forgot password page");
-        ForgotPassword forgotPassword = new ForgotPassword(inputs);
-        return forgotPassword.passwordUpdateProcess(UserType.ADMIN);
+        IForgotPassword IForgotPassword = new ForgotPassword(inputs);
+        return IForgotPassword.passwordUpdateProcess(UserType.ADMIN);
     }
 
     boolean logout() {

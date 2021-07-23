@@ -37,8 +37,8 @@ public class DriverProfileManagement {
 
     public boolean forgotPassword() throws MessagingException, InterruptedException {
         System.out.println("Welcome to Driver forgot password page");
-        ForgotPassword forgotPassword = new ForgotPassword(inputs);
-        return forgotPassword.passwordUpdateProcess(UserType.DRIVER);
+        IForgotPassword IForgotPassword = new ForgotPassword(inputs);
+        return IForgotPassword.passwordUpdateProcess(UserType.DRIVER);
     }
 
     boolean logout() {
