@@ -1,6 +1,6 @@
 package com.dal.cabby.driver;
 
-import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.util.Common;
 
@@ -13,16 +13,16 @@ public class Driver implements IDriver {
     private final Inputs inputs;
     private DriverTasks driverTasks;
     private DriverProfileManagement driverProfileManagement;
-    private DBHelper dbHelper;
+    private IPersistence IPersistence;
 
-    public Driver(Inputs inputs, DBHelper dbHelper) throws SQLException, ParseException {
+    public Driver(Inputs inputs, IPersistence IPersistence) throws SQLException, ParseException {
         this.inputs = inputs;
-        this.dbHelper = dbHelper;
+        this.IPersistence = IPersistence;
         intialiaze();
     }
 
     private void intialiaze() throws SQLException {
-        driverHelper = new DriverHelper(dbHelper);
+        driverHelper = new DriverHelper(IPersistence);
         driverTasks = new DriverTasks(driverHelper, inputs);
         driverProfileManagement = new DriverProfileManagement(driverHelper, inputs);
     }

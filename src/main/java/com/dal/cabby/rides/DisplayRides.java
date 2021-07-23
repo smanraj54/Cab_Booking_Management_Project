@@ -1,6 +1,7 @@
 package com.dal.cabby.rides;
 
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
 
@@ -8,14 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DisplayRides {
-    DBHelper dbHelper;
+    IPersistence IPersistence;
     private UserType requesterType;
     private int requesterID;
     Inputs inputs;
     public DisplayRides(Inputs inputs) throws SQLException {
         this.inputs = inputs;
-        dbHelper = new DBHelper();
-        dbHelper.initialize();
+        IPersistence = new DBHelper();
+        IPersistence.initialize();
     }
 
     public void getRides(UserType userType, int userID) throws SQLException {
@@ -111,7 +112,7 @@ public class DisplayRides {
                 "where cast(trips.created_at as date) between '%s' and '%s' \n" +
                 "and trips.%s = %d\n" +
                 "order by trips.booking_id;", startDate, endDate, getColumnName(userType), userID);
-        ResultSet result = dbHelper.executeSelectQuery(query);
+        ResultSet result = IPersistence.executeSelectQuery(query);
         System.out.println("\nRide Details -> ");
         while (result.next()) {
             String bookingID = result.getString("booking_id");
@@ -147,7 +148,7 @@ public class DisplayRides {
     private String getLastDay(String inputDate) throws SQLException {
         String date = "";
         String query = String.format("select last_day('%s') as last_date", inputDate);
-        ResultSet result = dbHelper.executeSelectQuery(query);
+        ResultSet result = IPersistence.executeSelectQuery(query);
         while (result.next()) {
             date = result.getString("last_date");
         }
@@ -158,7 +159,7 @@ public class DisplayRides {
     private int getDateDifference(String startDate, String endDate) throws SQLException {
         int dateDifference = 0;
         String query = String.format("select datediff('%s','%s') as date_difference", endDate, startDate);
-        ResultSet result = dbHelper.executeSelectQuery(query);
+        ResultSet result = IPersistence.executeSelectQuery(query);
         while (result.next()) {
             dateDifference = result.getInt("date_difference");
         }

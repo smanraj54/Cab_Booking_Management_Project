@@ -1,6 +1,6 @@
 package com.dal.cabby.admin;
 
-import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 
 import java.sql.SQLException;
 
@@ -11,14 +11,14 @@ import java.sql.SQLException;
 */
 public class DeRegisterProfiles {
 
-    private DBHelper dbHelper;
-    DeRegisterProfiles(DBHelper dbHelper) {
-        this.dbHelper = dbHelper;
+    private IPersistence IPersistence;
+    DeRegisterProfiles(IPersistence IPersistence) {
+        this.IPersistence = IPersistence;
     }
     // Deactivate the customer profile.
     public boolean deRegisterCustomer(int cust_id) {
         try {
-            AdminHelper adminHelper = new AdminHelper(dbHelper);
+            AdminHelper adminHelper = new AdminHelper(IPersistence);
             adminHelper.updateStatus(AdminHelper.customerProfile, false, cust_id);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -30,7 +30,7 @@ public class DeRegisterProfiles {
     // Deactivate the driver profile.
     public boolean deRegisterDriver(int driver_id) {
         try {
-            AdminHelper adminHelper = new AdminHelper(dbHelper);
+            AdminHelper adminHelper = new AdminHelper(IPersistence);
             adminHelper.updateStatus(AdminHelper.driverProfile, false, driver_id);
         } catch (SQLException e) {
             e.printStackTrace();

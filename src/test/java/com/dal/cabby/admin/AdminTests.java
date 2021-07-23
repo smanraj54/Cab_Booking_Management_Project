@@ -1,6 +1,7 @@
 package com.dal.cabby.admin;
 
 import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.PredefinedInputs;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,16 +14,16 @@ import java.util.UUID;
 import static com.dal.cabby.util.Constants.*;
 
 public class AdminTests {
-    DBHelper dbHelper = new DBHelper();
+    IPersistence IPersistence = new DBHelper();
     @Test
     void testExit() throws SQLException {
-        dbHelper.initialize();
+        IPersistence.initialize();
         System.out.println("Testing simple exit flow for Admin");
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(EXIT);
         Admin admin;
         try {
-            admin = new Admin(inputs, dbHelper);
+            admin = new Admin(inputs, IPersistence);
             admin.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
@@ -36,7 +37,7 @@ public class AdminTests {
 
     @Test
     void testRegistration() throws SQLException {
-        dbHelper.initialize();
+        IPersistence.initialize();
         System.out.println("Testing resgitration flow for Admin");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -47,7 +48,7 @@ public class AdminTests {
 
         Admin admin;
         try {
-            admin = new Admin(inputs, dbHelper);
+            admin = new Admin(inputs, IPersistence);
             admin.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
@@ -61,7 +62,7 @@ public class AdminTests {
 
     @Test
     void testLogin() throws SQLException {
-        dbHelper.initialize();
+        IPersistence.initialize();
         System.out.println("Testing login flow for Admin");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -73,7 +74,7 @@ public class AdminTests {
 
         Admin admin;
         try {
-            admin = new Admin(inputs, dbHelper);
+            admin = new Admin(inputs, IPersistence);
             admin.performTasks();
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();

@@ -2,7 +2,7 @@ package com.dal.cabby.customer;
 
 import com.dal.cabby.booking.BookingService;
 import com.dal.cabby.cabSelection.CabSelectionService;
-import com.dal.cabby.dbHelper.DBHelper;
+import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.money.BuyCoupons;
 import com.dal.cabby.pojo.Booking;
@@ -16,11 +16,11 @@ import java.sql.SQLException;
 
 public class CustomerTasks {
     private final Inputs inputs;
-    DBHelper dbHelper;
+    IPersistence IPersistence;
 
-    public CustomerTasks(Inputs inputs, DBHelper dbHelper) {
+    public CustomerTasks(Inputs inputs, IPersistence IPersistence) {
         this.inputs = inputs;
-        this.dbHelper = dbHelper;
+        this.IPersistence = IPersistence;
     }
 
     void rateDriver() throws SQLException {
@@ -47,12 +47,12 @@ public class CustomerTasks {
         Booking booking = cabSelectionService.preferredCab(custId, hour);
         booking.setCustomerId(custId);
         booking.setTravelTime(travelTime);
-        BookingService bookingService = new BookingService(dbHelper);
+        BookingService bookingService = new BookingService(IPersistence);
         bookingService.saveBooking(booking);
     }
 
     void cancelBooking() throws SQLException {
-        BookingService bookingService = new BookingService(dbHelper);
+        BookingService bookingService = new BookingService(IPersistence);
         Booking booking = bookingService.getCustomerOpenBooking(LoggedInProfile.getLoggedInId());
         if (booking == null) {
             System.out.println("You have no booking to cancel.");
