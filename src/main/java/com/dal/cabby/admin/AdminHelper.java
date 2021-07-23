@@ -1,6 +1,5 @@
 package com.dal.cabby.admin;
 
-import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.pojo.Profile;
 
@@ -20,20 +19,15 @@ public class AdminHelper {
 
     AdminHelper(IPersistence IPersistence) throws SQLException {
         this.IPersistence = IPersistence;
-        IPersistence.initialize();
     }
 
     boolean updateStatus(String profileType, boolean newStatus, int id) throws SQLException {
-        IPersistence IPersistence = new DBHelper();
         String query = getQuery(profileType, id, newStatus);
         try {
-            IPersistence.initialize();
             IPersistence.executeCreateOrUpdateQuery(query);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return false;
-        } finally {
-            IPersistence.close();
         }
         return true;
     }

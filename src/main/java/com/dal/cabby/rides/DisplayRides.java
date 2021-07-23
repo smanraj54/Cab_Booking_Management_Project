@@ -15,8 +15,7 @@ public class DisplayRides {
     Inputs inputs;
     public DisplayRides(Inputs inputs) throws SQLException {
         this.inputs = inputs;
-        IPersistence = new DBHelper();
-        IPersistence.initialize();
+        IPersistence = DBHelper.getInstance();
     }
 
     public void getRides(UserType userType, int userID) throws SQLException {

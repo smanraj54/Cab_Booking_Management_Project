@@ -68,39 +68,42 @@ public class Driver implements IDriver {
     @Override
     public void performDriverTasks() throws SQLException, ParseException {
         while (true) {
-            System.out.println("1. Start trip");
-            System.out.println("2. View previous rides");
-            System.out.println("3. View incomes");
-            System.out.println("4. Rate customer for the trip");
-            System.out.println("5. View your current rating");
-            System.out.println("6. Buy Coupons");
-            System.out.println("7. Logout");
+            System.out.println("1. Logout");
+            System.out.println("2. Start trip");
+            System.out.println("3. View previous rides");
+            System.out.println("4. View incomes");
+            System.out.println("5. Rate customer for the trip");
+            System.out.println("6. View your current rating");
+            System.out.println("7. Buy Coupons");
             System.out.println("8. Cancel booking");
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    driverTasks.startTrip();
-                    break;
-                case 2:
-                    driverTasks.viewRides();
-                    break;
-                case 3:
-                    driverTasks.viewIncomes();
-                    break;
-                case 4:
-                    driverTasks.rateCustomer();
-                    break;
-                case 5:
-                    driverTasks.viewRatings();
-                    break;
-                case 6:
-                    driverTasks.buyCoupons();
-                    break;
-                case 7:
                     boolean isLogoutSuccessful = driverProfileManagement.logout();
                     if (isLogoutSuccessful) {
                         return;
                     }
+                    break;
+                case 2:
+                    driverTasks.startTrip();
+                    break;
+                case 3:
+                    driverTasks.viewRides();
+                    break;
+                case 4:
+                    driverTasks.viewIncomes();
+                    break;
+                case 5:
+                    driverTasks.rateCustomer();
+                    break;
+                case 6:
+                    driverTasks.viewRatings();
+                    break;
+                case 7:
+                    driverTasks.buyCoupons();
+                    break;
+                case 8:
+                    System.out.println("Not implemented yet.");
                     break;
                 default:
                     System.out.println("\nInvalid Input");

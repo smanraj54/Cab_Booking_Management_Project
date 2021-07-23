@@ -10,25 +10,33 @@ public class DBHelper implements IPersistence {
     String connUrl;
     String url = "jdbc:mysql://%s:3306/%s?useSSL=false&allowPublicKeyRetrieval=true";
     private String DEFAULT_MYSQL_USERNAME = "root";
-    private String DEFAULT_MYSQL_PASSWORD = "root@123";
+    private String DEFAULT_MYSQL_PASSWORD = "mysql@789";
     private String DEFAULT_MYSQL_DATABASE = "cabby";
+    private static DBHelper dbHelper;
 
-    public DBHelper() {
+    public static DBHelper getInstance() throws SQLException {
+        if(dbHelper == null) {
+            dbHelper = new DBHelper();
+            dbHelper.initialize();
+        }
+        return dbHelper;
+    }
+
+    private DBHelper() {
         this.database = DEFAULT_MYSQL_DATABASE;
         this.user = DEFAULT_MYSQL_USERNAME;
         this.password = DEFAULT_MYSQL_PASSWORD;
         connUrl = String.format(url, "localhost", this.database);
     }
 
-    public DBHelper(String user, String password) {
+    private DBHelper(String user, String password) {
         this.database = "cabby";
         this.user = user;
         this.password = password;
         connUrl = String.format(url, "localhost", this.database);
     }
 
-    @Override
-    public void initialize() throws SQLException {
+    private void initialize() throws SQLException {
         if(connection == null) {
             connection = DriverManager.getConnection(connUrl, user, password);
         }

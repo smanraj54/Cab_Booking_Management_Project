@@ -10,8 +10,7 @@ public class Ratings implements IRatings {
     IPersistence IPersistence;
 
     public Ratings() throws SQLException {
-        IPersistence = new DBHelper();
-        IPersistence.initialize();
+        IPersistence = DBHelper.getInstance();
     }
 
     @Override

@@ -14,11 +14,11 @@ import java.util.UUID;
 import static com.dal.cabby.util.Constants.*;
 
 public class DriverTests {
-    IPersistence IPersistence = new DBHelper();
+    IPersistence IPersistence;
 
     @Test
     void testExit() throws SQLException {
-        IPersistence.initialize();
+        IPersistence = DBHelper.getInstance();
         System.out.println("Testing simple exit flow for driver");
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(EXIT);
@@ -69,7 +69,7 @@ public class DriverTests {
         String password = UUID.randomUUID().toString();
         String email = String.format("%s@gmail.com", name);
         inputs.add(REGISTRATION).add(name).add(email).add(userName).add(password)
-                .add(password).add(LOGIN).add(userName).add(password).add(LOGOUT).add("y").add(EXIT);
+                .add(password).add(LOGIN).add(userName).add(password).add(DRIVER_LOGOUT).add("y").add(EXIT);
 
         Driver driver;
         try {

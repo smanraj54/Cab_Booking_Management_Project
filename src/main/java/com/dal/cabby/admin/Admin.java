@@ -68,30 +68,31 @@ public class Admin implements IAdmin {
     @Override
     public void performAdminTasks() throws SQLException, ParseException {
         while (true) {
-            System.out.println("1. Approve Drivers");
-            System.out.println("2. Approve Customers");
-            System.out.println("3. Deregister drivers");
-            System.out.println("4. Deregister customers");
-            System.out.println("5. Logout");
+            System.out.println("1. Logout");
+            System.out.println("2. Approve Drivers");
+            System.out.println("3. Approve Customers");
+            System.out.println("4. Deregister drivers");
+            System.out.println("5. Deregister customers");
+
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    adminTasks.approveDriverAccounts();
-                    break;
-                case 2:
-                    adminTasks.approveCustomerAccounts();
-                    break;
-                case 3:
-                    adminTasks.deRegisterDriver();
-                    break;
-                case 4:
-                    adminTasks.deRegisterCustomer();
-                    break;
-                case 5:
                     boolean isLogoutSuccessful = adminProfileManagement.logout();
                     if (isLogoutSuccessful) {
                         return;
                     }
+                    break;
+                case 2:
+                    adminTasks.approveDriverAccounts();
+                    break;
+                case 3:
+                    adminTasks.approveCustomerAccounts();
+                    break;
+                case 4:
+                    adminTasks.deRegisterDriver();
+                    break;
+                case 5:
+                    adminTasks.deRegisterCustomer();
                     break;
                 default:
                     System.out.println("Invalid input entered");

@@ -4,9 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface IPersistence {
-    void initialize() throws SQLException;
 
-    void close() throws SQLException;
+    public void close() throws SQLException;
 
     void executeCreateOrUpdateQuery(String query) throws SQLException;
 

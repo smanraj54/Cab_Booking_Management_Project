@@ -66,34 +66,34 @@ public class Customer implements ICustomer {
     @Override
     public void performCustomerTasks() throws SQLException {
         while (true) {
-            System.out.println("1. Book Cabs");
-            System.out.println("2. View previous Rides");
-            System.out.println("3. Rate driver for the trip");
-            System.out.println("4. View your current rating");
-            System.out.println("5. Buy Coupons");
-            System.out.println("6. Logout");
+            System.out.println("1. Logout");
+            System.out.println("2. Book Cabs");
+            System.out.println("3. View previous Rides");
+            System.out.println("4. Rate driver for the trip");
+            System.out.println("5. View your current rating");
+            System.out.println("6. Buy Coupons");
             System.out.println("7. Cancel booking");
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    customerTasks.bookRides();
-                    break;
-                case 2:
-                    customerTasks.showRides();
-                    break;
-                case 3:
-                    customerTasks.rateDriver();
-                    break;
-                case 4:
-                    customerTasks.viewRatings();
-                    break;
-                case 5:
-                    customerTasks.buyCoupons();
-                    break;
-                case 6:
                     if (customerProfileManagement.logout()) {
                         return;
                     }
+                    break;
+                case 2:
+                    customerTasks.bookRides();
+                    break;
+                case 3:
+                    customerTasks.showRides();
+                    break;
+                case 4:
+                    customerTasks.rateDriver();
+                    break;
+                case 5:
+                    customerTasks.viewRatings();
+                    break;
+                case 6:
+                    customerTasks.buyCoupons();
                     break;
                 case  7:
                     customerTasks.cancelBooking();
