@@ -15,9 +15,6 @@ class ForgotPasswordTest {
     private String userName = "passwordUpdate";
     private String password = "password123";
     private UserType userType = UserType.CUSTOMER;
-    private int tempPass = 12345;
-    private String tableName = "customer";
-    private String columnId = "cust_id";
     @Test
 
     void passwordUpdateProcess() {
