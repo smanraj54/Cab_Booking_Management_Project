@@ -15,8 +15,8 @@ public class CustomerProfileManagement {
 
     boolean login() throws InterruptedException {
         System.out.println("Welcome to Customer login page");
-        Login login = new Login(inputs);
-        if (login.attemptLogin(UserType.CUSTOMER)) {
+        ILogin ILogin = new Login(inputs);
+        if (ILogin.attemptLogin(UserType.CUSTOMER)) {
             System.out.println("Login successful");
             System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
                     LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());

@@ -18,8 +18,8 @@ public class AdminProfileManagement {
 
     boolean login() throws SQLException, InterruptedException {
         System.out.println("Welcome to Admin login page");
-        Login login = new Login(inputs);
-        if (login.attemptLogin(UserType.ADMIN)) {
+        ILogin ILogin = new Login(inputs);
+        if (ILogin.attemptLogin(UserType.ADMIN)) {
             System.out.println("Login successful");
             System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
                     LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());

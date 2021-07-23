@@ -5,7 +5,7 @@ import com.dal.cabby.pojo.UserType;
 
 import static java.lang.Thread.sleep;
 
-public class Login {
+public class Login implements ILogin {
 
     Inputs inputs;
 
@@ -13,6 +13,7 @@ public class Login {
         this.inputs = inputs;
     }
 
+    @Override
     public boolean attemptLogin(UserType userType) throws InterruptedException {
 
         IDBOperations db_operations = new DBOperations(userType);

@@ -18,8 +18,8 @@ public class DriverProfileManagement {
 
     public boolean login() throws InterruptedException {
         System.out.println("Welcome to Driver login page");
-        Login login = new Login(inputs);
-        if (login.attemptLogin(UserType.DRIVER)) {
+        ILogin ILogin = new Login(inputs);
+        if (ILogin.attemptLogin(UserType.DRIVER)) {
             System.out.println("Login successful");
             System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
                     LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
