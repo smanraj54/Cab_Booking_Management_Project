@@ -109,11 +109,26 @@ class DBOperationsTest {
     }
 
     @Test
-    void updateEmailPassword() {
+    void updateEmailPasswordTest() {
+
+        IDBOperations idbOperations = new DBOperations(userType);
+        password = Integer.toString((int)(Math.random()*10000));
+        idbOperations.updateEmailPassword(email, password, userType);
+        boolean validation = idbOperations.validateLoginUser(userName, password, userType);
+        if(!validation){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            validation = idbOperations.validateLoginUser(userName, password, userType);
+        }
+
+        assertTrue(validation, "password update failed");
     }
 
     @Test
     void getTableName() {
+
     }
 
     @Test
