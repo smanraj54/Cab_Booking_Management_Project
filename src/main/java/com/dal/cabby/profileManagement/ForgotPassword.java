@@ -9,12 +9,20 @@ import static java.lang.Thread.sleep;
 
 public class ForgotPassword implements IForgotPassword {
 
-    Inputs inputs;
+    private Inputs inputs;
+    private int tempPass;
 
     public ForgotPassword(Inputs inputs) {
 
         this.inputs = inputs;
+        tempPass = generateTemporaryPassword(100000) + 1;
+
     }
+
+    public int getTempPass(){
+        return tempPass;
+    }
+
 
     @Override
     public boolean passwordUpdateProcess(UserType userType) throws InterruptedException, MessagingException {
@@ -30,8 +38,6 @@ public class ForgotPassword implements IForgotPassword {
         if(!authenticationPass){
             return false;
         }
-
-        int tempPass = generateTemporaryPassword(100000);
 
         if(!sendTemporaryPasswordViaEmail(email, tempPass)) {
             return false;
@@ -119,6 +125,11 @@ public class ForgotPassword implements IForgotPassword {
     }
 
     private int generateTemporaryPassword(int rangeOfPassword){
+
+        if(tempPass > 0) {
+            return tempPass;
+        }
+
         if(rangeOfPassword<0 || rangeOfPassword > Integer.MAX_VALUE){
             throw new IndexOutOfBoundsException();
         }
