@@ -2,10 +2,10 @@ package com.dal.cabby.admin;
 
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.io.PredefinedInputs;
-import com.dal.cabby.util.Constants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.UUID;
@@ -27,6 +27,10 @@ public class AdminTests {
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
             Assertions.fail(throwables.getMessage());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -48,6 +52,10 @@ public class AdminTests {
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
             Assertions.fail(throwables.getMessage());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -70,6 +78,10 @@ public class AdminTests {
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
             Assertions.fail(throwables.getMessage());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
