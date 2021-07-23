@@ -37,7 +37,8 @@ public class DriverTests {
     }
 
     @Test
-    void testRegistration() {
+    void testRegistration() throws SQLException {
+        IPersistence = DBHelper.getInstance();
         System.out.println("Testing resgitration flow for Driver");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
@@ -61,15 +62,16 @@ public class DriverTests {
     }
 
     @Test
-    void testLogin() {
+    void testLogin() throws SQLException {
+        IPersistence = DBHelper.getInstance();
         System.out.println("Testing login flow for Driver");
         PredefinedInputs inputs = new PredefinedInputs();
         String name = UUID.randomUUID().toString();
-        String userName = UUID.randomUUID().toString();
-        String password = UUID.randomUUID().toString();
+        String userName = "driver1";
+        String password = "driver1@123";
         String email = String.format("%s@gmail.com", name);
-        inputs.add(REGISTRATION).add(name).add(email).add(userName).add(password)
-                .add(password).add(LOGIN).add(userName).add(password).add(DRIVER_LOGOUT).add("y").add(EXIT);
+        inputs.add(LOGIN).add(userName).add(password)
+                .add(DRIVER_LOGOUT).add("y").add(EXIT);
 
         Driver driver;
         try {
@@ -78,9 +80,7 @@ public class DriverTests {
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
             Assertions.fail(throwables.getMessage());
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (MessagingException | InterruptedException e) {
             e.printStackTrace();
         }
     }

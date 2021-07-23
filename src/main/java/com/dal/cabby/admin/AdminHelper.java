@@ -11,35 +11,13 @@ import java.util.List;
 /*
   This is a utility class for Admin class.
  */
-public class AdminHelper {
-
+class AdminHelper {
     static String driverProfile = "driver";
     static String customerProfile = "customer";
     IPersistence IPersistence;
 
     AdminHelper(IPersistence IPersistence) throws SQLException {
         this.IPersistence = IPersistence;
-    }
-
-    boolean updateStatus(String profileType, boolean newStatus, int id) throws SQLException {
-        String query = getQuery(profileType, id, newStatus);
-        try {
-            IPersistence.executeCreateOrUpdateQuery(query);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    String getQuery(String profileType, int id, boolean status) {
-        if (profileType.equals("driver")) {
-            return String.format("update driver set status=%b where driver_id=%d", status, id);
-        } else if (profileType.equals("customer")) {
-            return String.format("update customer set status=%b where cust_id=%d", status, id);
-        } else {
-            throw new RuntimeException("Invalid profile type: " + profileType);
-        }
     }
 
     List<Profile> listOfDriversToBeApproved() throws SQLException {
