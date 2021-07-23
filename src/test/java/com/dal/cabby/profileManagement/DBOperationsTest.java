@@ -60,7 +60,8 @@ class DBOperationsTest {
     }
 
     @Test
-    void getEmailValue() {
+    void getEmailValueTest() {
+
         IDBOperations idbOperations = new DBOperations(userType);
         String emailValue = idbOperations.getEmailValue(email, "email", userType, queryEmail);
         if(!emailValue.equals(email)){
@@ -75,11 +76,20 @@ class DBOperationsTest {
     }
 
     @Test
-    void entryRegistration() {
-    }
+    void validateLoginUserTest() {
 
-    @Test
-    void validateLoginUser() {
+        IDBOperations idbOperations = new DBOperations(userType);
+        boolean validation = idbOperations.validateLoginUser(userName, password, userType);
+        if(!validation){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            validation = idbOperations.validateLoginUser(userName, password, userType);
+        }
+
+        assertTrue(validation, "email extraction from db failed");
+
     }
 
     @Test
