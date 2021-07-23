@@ -30,16 +30,12 @@ public class ForgotPassword {
 
         int tempPass = generateTemporaryPassword(100000);
 
-        try{
-            SendEmail.sendEmail(email,
-                    "Temporary password for RESET!!",
-                    "<h2>Your Temporary Password is : "+tempPass+"</h2><p>Its advised not to share this email!!!</p>");
-        }
-        catch (Exception ee){
-            System.out.println(ee);
+        if(sendTemporaryPasswordViaEmail(email, tempPass)) {
+            return false;
         }
 
         authenticationPass = false;
+
         for(int t=0; t<3; t++) {
             if (validateTempPass(tempPass)) {
                 authenticationPass = true;
@@ -135,6 +131,19 @@ public class ForgotPassword {
     private int generateTemporaryPassword(int rangeOfPassword){
         int tempPass = (int)(Math.random()*rangeOfPassword);
         return tempPass;
+    }
+
+    private boolean sendTemporaryPasswordViaEmail(String email, int tempPass){
+        try{
+            SendEmail.sendEmail(email,
+                    "Temporary password for RESET!!",
+                    "<h2>Your Temporary Password is : "+tempPass+"</h2><p>Its advised not to share this email!!!</p>");
+            return true;
+        }
+        catch (Exception ee){
+            System.out.println(ee);
+        }
+        return false;
     }
 
 }
