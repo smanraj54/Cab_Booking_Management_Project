@@ -30,11 +30,22 @@ class DBOperationsTest {
     }
 
     @Test
-    void dbContainsUserName() {
+    void dbContainsUserNameTest() {
+        IDBOperations idbOperations = new DBOperations(userType);
+        boolean validation = idbOperations.dbContainsUserName(userName, userType);
+        if(!validation){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            validation = idbOperations.dbContainsUserName(userName, userType);
+        }
+        assertTrue(validation, "Username Validation failed from db");
     }
 
     @Test
     void dbContainsEmail() {
+
     }
 
     @Test
