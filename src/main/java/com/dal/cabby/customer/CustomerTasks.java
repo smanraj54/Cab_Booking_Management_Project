@@ -2,6 +2,7 @@ package com.dal.cabby.customer;
 
 import com.dal.cabby.booking.BookingService;
 import com.dal.cabby.cabSelection.CabSelectionService;
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.money.BuyCoupons;
@@ -11,16 +12,22 @@ import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 import com.dal.cabby.rides.DisplayRides;
+import com.dal.cabby.util.Common;
+import com.dal.cabby.util.ConsolePrinter;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
 
 class CustomerTasks {
     private final Inputs inputs;
-    IPersistence iPersistence;
+    private IPersistence iPersistence;
+    private IRatings iRatings;
 
-    public CustomerTasks(Inputs inputs, IPersistence iPersistence) {
+    public CustomerTasks(Inputs inputs) throws SQLException {
         this.inputs = inputs;
-        this.iPersistence = iPersistence;
+        this.iPersistence = DBHelper.getInstance();
+        iRatings = new Ratings();
     }
 
     void rateDriver() throws SQLException {
@@ -33,17 +40,25 @@ class CustomerTasks {
         int trip_id = inputs.getIntegerInput();
         System.out.println("Enter the rating between 1-5:");
         int rating = inputs.getIntegerInput();
-        IRatings IRatings = new Ratings();
-        IRatings.addCustomerRating(driver_id, trip_id, rating);
+
+        iRatings.addCustomerRating(driver_id, trip_id, rating);
     }
 
-    void bookRides() throws SQLException {
+    void bookRides() throws SQLException, ParseException {
         int custId = LoggedInProfile.getLoggedInId();
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        System.out.println("Select travel time:");
+        System.out.println("Select travel time(MM/dd/yyyy HH:mm):");
         String travelTime = inputs.getStringInput();
-        //0 to 23:59
-        double hour = 13;
+        double hour=0.0;
+        try {
+            Date date = Common.parseDate(travelTime, "MM/dd/yyyy HH:mm");
+            hour = date.getHours();
+            System.out.println("Awesome, Your travel date and time is " + date.toLocaleString());
+        } catch (Exception e) {
+            ConsolePrinter.printErrorMsg(e.getMessage());
+            ConsolePrinter.printErrorMsg("Your cab booking failed due to wrong date entered. Please try again");
+            return;
+        }
         Booking booking = cabSelectionService.preferredCab(custId, hour);
         booking.setCustomerId(custId);
         booking.setTravelTime(travelTime);
@@ -66,8 +81,13 @@ class CustomerTasks {
         rides.getRides(UserType.CUSTOMER, LoggedInProfile.getLoggedInId());
     }
 
-    void viewRatings() {
-        System.out.println("You current rating is: <NA>");
+    void viewRatings() throws SQLException {
+        double avgRating = iRatings.getAverageRatingOfCustomer(LoggedInProfile.getLoggedInId());
+        if (avgRating == 0) {
+            System.out.println("You don't have any rating at the moment");
+            return;
+        }
+        System.out.println("Your average rating is: " + avgRating);
     }
 
     void buyCoupons() throws SQLException {

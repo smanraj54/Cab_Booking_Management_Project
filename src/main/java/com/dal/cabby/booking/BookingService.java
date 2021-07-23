@@ -7,6 +7,8 @@ import com.dal.cabby.pojo.UserType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookingService {
     private IPersistence iPersistence;
@@ -61,7 +63,7 @@ public class BookingService {
     }
 
     public Booking getCustomerOpenBooking(int cust_id) throws SQLException {
-        String query = String.format("select * from bookings where cust_id=%d and is_trip_done=false;", cust_id);
+        String query = String.format("select * from bookings where cust_id=%d and is_trip_done=false and and is_cancelled=false;", cust_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             int bookingId = resultSet.getInt("booking_id");;
@@ -78,9 +80,10 @@ public class BookingService {
         return null;
     }
 
-    public Booking getDriverOpenBookings(int driver_id) throws SQLException {
-        String query = String.format("select * from bookings where driver_id=%d and is_trip_done=false;", driver_id);
+    public List<Booking> getDriverOpenBookings(int driver_id) throws SQLException {
+        String query = String.format("select * from bookings where driver_id=%d and is_trip_done=false and is_cancelled=false;", driver_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
+        List<Booking> bookings = new ArrayList<>();
         while (resultSet.next()) {
             int bookingId = resultSet.getInt("booking_id");;
             int customerId = resultSet.getInt("cust_id");
@@ -90,9 +93,10 @@ public class BookingService {
             String destination = resultSet.getString("destination");
             String travelTime = resultSet.getString("travel_time");
             double price = resultSet.getDouble("estimated_price");
-            return new Booking(bookingId, customerId, driverId, cabId, source, destination, travelTime, price, false);
+            Booking booking = new Booking(bookingId, customerId, driverId, cabId, source, destination, travelTime, price, false);
+            bookings.add(booking);
         }
-        return null;
+        return bookings;
     }
 
     public int getCustomerTotalBookings(int cust_id) throws SQLException {
