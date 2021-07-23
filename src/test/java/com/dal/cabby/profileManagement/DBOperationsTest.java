@@ -14,6 +14,8 @@ class DBOperationsTest {
     private String password = "manu123";
     private UserType userType = UserType.CUSTOMER;
     private String queryEmail = "Select * from %s where email = '%s'";
+    private String tableName = "customer";
+    private String columnId = "cust_id";
 
     @Test
     void dbUserNameValidationTest() {
@@ -54,13 +56,14 @@ class DBOperationsTest {
             predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
             IRegistration iregistration = new Registration(predefinedInputs);
             iregistration.registerUser(userType);
-            validation = idbOperations.dbContainsEmail(userName, userType);
+            validation = idbOperations.dbContainsEmail(email, userType);
         }
         assertTrue(validation, "db check for email failed");
     }
 
     @Test
-    void getEmailValue() {
+    void getEmailValueTest() {
+
         IDBOperations idbOperations = new DBOperations(userType);
         String emailValue = idbOperations.getEmailValue(email, "email", userType, queryEmail);
         if(!emailValue.equals(email)){
@@ -75,26 +78,85 @@ class DBOperationsTest {
     }
 
     @Test
-    void entryRegistration() {
+    void validateLoginUserTest() {
+
+        IDBOperations idbOperations = new DBOperations(userType);
+        boolean validation = idbOperations.validateLoginUser(userName, password, userType);
+        if(!validation){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            validation = idbOperations.validateLoginUser(userName, password, userType);
+        }
+
+        assertTrue(validation, "user validation failed with correct credentials");
+
     }
 
     @Test
-    void validateLoginUser() {
+    void fetchEmailForAuthenticationTest() {
+
+        IDBOperations idbOperations = new DBOperations(userType);
+        String emailForAuthentication = idbOperations.fetchEmailForAuthentication(userName, userType);
+        if(!emailForAuthentication.equals(email)){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            emailForAuthentication = idbOperations.fetchEmailForAuthentication(userName, userType);
+        }
+
+        assertTrue(emailForAuthentication.equals(email), "email extraction using username failed from db");
     }
 
     @Test
-    void fetchEmailForAuthentication() {
-    }
+    void updateEmailPasswordTest() {
 
-    @Test
-    void updateEmailPassword() {
+        IDBOperations idbOperations = new DBOperations(userType);
+        idbOperations.updateEmailPassword(email, password, userType);
+        boolean validation = idbOperations.validateLoginUser(userName, password, userType);
+        if(!validation){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            validation = idbOperations.validateLoginUser(userName, password, userType);
+        }
+
+        assertTrue(validation, "password update failed");
     }
 
     @Test
     void getTableName() {
+        IDBOperations idbOperations = new DBOperations(userType);
+        String table = idbOperations.getTableName(userType);
+
+        if(!table.equals(tableName)){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            table = idbOperations.getTableName(userType);
+        }
+
+        assertTrue(table.equals(tableName), "table name is wrong while fetching from db");
     }
 
     @Test
     void getIDColumnName() {
+
+        IDBOperations idbOperations = new DBOperations(userType);
+        String columnName = idbOperations.getIDColumnName(userType);
+
+        if(!columnName.equals(columnId)){
+            PredefinedInputs predefinedInputs = new PredefinedInputs();
+            predefinedInputs.add(name).add(email).add(userName).add(password).add(password);
+            IRegistration iregistration = new Registration(predefinedInputs);
+            iregistration.registerUser(userType);
+            columnName = idbOperations.getIDColumnName(userType);
+        }
+
+        assertTrue(columnName.equals(columnId), "column id is wrong while fetching from db");
     }
 }
