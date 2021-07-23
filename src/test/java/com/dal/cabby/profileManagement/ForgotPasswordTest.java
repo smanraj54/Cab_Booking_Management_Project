@@ -15,8 +15,8 @@ class ForgotPasswordTest {
     private String userName = "passwordUpdate";
     private String password = "password123";
     private UserType userType = UserType.CUSTOMER;
-    @Test
 
+    @Test
     void passwordUpdateProcess() {
 
         PredefinedInputs predefinedInputs1 = new PredefinedInputs();
