@@ -20,16 +20,14 @@ public class Customer implements ICustomer {
     private CustomerTasks customerTasks;
     private CustomerProfileManagement customerProfileManagement;
     private ProfileStatus profileStatus;
-    private IPersistence iPersistence;
 
     public Customer(Inputs inputs) throws SQLException {
         this.inputs = inputs;
-        this.iPersistence = DBHelper.getInstance();
         initialize();
     }
 
     private void initialize() throws SQLException {
-        customerTasks = new CustomerTasks(inputs, iPersistence);
+        customerTasks = new CustomerTasks(inputs);
         customerProfileManagement = new CustomerProfileManagement(inputs);
         profileStatus = new ProfileStatus();
     }
@@ -78,7 +76,7 @@ public class Customer implements ICustomer {
     }
 
     @Override
-    public void performCustomerTasks() throws SQLException {
+    public void performCustomerTasks() throws SQLException, ParseException {
         while (true) {
             System.out.println("1. Logout");
             System.out.println("2. Book Cabs");

@@ -1,5 +1,10 @@
 package com.dal.cabby.util;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /*
     This class will contain all the common methods which can be reused across multiple
     places in the project.
@@ -27,8 +32,13 @@ public class Common {
             e.printStackTrace();
         }
     }
+    public static Date parseDate(String dateStr, String format) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat(format);
+        return dateFormat.parse(dateStr);
+    }
 
-    public static void main(String[] args) {
-        Common.simulateCabTrip();
+    public static void main(String[] args) throws ParseException {
+        Date date = parseDate("07/23/2021 14:23:23", "MM/dd/yyyy HH:mm");
+        System.out.println("You travel date is " + date.toLocaleString());
     }
 }
