@@ -31,8 +31,8 @@ public class DriverProfileManagement {
 
     public boolean register() {
         System.out.println("Welcome to Driver registration page");
-        Registration registration = new Registration(inputs);
-        return registration.registerUser(UserType.DRIVER);
+        IRegistration IRegistration = new Registration(inputs);
+        return IRegistration.registerUser(UserType.DRIVER);
     }
 
     public boolean forgotPassword() throws MessagingException, InterruptedException {

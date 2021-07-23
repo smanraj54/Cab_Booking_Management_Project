@@ -83,8 +83,8 @@ public class ForgotPassword implements IForgotPassword {
     private String getNewPassword(){
 
         //System.out.print("\nEnter new Password : ");
-        Registration registration = new Registration(inputs);
-        String newPassword = registration.getPassword(new ValidateInput());
+        IRegistration IRegistration = new Registration(inputs);
+        String newPassword = IRegistration.getPassword(new ValidateInput());
         if(newPassword == null){
             System.err.println("\nPassword Update Failed");
             try {

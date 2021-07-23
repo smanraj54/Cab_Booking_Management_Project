@@ -28,8 +28,8 @@ public class CustomerProfileManagement {
 
     boolean register() {
         System.out.println("Welcome to Customer registration page");
-        Registration registration = new Registration(inputs);
-        return registration.registerUser(UserType.CUSTOMER);
+        IRegistration IRegistration = new Registration(inputs);
+        return IRegistration.registerUser(UserType.CUSTOMER);
     }
 
     boolean forgotPassword() throws MessagingException, InterruptedException {

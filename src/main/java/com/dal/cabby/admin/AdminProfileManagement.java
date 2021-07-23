@@ -31,8 +31,8 @@ public class AdminProfileManagement {
 
     boolean register() {
         System.out.println("Welcome to Admin registration page");
-        Registration registration = new Registration(inputs);
-        return registration.registerUser(UserType.ADMIN);
+        IRegistration IRegistration = new Registration(inputs);
+        return IRegistration.registerUser(UserType.ADMIN);
     }
 
     boolean forgotPassword() throws MessagingException, InterruptedException {

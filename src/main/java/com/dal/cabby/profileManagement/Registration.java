@@ -5,7 +5,7 @@ import com.dal.cabby.pojo.UserType;
 
 import static java.lang.Thread.sleep;
 
-public class Registration {
+public class Registration implements IRegistration {
     Inputs inputs;
 
     public Registration(Inputs inputs) {
@@ -13,6 +13,7 @@ public class Registration {
         this.inputs = inputs;
     }
 
+    @Override
     public boolean registerUser(UserType userType) {
 
         String name = inputName();
@@ -49,6 +50,7 @@ public class Registration {
         return true;
     }
 
+    @Override
     public String getPassword(ValidateInput validateInput) {
         String password;
         boolean registerSuccessful = false;
