@@ -18,37 +18,24 @@ public class ForgotPassword {
 
         IDBOperations IDBOperations = new DBOperations(userType);
         boolean authenticationPass = false;
-        String email = null;
 
-        for(int t=0; t<3; t++) {
-            System.out.print("\nEnter UserName or Email : ");
-            String user = this.inputs.getWordInput();
-            this.inputs.getStringInput();
-            email = IDBOperations.fetchEmailForAuthentication(user, userType);
-            if(email!=null){
-                authenticationPass = true;
-                break;
-            }
-            System.err.println("Enter Correct Username or Email");
-            try {
-                sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        String email = getEmailfromUser(IDBOperations, userType);
+
+        if(email != null){
+            authenticationPass = true;
         }
         if(!authenticationPass){
             return false;
         }
-        int tempPass = (int)(Math.random()*100000);
-        try{
-            SendEmail.sendEmail(email,
-                    "Temporary password for RESET!!",
-                    "<h2>Your Temporary Password is : "+tempPass+"</h2><p>Its advised not to share this email!!!</p>");
-        }catch (Exception ee){
-            System.out.println(ee);
+
+        int tempPass = generateTemporaryPassword(100000);
+
+        if(sendTemporaryPasswordViaEmail(email, tempPass)) {
+            return false;
         }
 
         authenticationPass = false;
+
         for(int t=0; t<3; t++) {
             if (validateTempPass(tempPass)) {
                 authenticationPass = true;
@@ -119,6 +106,44 @@ public class ForgotPassword {
         }
 
         return newPassword;
+    }
+
+    private String getEmailfromUser(IDBOperations idbOperations, UserType userType){
+        String email = null;
+        for(int t=0; t<3; t++) {
+            System.out.print("\nEnter UserName or Email : ");
+            String user = this.inputs.getWordInput();
+            this.inputs.getStringInput();
+            email = idbOperations.fetchEmailForAuthentication(user, userType);
+            if(email!=null){
+                break;
+            }
+            System.err.println("Enter Correct Username or Email");
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return email;
+    }
+
+    private int generateTemporaryPassword(int rangeOfPassword){
+        int tempPass = (int)(Math.random()*rangeOfPassword);
+        return tempPass;
+    }
+
+    private boolean sendTemporaryPasswordViaEmail(String email, int tempPass){
+        try{
+            SendEmail.sendEmail(email,
+                    "Temporary password for RESET!!",
+                    "<h2>Your Temporary Password is : "+tempPass+"</h2><p>Its advised not to share this email!!!</p>");
+            return true;
+        }
+        catch (Exception ee){
+            System.out.println(ee);
+        }
+        return false;
     }
 
 }
