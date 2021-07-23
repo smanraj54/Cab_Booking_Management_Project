@@ -11,6 +11,8 @@ public class LoggedInProfile {
     static int loggedInId;
     static String loggedInName;
 
+    private LoggedInProfile(){}
+
     public static int getLoggedInId() {
 
         return loggedInId;
