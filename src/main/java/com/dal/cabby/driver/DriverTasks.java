@@ -1,6 +1,7 @@
 package com.dal.cabby.driver;
 
 import com.dal.cabby.booking.BookingService;
+import com.dal.cabby.booking.IBookingService;
 import com.dal.cabby.incentives.CustomerBonus;
 import com.dal.cabby.incentives.ICustomerBonus;
 import com.dal.cabby.io.Inputs;
@@ -22,16 +23,16 @@ import java.util.List;
 class DriverTasks {
     private final Inputs inputs;
     private final IRatings iRatings;
-    private final BookingService bookingService;
+    private final IBookingService iBookingService;
 
     public DriverTasks(Inputs inputs) throws SQLException {
         this.inputs = inputs;
         iRatings = new Ratings();
-        bookingService = new BookingService();
+        iBookingService = new BookingService();
     }
 
     void startTrip() throws SQLException, ParseException {
-        List<Booking> bookingsList = bookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
+        List<Booking> bookingsList = iBookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
         if (bookingsList.size() == 0) {
             System.out.println("You have no new bookings\n");
             return;
@@ -43,11 +44,11 @@ class DriverTasks {
         }
         System.out.println("Enter the bookingId for which you want to start the trip: ");
         int input = inputs.getIntegerInput();
-        bookingService.markBookingComplete(input);
+        iBookingService.markBookingComplete(input);
         Common.simulateCabTrip();
         for (Booking b : bookingsList) {
             if (b.getBookingId() == input) {
-                bookingService.completeTrip(input, LoggedInProfile.getLoggedInId(), b.getCustomerId(), 5.6, 9.8,
+                iBookingService.completeTrip(input, LoggedInProfile.getLoggedInId(), b.getCustomerId(), 5.6, 9.8,
                         "2021-01-24 12:35:16", "2021-01-24 12:55:16");
             }
         }
@@ -100,8 +101,8 @@ class DriverTasks {
     }
 
     void cancelBooking() throws SQLException {
-        BookingService bookingService = new BookingService();
-        List<Booking> bookingList = bookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
+        IBookingService iBookingService = new BookingService();
+        List<Booking> bookingList = iBookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
         if (bookingList.size() == 0) {
             ConsolePrinter.printOutput("You have no booking to cancel.");
             return;
@@ -124,7 +125,7 @@ class DriverTasks {
             ConsolePrinter.printErrorMsg("Invalid booking-id: " + bookingId);
             return;
         }
-        bookingService.cancelBooking(bookingId, UserType.DRIVER);
+        iBookingService.cancelBooking(bookingId, UserType.DRIVER);
         ConsolePrinter.printSuccessMsg(
                 String.format("Your booking with bookingId: %d is cancelled", bookingId));
     }
