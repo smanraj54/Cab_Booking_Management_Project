@@ -290,4 +290,19 @@ public class DisplayRidesTest {
         Collections.singletonList(rides.getRides(UserType.CUSTOMER, 2)),
         "Rides returned between specific period for customer are not correct");
   }
+
+  @Test
+  void testWhenNoRides() throws SQLException {
+    PredefinedInputs inputs = new PredefinedInputs();
+    inputs.add(1).add("01/07/2000");
+    DisplayRides rides = new DisplayRides(inputs);
+
+    List<String> expected = new ArrayList<>();
+    expected.add("Ride Details ->");
+    expected.add("No rides to display");
+
+    assertEquals(Collections.singletonList(expected),
+        Collections.singletonList(rides.getRides(UserType.DRIVER, 1)),
+        "Incorrect output when there is no ride to display");
+  }
 }
