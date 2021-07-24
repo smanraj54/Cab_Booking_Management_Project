@@ -2,6 +2,10 @@ package com.dal.cabby.profileManagement;
 
 import com.dal.cabby.pojo.UserType;
 
+/*
+    DataNode of all the details of a user used for registering and login
+*/
+
 public class DataNode {
 
     private String user;
