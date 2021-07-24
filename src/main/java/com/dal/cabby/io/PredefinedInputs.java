@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PredefinedInputs implements Inputs {
-    private List<Object> preDefinedInputs;
     int currentIndex;
+    private final List<Object> preDefinedInputs;
 
     public PredefinedInputs() {
         preDefinedInputs = new ArrayList<>();
@@ -47,8 +47,8 @@ public class PredefinedInputs implements Inputs {
         Object o = getElement();
         if (o instanceof String) {
             String value = (String) o;
-            String arr[] = value.split(" ");
-            if(arr.length==1){
+            String[] arr = value.split(" ");
+            if (arr.length == 1) {
                 return value;
             }
         } else {

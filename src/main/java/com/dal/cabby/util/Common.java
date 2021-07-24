@@ -32,6 +32,7 @@ public class Common {
             e.printStackTrace();
         }
     }
+
     public static Date parseDate(String dateStr, String format) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat(format);
         return dateFormat.parse(dateStr);

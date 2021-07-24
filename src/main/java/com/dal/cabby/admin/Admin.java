@@ -9,11 +9,11 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 public class Admin implements IAdmin {
-    AdminHelper adminHelper;
     private final Inputs inputs;
+    private final IPersistence iPersistence;
+    AdminHelper adminHelper;
     private AdminTasks adminTasks;
     private AdminProfileManagement adminProfileManagement;
-    private final IPersistence iPersistence;
 
     public Admin(Inputs inputs, IPersistence iPersistence) throws SQLException {
         this.inputs = inputs;
@@ -34,7 +34,7 @@ public class Admin implements IAdmin {
 
     @Override
     public void profileManagementTasks() throws SQLException, ParseException, MessagingException, InterruptedException {
-        while(true) {
+        while (true) {
             Common.page1Options();
             int input = inputs.getIntegerInput();
             switch (input) {
@@ -47,13 +47,13 @@ public class Admin implements IAdmin {
                     break;
                 case 2:
                     boolean isRegistered = adminProfileManagement.register();
-                    if(!isRegistered) {
+                    if (!isRegistered) {
                         System.out.println("Registration failed!");
                     }
                     break;
                 case 3:
                     boolean recoveryStatus = adminProfileManagement.forgotPassword();
-                    if(recoveryStatus) {
+                    if (recoveryStatus) {
                         System.out.println("Password reset successful. Please login with new credentials");
                     }
                     break;

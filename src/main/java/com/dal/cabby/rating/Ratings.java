@@ -15,7 +15,7 @@ public class Ratings implements IRatings {
 
     @Override
     public void addDriverRating(int driverId, int tripId, int rating) throws SQLException {
-        if (rating<1 || rating>5) {
+        if (rating < 1 || rating > 5) {
             throw new RuntimeException("Rating can only be in the range of 1 to 5");
         }
         String q = String.format("insert into driver_ratings(driver_id, trip_id, rating) values (%d, %d, %d)",
@@ -25,7 +25,7 @@ public class Ratings implements IRatings {
 
     @Override
     public void addCustomerRating(int userId, int tripId, int rating) throws SQLException {
-        if (rating<1 || rating>5) {
+        if (rating < 1 || rating > 5) {
             throw new RuntimeException("Rating can only be in the range of 1 to 5");
         }
         String q = String.format("insert into customer_ratings(cust_id, trip_id, rating) values (%d, %d, %d)",
@@ -45,11 +45,11 @@ public class Ratings implements IRatings {
 
     @Override
     public double getAverageRatingOfCustomer(int cust_id) throws SQLException {
-        String q = String.format("select avg(rating) as avg_rating from customer_ratings where cust_id=%d",cust_id);
+        String q = String.format("select avg(rating) as avg_rating from customer_ratings where cust_id=%d", cust_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(q);
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             return resultSet.getDouble("avg_rating");
         }
-       return 0.0;
+        return 0.0;
     }
 }

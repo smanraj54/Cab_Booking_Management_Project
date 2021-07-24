@@ -9,9 +9,9 @@ import java.sql.SQLException;
 
 public class DBOperations implements IDBOperations {
 
-    private String queryUser = "Select * from %s where username = '%s'";
-    private String queryEmail = "Select * from %s where email = '%s'";
     UserType userType;
+    private final String queryUser = "Select * from %s where username = '%s'";
+    private final String queryEmail = "Select * from %s where email = '%s'";
 
     DBOperations(UserType userType) {
 
@@ -112,7 +112,7 @@ public class DBOperations implements IDBOperations {
     }
 
     private IPersistence getDBInstance() {
-        IPersistence iPersistence=null;
+        IPersistence iPersistence = null;
         try {
             iPersistence = DBHelper.getInstance();
         } catch (SQLException throwable) {
@@ -143,11 +143,7 @@ public class DBOperations implements IDBOperations {
     private boolean validateKeyword(String userNameOrEmail, String keyword, String keywordValue, UserType userType, String query) {
 
         String value = getValueFromDB(userNameOrEmail, keyword, userType, query);
-        if (value != null && value.equals(keywordValue)) {
-            return true;
-        }
-
-        return false;
+        return value != null && value.equals(keywordValue);
     }
 
     @Override
@@ -189,7 +185,7 @@ public class DBOperations implements IDBOperations {
         if (userType == UserType.ADMIN) {
             return "cabby_admin";
         } else if (userType == UserType.DRIVER) {
-            return  "driver";
+            return "driver";
         } else if (userType == UserType.CUSTOMER) {
             return "customer";
         } else {
@@ -203,7 +199,7 @@ public class DBOperations implements IDBOperations {
         if (userType == UserType.ADMIN) {
             return "admin_id";
         } else if (userType == UserType.DRIVER) {
-            return  "driver_id";
+            return "driver_id";
         } else if (userType == UserType.CUSTOMER) {
             return "cust_id";
         } else {

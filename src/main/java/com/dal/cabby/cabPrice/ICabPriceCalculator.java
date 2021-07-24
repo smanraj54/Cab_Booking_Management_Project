@@ -12,13 +12,13 @@ public interface ICabPriceCalculator {
     /*
         This method calculate distance between Source and Destination place. It takes two parameters.
      */
-    double locationsDistanceFromOrigin(String source,String destination) throws SQLException;
+    double locationsDistanceFromOrigin(String source, String destination) throws SQLException;
 
     /*
         This method calculate distance between Source i.e, (location from where user is booking cab)
         and Nearby Cabs. It takes two parameters i.e, source location and names of nearby cabs.
      */
-    double locationAndCabDistanceFromOrigin(String source,String destination) throws SQLException;
+    double locationAndCabDistanceFromOrigin(String source, String destination) throws SQLException;
 
 }
 

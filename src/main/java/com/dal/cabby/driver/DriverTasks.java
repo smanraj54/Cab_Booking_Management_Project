@@ -21,8 +21,8 @@ import java.util.List;
 
 class DriverTasks {
     private final Inputs inputs;
-    private IRatings iRatings;
-    private BookingService bookingService;
+    private final IRatings iRatings;
+    private final BookingService bookingService;
 
     public DriverTasks(Inputs inputs) throws SQLException {
         this.inputs = inputs;
@@ -114,8 +114,8 @@ class DriverTasks {
         System.out.println("Now, select the booking-id you want to cancel:");
         int bookingId = inputs.getIntegerInput();
         boolean isBookingPresent = false;
-        for(Booking b : bookingList) {
-            if(b.getBookingId() == bookingId) {
+        for (Booking b : bookingList) {
+            if (b.getBookingId() == bookingId) {
                 isBookingPresent = true;
                 break;
             }

@@ -10,6 +10,7 @@ public class Logout implements ILogout {
 
         this.inputs = inputs;
     }
+
     /*
     This function will exit the application.
     Before exiting, it will ask for confirmation for one last time.

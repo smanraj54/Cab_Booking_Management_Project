@@ -16,10 +16,10 @@ import static com.dal.cabby.util.ConsolePrinter.printSuccessMsg;
 
 public class Driver implements IDriver {
     private final Inputs inputs;
+    private final IPersistence iPersistence;
     private DriverTasks driverTasks;
     private DriverProfileManagement driverProfileManagement;
     private ProfileStatus profileStatus;
-    private final IPersistence iPersistence;
 
     public Driver(Inputs inputs) throws SQLException, ParseException {
         this.inputs = inputs;

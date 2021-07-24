@@ -30,6 +30,7 @@ public class Booking {
     public boolean isCancelled() {
         return this.isCancelled;
     }
+
     public void setCancelled(boolean cancelled) {
         this.isCancelled = cancelled;
     }
@@ -50,67 +51,67 @@ public class Booking {
         this.hasCustomerCancelled = hasCustomerCancelled;
     }
 
-    public void setBookingId(int bookingId) {
-        this.bookingId = bookingId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    public void setDriverId(int driverId) {
-        this.driverId = driverId;
-    }
-
-    public void setCabId(int cabId) {
-        this.cabId = cabId;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public void setTravelTime(String travelTime) {
-        this.travelTime = travelTime;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public int getBookingId() {
         return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
     }
 
     public int getCustomerId() {
         return customerId;
     }
 
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
     public int getDriverId() {
         return driverId;
+    }
+
+    public void setDriverId(int driverId) {
+        this.driverId = driverId;
     }
 
     public int getCabId() {
         return cabId;
     }
 
+    public void setCabId(int cabId) {
+        this.cabId = cabId;
+    }
+
     public String getSource() {
         return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getDestination() {
         return destination;
     }
 
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
     public String getTravelTime() {
         return travelTime;
     }
 
+    public void setTravelTime(String travelTime) {
+        this.travelTime = travelTime;
+    }
+
     public double getPrice() {
         return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
