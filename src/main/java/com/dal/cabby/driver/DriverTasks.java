@@ -1,6 +1,8 @@
 package com.dal.cabby.driver;
 
 import com.dal.cabby.booking.BookingService;
+import com.dal.cabby.incentives.CustomerBonus;
+import com.dal.cabby.incentives.ICustomerBonus;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.money.BuyCoupons;
 import com.dal.cabby.money.DriverEarnings;
@@ -77,6 +79,10 @@ class DriverTasks {
         int rating = inputs.getIntegerInput();
         IRatings IRatings = new Ratings();
         IRatings.addCustomerRating(cust_id, trip_id, rating);
+        ICustomerBonus customerBonus = new CustomerBonus();
+        int bonus = customerBonus.giveCustomerBonus(rating);
+        ConsolePrinter.printSuccessMsg(String.format("Customer with id: %d is eligible for cashback of %d ",
+                cust_id, bonus));
     }
 
     void viewRatings() throws SQLException {

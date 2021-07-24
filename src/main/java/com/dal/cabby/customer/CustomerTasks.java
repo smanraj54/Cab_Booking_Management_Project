@@ -4,6 +4,11 @@ import com.dal.cabby.booking.BookingService;
 import com.dal.cabby.cabSelection.CabSelectionService;
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
+import com.dal.cabby.driver.IDriver;
+import com.dal.cabby.incentives.CustomerBonus;
+import com.dal.cabby.incentives.DriverBonus;
+import com.dal.cabby.incentives.ICustomerBonus;
+import com.dal.cabby.incentives.IDriverBonus;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.money.BuyCoupons;
 import com.dal.cabby.pojo.Booking;
@@ -41,8 +46,12 @@ class CustomerTasks {
         int trip_id = inputs.getIntegerInput();
         System.out.println("Enter the rating between 1-5:");
         int rating = inputs.getIntegerInput();
-
         iRatings.addCustomerRating(driver_id, trip_id, rating);
+
+        IDriverBonus driverBonus = new DriverBonus();
+        int bonus = driverBonus.giveDriverBonus(rating);
+        ConsolePrinter.printSuccessMsg(String.format("Driver with id: %d is eligible for bonus of %d percentage",
+                driver_id, bonus));
     }
 
     void bookRides() throws SQLException, ParseException {

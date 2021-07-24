@@ -76,7 +76,7 @@ public class CabPriceCalculator implements ICabPriceCalculator{
             cabDistanceFromOrigin = resultSet1.getDouble("cabDistanceFromOrigin");
         }
         double distanceBetweenSourceAndCab=calculateDistance(sourceDistanceFromOrigin,cabDistanceFromOrigin);
-        System.out.println("Distance between "+ source + " and "+ destination +" is: " + distance+" KM");
+        //System.out.println("Distance between "+ source + " and "+ destination +" is: " + distance+" KM");
         return (Math.round(distanceBetweenSourceAndCab*100.0)/100.0);
     }
 
