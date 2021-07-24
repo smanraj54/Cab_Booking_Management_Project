@@ -27,7 +27,7 @@ public class DriverEarnings {
         return earningsPage();
     }
 
-    public String earningsPage() throws SQLException {
+    private String earningsPage() throws SQLException {
         System.out.println("\n**** Earnings Page ****");
         System.out.println("1. Daily earnings: ");
         System.out.println("2. Monthly earnings: ");
@@ -43,12 +43,12 @@ public class DriverEarnings {
             case 3:
                 return specificPeriodEarnings();
             default:
-                return "\nInvalid Selecttion";
+                return "\nInvalid Selection";
         }
     }
 
     // method to calculate the daily earnings
-    public String dailyEarnings() throws SQLException {
+    private String dailyEarnings() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
         String inputDate = inputs.getStringInput();
         if (validateDate(inputDate)) {
@@ -62,7 +62,7 @@ public class DriverEarnings {
     }
 
     // method to calculate monthly earnings
-    public String monthlyEarnings() throws SQLException {
+    private String monthlyEarnings() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
         String input = inputs.getStringInput();
         if (input.isEmpty() || (input.indexOf("/")!=2)) {
