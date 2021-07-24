@@ -41,7 +41,7 @@ public class DisplayRidesTest {
 
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(1).add("24/07/2020");
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
@@ -78,7 +78,7 @@ public class DisplayRidesTest {
 
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(2).add("07/2020");  // user inputs
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
@@ -121,7 +121,7 @@ public class DisplayRidesTest {
 
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(3).add("01/01/2020").add("31/07/2020");  // user inputs
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
@@ -144,7 +144,7 @@ public class DisplayRidesTest {
   void invalidDateInput() throws SQLException {
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(3).add("31/07/2020").add("01/07/2020");
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     assertEquals(Collections.singletonList("Invalid Input. Start date is " +
             "greater than end date."),
@@ -156,7 +156,7 @@ public class DisplayRidesTest {
   void invalidDateTest() throws SQLException {
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(1).add("00/07/2020");
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     assertEquals(Collections.singletonList("Invalid Input"),
         rides.getRides(UserType.DRIVER, 1),
@@ -167,7 +167,7 @@ public class DisplayRidesTest {
   void invalidMonthTest() throws SQLException {
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(1).add("01/00/2020");
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     assertEquals(Collections.singletonList("Invalid Input"),
         rides.getRides(UserType.DRIVER, 1),
@@ -178,7 +178,7 @@ public class DisplayRidesTest {
   void invalidYearTest() throws SQLException {
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(1).add("01/07/0000");
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     assertEquals(Collections.singletonList("Invalid Input"),
         rides.getRides(UserType.DRIVER, 1),
@@ -206,7 +206,7 @@ public class DisplayRidesTest {
 
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(1).add("24/07/2020");
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
@@ -243,7 +243,7 @@ public class DisplayRidesTest {
 
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(2).add("07/2020");  // user inputs
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
@@ -286,7 +286,7 @@ public class DisplayRidesTest {
 
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(3).add("01/01/2020").add("31/07/2020");  // user inputs
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
@@ -308,7 +308,7 @@ public class DisplayRidesTest {
   void testWhenNoRides() throws SQLException {
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(1).add("01/07/2000");
-    DisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides(inputs);
 
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
