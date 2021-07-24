@@ -109,14 +109,14 @@ public class DriverEarnings {
             String endDate = dateOperations.getLastDayOfMonth(startDate);
             int days = dateOperations.getDateDifference(startDate, endDate);
             for (int i = 0; i <= days; i++) {
-                earning = earning + earningOnDate(userID, startDate);
                 if (i >= 0 && i < 9) {
                     startDate = startDate.substring(0, startDate.length()-1) + (i + 1);
                 } else {
                     startDate = startDate.substring(0, startDate.length()-2) + (i + 1);
                 }
+                earning = earning + earningOnDate(userID, startDate);
             }
-            return "\nThe total earnings in " + input + " is $" + earning;
+            return "\nThe total earnings in " + input + " is $" + String.format("%.2f", earning);
         }
     }
 
@@ -144,7 +144,8 @@ public class DriverEarnings {
                     earning = earning + earningOnDate(userID, startingDate);
                     startingDate = dateOperations.getNextDay(startingDate);
                 }
-                return "\nTotal earnings between " + startDate + " and " + endDate + " is $" + earning;
+                return "\nTotal earnings between " + startDate + " and " + endDate +
+                    " is $" + String.format("%.2f", earning);
             }
         } else {
             return "\nInvalid Entry...";
