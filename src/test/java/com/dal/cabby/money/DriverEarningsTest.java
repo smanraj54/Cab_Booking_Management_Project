@@ -87,7 +87,7 @@ public class DriverEarningsTest {
                 "calculated correctly");
     }
 
-    @Test
+    //@Test
     public void testSpecificPeriodEarnings() throws SQLException {
 
         // cleaning data for testing
