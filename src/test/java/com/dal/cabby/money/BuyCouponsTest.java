@@ -37,4 +37,14 @@ public class BuyCouponsTest {
         buyCoupons.getCoupons(1, UserType.CUSTOMER),
         "Coupon is not added");
   }
+
+  @Test
+  void testBuyCouponInvalidID() throws SQLException {
+    PredefinedInputs inputs = new PredefinedInputs();
+    inputs.add("y").add(200);
+    BuyCoupons buyCoupons = new BuyCoupons(inputs);
+    assertEquals("\nInvalid coupon code",
+        buyCoupons.getCoupons(1, UserType.CUSTOMER),
+        "Coupon is not added");
+  }
 }
