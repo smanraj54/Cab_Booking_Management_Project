@@ -95,6 +95,10 @@ public class CabSelectionWithGender {
                 }
             }
         }
+        System.out.println("Estimated Arrival time of each Cab:");
+        for (Double driverTimeToReach : maleDriverTimeToReach) {
+            System.out.println(String.format("%.2f", driverTimeToReach));
+        }
         System.out.println("Fastest cab is reaching your location in " + String.format("%.2f", min) + " minutes");
         return selectedCab;
     }
