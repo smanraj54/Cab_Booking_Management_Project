@@ -90,7 +90,7 @@ class DriverTasks {
 
     void buyCoupons() throws SQLException {
         BuyCoupons buyCoupons = new BuyCoupons(inputs);
-        buyCoupons.getCoupons(LoggedInProfile.getLoggedInId(), UserType.DRIVER);
+        System.out.println(buyCoupons.getCoupons(LoggedInProfile.getLoggedInId(), UserType.DRIVER));
     }
 
     void cancelBooking() throws SQLException {
