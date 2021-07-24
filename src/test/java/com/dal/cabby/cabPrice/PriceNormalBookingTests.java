@@ -8,43 +8,44 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
-public class PriceWithAmenitiesTest {
-
+public class PriceNormalBookingTests {
     @Test
-    void microAndMiniWithAmenitiesTest() throws SQLException {
-        PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(1).add("Dartmouth").add("Winnipeg").add(1).add(2).add(3).add(2);
+    void microAndMiniNormalBookingTest() throws SQLException {
+        PredefinedInputs inputs=new PredefinedInputs();
+        inputs.add(1).add("Halifax").add("Dartmouth").add(1).add(2).add(1);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
         Booking booking=cabSelectionService.preferredCab(1,20);
-        double expectedPrice=91.29;
-        Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
-    }
-    @Test
-    void primeSedanWithAmenitiesTest() throws SQLException {
-        PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(2).add("Toronto").add("Yarmouth").add(1).add(1).add(3).add(3);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
-        double expectedPrice=547.31;
+        double expectedPrice=88.73;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
     }
 
     @Test
-    void primeSUVWithAmenitiesTest() throws SQLException {
+    void primeSedanNormalBookingTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(3).add("Halifax").add("Sydney").add(1).add(2).add(3).add(2);
+        inputs.add(2).add("Sydney").add("Dartmouth").add(1).add(2).add(1);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
         Booking booking=cabSelectionService.preferredCab(1,20);
-        double expectedPrice=90.66;
+        double expectedPrice=166.32;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
     }
+
     @Test
-    void luxuryClassWithAmenitiesTest() throws SQLException {
+    void primeSUVNormalBookingTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(4).add("Sydney").add("Kentville").add(1).add(2).add(3).add(3);
+        inputs.add(3).add("Toronto").add("Halifax").add(1).add(1).add(1);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
         Booking booking=cabSelectionService.preferredCab(1,20);
-        double expectedPrice=460.25;
+        double expectedPrice=528.94;
+        Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
+    }
+
+    @Test
+    void luxuryClassNormalBookingTest() throws SQLException {
+        PredefinedInputs inputs = new PredefinedInputs();
+        inputs.add(4).add("Toronto").add("Montreal").add(1).add(2).add(1);
+        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
+        Booking booking=cabSelectionService.preferredCab(1,20);
+        double expectedPrice=1750.04;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
     }
 }

@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 
-public class CabSelectionTests {
+public class CabWithGenderPreferenceTests {
     @Test
-    void microAndMiniNormalBookingTest() throws SQLException {
+    void microAndMiniNormalBookingWithGenderTest() throws SQLException {
         PredefinedInputs inputs=new PredefinedInputs();
         inputs.add(1).add("Halifax").add("Dartmouth").add(1).add(2).add(1);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -22,7 +22,7 @@ public class CabSelectionTests {
     }
 
     @Test
-    void microAndMiniRideSharingTest() throws SQLException {
+    void microAndMiniRideSharingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(1).add("Halifax").add("Sydney").add(1).add(1).add(2).add(1);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -38,7 +38,7 @@ public class CabSelectionTests {
 
 
     @Test
-    void microAndMiniWithAmenitiesTest() throws SQLException {
+    void microAndMiniWithAmenitiesWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(1).add("Halifax").add("Toronto").add(1).add(2).add(3).add(2);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -53,7 +53,7 @@ public class CabSelectionTests {
     }
 
     @Test
-    void primeSedanNormalBookingTest() throws SQLException {
+    void primeSedanNormalBookingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(2).add("Sydney").add("Dartmouth").add(1).add(2).add(1);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -67,7 +67,7 @@ public class CabSelectionTests {
     }
 
     @Test
-    void primeSedanRideSharingTest() throws SQLException {
+    void primeSedanRideSharingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(2).add("Dartmouth").add("Toronto").add(1).add(2).add(2).add(1);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -82,7 +82,7 @@ public class CabSelectionTests {
     }
 
     @Test
-    void primeSedanWithAmenitiesTest() throws SQLException {
+    void primeSedanWithAmenitiesWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(2).add("Yarmouth").add("Halifax").add(1).add(1).add(3).add(3);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -97,7 +97,7 @@ public class CabSelectionTests {
     }
 
     @Test
-    void primeSUVNormalBookingTest() throws SQLException {
+    void primeSUVNormalBookingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(3).add("Toronto").add("Halifax").add(1).add(1).add(1);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -111,7 +111,7 @@ public class CabSelectionTests {
     }
 
     @Test
-    void primeSUVRideSharingTest() throws SQLException {
+    void primeSUVRideSharingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(3).add("Sydney").add("BedFord").add(1).add(2).add(2).add(2);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -126,7 +126,7 @@ public class CabSelectionTests {
     }
 
     @Test
-    void primeSUVWithAmenitiesTest() throws SQLException {
+    void primeSUVWithAmenitiesWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(3).add("Halifax").add("Winnipeg").add(1).add(2).add(3).add(2);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -141,7 +141,7 @@ public class CabSelectionTests {
     }
 
     @Test
-    void luxuryClassNormalBookingTest() throws SQLException {
+    void luxuryClassNormalBookingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(4).add("Toronto").add("Montreal").add(1).add(2).add(1);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -156,7 +156,7 @@ public class CabSelectionTests {
     }
 
     @Test
-    void luxuryClassRideSharingTest() throws SQLException {
+    void luxuryClassRideSharingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(4).add("Halifax").add("Winnipeg").add(1).add(2).add(2).add(2);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
@@ -171,7 +171,7 @@ public class CabSelectionTests {
     }
 
     @Test
-    void luxuryClassWithAmenitiesTest() throws SQLException {
+    void luxuryClassWithAmenitiesWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(4).add("Dartmouth").add("Kentville").add(1).add(2).add(3).add(3);
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
