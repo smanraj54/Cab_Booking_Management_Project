@@ -33,8 +33,6 @@ public class CabSelectionService {
         cabSelectionWithGender=new CabSelectionWithGender(inputs,this);
         cabSelectionWithoutGender=new CabSelectionWithoutGender(inputs,this);
     }
-
-
     public static void main(String[] args) throws SQLException {
         CabSelectionService cabSelectionService = new CabSelectionService(new InputFromUser());
         cabSelectionService.preferredCab(1, 20);
@@ -99,50 +97,5 @@ public class CabSelectionService {
         }
         return cabDetails;
     }
-
-
-//    private CabSelectionDAO withoutGenderPreference() throws SQLException {
-//        try {
-//            System.out.println("Great! We are searching the best cab for you. Please hold on......");
-//            for (int i = 5; i > 0; i--) {
-//                Thread.sleep(1000);
-//                System.out.println(i + "....");
-//            }
-//            System.out.println("Hey! We have found the best cab based on your preferences.");
-//        } catch (InterruptedException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        List<String> arrayList = new ArrayList<>();
-//        for (CabSelectionDAO cabDetail : cabDetails) {
-//            arrayList.add(cabDetail.cabName);
-//        } /*
-//        Created this arrayList to store names of Nearby cabs which will be passed to a function along with
-//        sourceLocation to calculate distance between cabs and source location.
-//        */
-//
-//        for (String s : arrayList) {
-//            cabPriceCalculator.locationAndCabDistanceFromOrigin(sourceLocation, s);
-//        }
-//        return bestNearbyCabWithoutFilter();
-//    }
-//
-//    private CabSelectionDAO bestNearbyCabWithoutFilter() throws SQLException {
-//        List<Double> timeToReach = new ArrayList<>();
-//        CabSelectionDAO selectedCab = null;
-//        IRatings iRatings = new Ratings();
-//        double min = Double.MAX_VALUE;
-//        for (CabSelectionDAO cabDetail : cabDetails) {
-//            double timeOfCab = (cabDetail.cabDistanceFromOrigin) / (cabDetail.cabSpeedOnRoute);
-//            timeToReach.add(timeOfCab);
-//            int driverId = cabDetail.driver_Id;
-//            double ratings = iRatings.getAverageRatingOfDriver(driverId);
-//            if (timeOfCab < min) {
-//                selectedCab = cabDetail;
-//                min = timeOfCab;
-//            }
-//        }
-//        System.out.println("Fastest cab is reaching your location in " + String.format("%.2f", min) + " minutes");
-//        return selectedCab;
-//    }
 }
 
