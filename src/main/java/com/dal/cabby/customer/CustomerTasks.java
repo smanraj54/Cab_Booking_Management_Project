@@ -1,6 +1,7 @@
 package com.dal.cabby.customer;
 
 import com.dal.cabby.booking.BookingService;
+import com.dal.cabby.booking.IBookingService;
 import com.dal.cabby.cabSelection.CabSelectionService;
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
@@ -69,8 +70,8 @@ class CustomerTasks {
         Booking booking = cabSelectionService.preferredCab(custId, hour);
         booking.setCustomerId(custId);
         booking.setTravelTime(travelTime);
-        BookingService bookingService = new BookingService();
-        bookingService.saveBooking(booking);
+        IBookingService iBookingService = new BookingService();
+        iBookingService.saveBooking(booking);
         ConsolePrinter.printSuccessMsg("Congratulations!. Your booking is confirmed!");
         String bookingDetails = String.format("Booking details: Source: %s , Destination: %s , Travel time: %s, Fare: %f",
                 booking.getSource(), booking.getDestination(), booking.getTravelTime(), booking.getPrice());
@@ -78,8 +79,8 @@ class CustomerTasks {
     }
 
     void cancelBooking() throws SQLException {
-        BookingService bookingService = new BookingService();
-        Booking booking = bookingService.getCustomerOpenBooking(LoggedInProfile.getLoggedInId());
+        IBookingService iBookingService = new BookingService();
+        Booking booking = iBookingService.getCustomerOpenBooking(LoggedInProfile.getLoggedInId());
         if (booking == null) {
             ConsolePrinter.printOutput("You have no booking to cancel.");
             return;
@@ -92,7 +93,7 @@ class CustomerTasks {
         if (!input.equalsIgnoreCase("y")) {
             return;
         }
-        bookingService.cancelBooking(booking.getBookingId(), UserType.CUSTOMER);
+        iBookingService.cancelBooking(booking.getBookingId(), UserType.CUSTOMER);
         ConsolePrinter.printSuccessMsg("Your booking is cancelled successfully");
     }
 

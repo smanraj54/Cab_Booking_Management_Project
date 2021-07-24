@@ -13,7 +13,7 @@ class BookingServiceTest {
 
     @BeforeAll
     static void saveBooking() throws SQLException {
-        BookingService bookingService = new BookingService();
+        IBookingService iBookingService = new BookingService();
         Booking booking = new Booking();
         booking.setDriverId(1);
         booking.setCustomerId(1);
@@ -23,7 +23,7 @@ class BookingServiceTest {
         booking.setTravelTime("08/06/2021 02:30");
         booking.setCabId(1);
         try {
-            bookingService.saveBooking(booking);
+            iBookingService.saveBooking(booking);
         } catch (SQLException throwables) {
             Assertions.fail(throwables.getMessage());
         }
@@ -31,9 +31,9 @@ class BookingServiceTest {
 
     @Test
     void getBooking() throws SQLException {
-        BookingService bookingService = new BookingService();
+        IBookingService iBookingService = new BookingService();
         try {
-            Booking booking = bookingService.getBooking(1);
+            Booking booking = iBookingService.getBooking(1);
             Assertions.assertEquals(1, booking.getBookingId(), "Wrong booking id");
         } catch (SQLException throwables) {
             Assertions.fail(throwables.getMessage());
@@ -42,37 +42,37 @@ class BookingServiceTest {
 
     @Test
     void cancelBooking() throws SQLException {
-        BookingService bookingService = new BookingService();
-        bookingService.cancelBooking(1, UserType.DRIVER);
-        Booking booking = bookingService.getBooking(1);
+        IBookingService iBookingService = new BookingService();
+        iBookingService.cancelBooking(1, UserType.DRIVER);
+        Booking booking = iBookingService.getBooking(1);
         Assertions.assertEquals(true, booking.isCancelled(), "Wrong value");
     }
 
     @Test
     void getCustomerOpenBooking() throws SQLException {
-        BookingService bookingService = new BookingService();
-        Booking booking = bookingService.getCustomerOpenBooking(1);
+        IBookingService iBookingService = new BookingService();
+        Booking booking = iBookingService.getCustomerOpenBooking(1);
         Assertions.assertNotNull(booking, "Wrong value");
     }
 
     @Test
     void getDriverOpenBookings() throws SQLException {
-        BookingService bookingService = new BookingService();
-        List<Booking> bookingList = bookingService.getDriverOpenBookings(1);
+        IBookingService iBookingService = new BookingService();
+        List<Booking> bookingList = iBookingService.getDriverOpenBookings(1);
         Assertions.assertTrue(bookingList.size() >= 1, "Wrong value");
     }
 
     @Test
     void getCustomerTotalBookings() throws SQLException {
-        BookingService bookingService = new BookingService();
-        int totalBooking = bookingService.getCustomerTotalBookings(1);
+        IBookingService iBookingService = new BookingService();
+        int totalBooking = iBookingService.getCustomerTotalBookings(1);
         Assertions.assertTrue(totalBooking >= 1, "Wrong value");
     }
 
     @Test
     void getDriverTotalBookings() throws SQLException {
-        BookingService bookingService = new BookingService();
-        int totalBooking = bookingService.getDriverTotalBookings(1);
+        IBookingService iBookingService = new BookingService();
+        int totalBooking = iBookingService.getDriverTotalBookings(1);
         Assertions.assertTrue(totalBooking >= 1, "Wrong value");
     }
 }

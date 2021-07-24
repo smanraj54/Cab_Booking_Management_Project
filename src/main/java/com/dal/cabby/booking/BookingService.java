@@ -14,19 +14,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BookingService {
+public class BookingService implements IBookingService {
     private final IPersistence iPersistence;
 
     public BookingService() throws SQLException {
         this.iPersistence = DBHelper.getInstance();
     }
 
+    @Override
     public void saveBooking(Booking booking) throws SQLException {
         String query = String.format("insert into bookings(driver_id, cust_id, cab_id, travel_time, estimated_price, source, destination) values(%d, %d, %d, '%s', %f, '%s', '%s')",
                 booking.getDriverId(), booking.getCustomerId(), booking.getCabId(), booking.getTravelTime(), booking.getPrice(), booking.getSource(), booking.getDestination());
         iPersistence.executeCreateOrUpdateQuery(query);
     }
 
+    @Override
     public Booking getBooking(int booking_id) throws SQLException {
         String query = String.format("select * from bookings where booking_id=%d;", booking_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
@@ -50,6 +52,7 @@ public class BookingService {
         return null;
     }
 
+    @Override
     public void cancelBooking(int booking_id, UserType cancelledBy) throws SQLException {
         boolean hasDriverCancelled = false;
         boolean hasCustomerCancelled = false;
@@ -65,6 +68,7 @@ public class BookingService {
         iPersistence.executeCreateOrUpdateQuery(query);
     }
 
+    @Override
     public Booking getCustomerOpenBooking(int cust_id) throws SQLException {
         String query = String.format("select * from bookings where cust_id=%d and is_trip_done=false and is_cancelled=false;", cust_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
@@ -83,6 +87,7 @@ public class BookingService {
         return null;
     }
 
+    @Override
     public List<Booking> getDriverOpenBookings(int driver_id) throws SQLException {
         String query = String.format("select * from bookings where driver_id=%d and is_trip_done=false and is_cancelled=false;", driver_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
@@ -102,6 +107,7 @@ public class BookingService {
         return bookings;
     }
 
+    @Override
     public int getCustomerTotalBookings(int cust_id) throws SQLException {
         String query = String.format("select count(*) from bookings where cust_id=%d;", cust_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
@@ -112,6 +118,7 @@ public class BookingService {
         return -1;
     }
 
+    @Override
     public int getDriverTotalBookings(int driver_id) throws SQLException {
         String query = String.format("select count(*) from bookings where driver_id=%d;", driver_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
@@ -121,11 +128,13 @@ public class BookingService {
         return -1;
     }
 
+    @Override
     public void markBookingComplete(int bookingId) throws SQLException {
         String q = String.format("update bookings set is_trip_done=true where booking_id=%d", bookingId);
         iPersistence.executeCreateOrUpdateQuery(q);
     }
 
+    @Override
     public void completeTrip(int bookingId, int driverId, int custId, double tripAmount, double distanceCovered,
                              String tripStartTime, String tripEndTime) throws SQLException, ParseException {
         java.sql.Date startTime = getSQLFormatDate(tripStartTime);
