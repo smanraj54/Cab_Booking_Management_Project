@@ -93,7 +93,7 @@ public class DisplayRidesTest {
 
     assertEquals(Collections.singletonList(expected),
         Collections.singletonList(rides.getRides(UserType.DRIVER, 1)),
-        "Daily Rides returned are not correct");
+        "Monthly Rides returned are not correct");
   }
 
   @Test
@@ -136,6 +136,39 @@ public class DisplayRidesTest {
 
     assertEquals(Collections.singletonList(expected),
         Collections.singletonList(rides.getRides(UserType.DRIVER, 1)),
-        "Daily Rides returned are not correct");
+        "Rides returned for specific period are not correct");
+  }
+
+  @Test
+  void invalidDateTest() throws SQLException {
+    PredefinedInputs inputs = new PredefinedInputs();
+    inputs.add(1).add("00/07/2020");
+    DisplayRides rides = new DisplayRides(inputs);
+
+    assertEquals(Collections.singletonList("Invalid Input"),
+        rides.getRides(UserType.DRIVER, 1),
+        "Issue in detecting invalid date");
+  }
+
+  @Test
+  void invalidMonthTest() throws SQLException {
+    PredefinedInputs inputs = new PredefinedInputs();
+    inputs.add(1).add("01/00/2020");
+    DisplayRides rides = new DisplayRides(inputs);
+
+    assertEquals(Collections.singletonList("Invalid Input"),
+        rides.getRides(UserType.DRIVER, 1),
+        "Issue in detecting invalid date");
+  }
+
+  @Test
+  void invalidYearTest() throws SQLException {
+    PredefinedInputs inputs = new PredefinedInputs();
+    inputs.add(1).add("01/07/0000");
+    DisplayRides rides = new DisplayRides(inputs);
+
+    assertEquals(Collections.singletonList("Invalid Input"),
+        rides.getRides(UserType.DRIVER, 1),
+        "Issue in detecting invalid date");
   }
 }
