@@ -18,17 +18,33 @@ public class BuyCoupons {
   UserType requesterType;
   Inputs inputs;
 
+  /**
+   * Constructor of class BuyCoupons
+   */
   public BuyCoupons(Inputs inputs) throws SQLException {
     this.inputs = inputs;
     iPersistence = DBHelper.getInstance();
   }
 
+  /**
+   * This method will get the input from user and process the request
+   * to buy coupons.
+   * Parameters:
+   *   userID - id of the user
+   *   userType - user type (DRIVER or CUSTOMER)
+   * Returns:
+   *   return the output as a string
+   */
   public String getCoupons(int userID, UserType userType) throws SQLException {
     requesterID = userID;
     requesterType = userType;
     return couponsPage();
   }
 
+  /**
+   * This method will display the available coupons and ask the user to
+   * select the coupon they want to buy.
+   */
   private String couponsPage() throws SQLException {
     System.out.println("\nBelow are the available coupons: ");
     System.out.println("\nCouponID" + ", " + "CouponName" + ", " +
@@ -46,6 +62,9 @@ public class BuyCoupons {
     }
   }
 
+  /**
+   * This method will fetch the coupon details from the database
+   */
   private void displayCoupons() throws SQLException {
     String query = "select coupon_id, coupon_name, coupon_value," +
         "price_in_points from coupons;";
@@ -60,6 +79,9 @@ public class BuyCoupons {
     }
   }
 
+  /**
+   * This method will return the available user points
+   */
   private int checkUserPoints() throws SQLException {
     String query = String.format("select total_points \n" +
         "from user_points \n" +
@@ -73,6 +95,15 @@ public class BuyCoupons {
     return points;
   }
 
+  /**
+   * This method will validate the input and process the request to
+   * buy coupons.
+   * Parameters:
+   *   couponID - id of the coupon
+   *   userPoints - points of the user
+   * Returns:
+   *   return the result of purchase request in string format
+   */
   private String purchaseCoupon(int couponId, int userPoints) throws SQLException {
     int couponPoints = getCouponValue(couponId);
     if (!isCouponValid(couponId)) {
@@ -84,6 +115,13 @@ public class BuyCoupons {
     }
   }
 
+  /**
+   * This method will fetch the value of particular coupon.
+   * Parameter:
+   *   couponID - coupon id
+   * Returns:
+   *   return the value of the coupon
+   */
   private int getCouponValue(int couponID) throws SQLException {
     String query = String.format("select price_in_points \n" +
         "from coupons\n" +
@@ -96,6 +134,13 @@ public class BuyCoupons {
     return points;
   }
 
+  /**
+   * This method will check if the coupon is valid.
+   * Parameters:
+   *   couponID - coupon id
+   * Returns:
+   *   returns true if coupon is valid else false
+   */
   private boolean isCouponValid(int couponID) throws SQLException {
     int couponCount = 0;
     ResultSet result = iPersistence.executeSelectQuery("select count(*) id_count " +
@@ -106,6 +151,14 @@ public class BuyCoupons {
     return couponCount != 0;
   }
 
+  /**
+   * This method will update the database as per the purchase request.
+   * Parameters:
+   *   couponID - coupon id
+   *   couponPoints - the value of coupon in points
+   * Returns:
+   *   returns the message after updating the database
+   */
   private String beginTransaction(int couponID, int couponPoints) throws SQLException {
 
     // query to start transaction

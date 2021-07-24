@@ -8,7 +8,12 @@ import com.dal.cabby.util.DateOperations;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-// this class will show the earning of driver for a specific period
+/**
+ * This class will return the earnings of the driver. The driver has the option
+ * to select from three option: daily earnings, monthly earnings, and earning between
+ * specific dates. The driver will enter the required dates and will get the earning
+ * details.
+ */
 public class DriverEarnings {
     IPersistence iPersistence;
     DateOperations dateOperations;
@@ -16,6 +21,9 @@ public class DriverEarnings {
     int userID;
     Inputs inputs;
 
+    /**
+     * Constructor of DriverEarnings class
+     */
     public DriverEarnings(Inputs inputs) throws SQLException {
         this.inputs = inputs;
         dateOperations = new DateOperations();
@@ -23,11 +31,24 @@ public class DriverEarnings {
         iPersistence = DBHelper.getInstance();
     }
 
+    /**
+     * This method will return the earning details in string format
+     * Parameters:
+     *   driverID - the id of the driver
+     * Returns:
+     *   a string with earning details
+     */
     public String getEarnings(int driverID) throws SQLException {
         userID = driverID;
         return earnings();
     }
 
+    /**
+     * This method will provide the options to the driver to select from and
+     * give appropriate response
+     * Returns:
+     *  a string with earning details
+     */
     private String earnings() throws SQLException {
         System.out.println("\n**** Earnings Page ****");
         System.out.println("1. Daily earnings: ");
@@ -50,7 +71,12 @@ public class DriverEarnings {
         }
     }
 
-    // method to calculate the daily earnings
+    /**
+     * This method will ask the date from driver and will provide the
+     * earnings on that date
+     * Returns:
+     *   a string with earning details of that day
+     */
     private String dailyEarnings() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
         String inputDate = inputs.getStringInput();
@@ -64,7 +90,12 @@ public class DriverEarnings {
         }
     }
 
-    // method to calculate monthly earnings
+    /**
+     * This method will ask the month details from driver and will provide the
+     * earnings in that month
+     * Returns:
+     *   a string with earning details of that month
+     */
     private String monthlyEarnings() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
         String input = inputs.getStringInput();
@@ -84,6 +115,12 @@ public class DriverEarnings {
         }
     }
 
+    /**
+     * This method will ask the start date and end date from driver and
+     * will provide the earnings between those dates
+     * Returns:
+     *   a string with earning details between specific period
+     */
     private String specificPeriodEarnings() throws SQLException {
         System.out.print("Enter the start date (DD/MM/YYYY): ");
         String startDate = inputs.getStringInput();
@@ -109,6 +146,14 @@ public class DriverEarnings {
         }
     }
 
+    /**
+     * This method will check the earning details from database
+     * Parameters:
+     *   driverID - id of the driver
+     *   date - date for which earning is being calculated
+     * Returns:
+     *   earning on that particular date
+     */
     private double earningOnDate(int driverID, String date) throws SQLException {
         int totalRides = 0;
         double travelDistance = 0.0;

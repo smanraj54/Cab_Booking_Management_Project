@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class displays the rides completed by user (Driver and Customer). This
+ * class provides the option to display daily rides, monthly rides, and rides
+ * between specific period.
+ */
 public class DisplayRides {
     IPersistence iPersistence;
     private UserType requesterType;
@@ -19,19 +24,35 @@ public class DisplayRides {
     Inputs inputs;
     DateOperations dateOperations;
 
+    /**
+     * Constructor of class DisplayRides
+     */
     public DisplayRides(Inputs inputs) throws SQLException {
         this.inputs = inputs;
         dateOperations = new DateOperations();
         iPersistence = DBHelper.getInstance();
     }
 
+    /**
+     * This method will return the list of rides.
+     * Parameters:
+     *   userType - whether the user is driver or customer
+     *   userID - the id of the user
+     * Returns:
+     *   list of rides
+     */
     public List<String> getRides(UserType userType, int userID) throws SQLException {
         requesterType = userType;
         requesterID = userID;
         return rides();
     }
 
-    // method to display ride page options and get input from the user
+    /**
+     * This method provides the display options to select from and returns
+     * the appropriate result
+     * Returns:
+     *   list of rides
+     */
     private List<String> rides() throws SQLException {
         List<String> totalRides = new ArrayList<>();
         System.out.println("\n**** Rides Page ****");
@@ -55,7 +76,12 @@ public class DisplayRides {
         }
     }
 
-    // method to get daily rides
+    /**
+     * This method ask the user to enter the date and return the ride
+     * details.
+     * Returns:
+     *   list of completed rides on a particular day
+     */
     private List<String> getDailyRides() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
         String inputDate = inputs.getStringInput().trim();
@@ -67,7 +93,12 @@ public class DisplayRides {
         }
     }
 
-    // method to get monthly rides
+    /**
+     * This method ask the user to enter the month details and return the
+     * ride details.
+     * Returns:
+     *   list of completed rides in that particular month
+     */
     private List<String> getMonthlyRides() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
         String input = inputs.getStringInput().trim();
@@ -83,7 +114,12 @@ public class DisplayRides {
         }
     }
 
-    // method to get rides between specific time period
+    /**
+     * This method ask the user to enter the start date and end date
+     * and return the ride details.
+     * Returns:
+     *   list of completed rides between start date and end date
+     */
     private List<String> getSpecificPeriodRides() throws SQLException {
         System.out.print("Enter the start date (DD/MM/YYYY): ");
         String startDate = inputs.getStringInput().trim();
@@ -103,7 +139,16 @@ public class DisplayRides {
         }
     }
 
-    // method to get rides from the database
+    /**
+     * This method gets the ride details from the database
+     * Parameters:
+     *   startDate - start date
+     *   endDate - end date
+     *   userType - type of user (Customer or Driver)
+     *   userID - id of the user
+     * Returns:
+     *   list of completed rides between start date and end date
+     */
     private List<String> getRidesFromDb(String startDate, String endDate, UserType userType, int userID) throws SQLException {
         List<String> listOfRides = new ArrayList<>();
         listOfRides.add("Ride Details ->");
@@ -134,7 +179,9 @@ public class DisplayRides {
         return listOfRides;
     }
 
-    // method to get the column name for user category
+    /**
+     * method to get the column name for user category
+     */
     private String getColumnName(UserType userType) {
         if (userType == UserType.DRIVER) {
             return "driver_id";
