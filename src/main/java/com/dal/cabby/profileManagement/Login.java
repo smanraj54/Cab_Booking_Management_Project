@@ -1,37 +1,56 @@
 package com.dal.cabby.profileManagement;
 
-import java.util.Scanner;
+import com.dal.cabby.io.Inputs;
+import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.util.ConsolePrinter;
 
 import static java.lang.Thread.sleep;
 
-public class Login {
+public class Login implements ILogin {
 
-    public Login(){
+    Inputs inputs;
 
+    public Login(Inputs inputs){
+        this.inputs = inputs;
     }
-    public boolean attemptLogin(){
-        Scanner sc = new Scanner(System.in);
-        DB_Operations db_operations = new DB_Operations();
-        System.out.print("\nEnter UserName : ");
-        String userName = sc.nextLine();
 
-        System.out.print("\nEnter Password : ");
-        String  password = sc.nextLine();
+    @Override
+    public boolean attemptLogin(UserType userType) throws InterruptedException {
 
-        sc.close();
+        IDBOperations db_operations = new DBOperations(userType);
+        String userNameOrEmail;
+        String password;
 
-        if(db_operations.dbUserNameValidation(userName) && db_operations.validatePassword(userName,password)){
-            System.out.println("\n\t\tLogin Successful !!");
+        userNameOrEmail = inputUserName();
+        password = inputPassword();
+
+        if(db_operations.validateLoginUser(userNameOrEmail, password, userType)){
             return true;
         }
 
-        System.err.println("\n\t\tLogin Failed !!");
+        ConsolePrinter.printErrorMsg("Login Failed due to invalid credentials.");
         try {
             sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            throw e;
         }
         return false;
+    }
+
+    private String inputUserName(){
+
+        System.out.print("\nEnter UserName or Email : ");
+
+        return(inputs.getStringInput());
+
+    }
+
+    private String inputPassword(){
+
+        System.out.print("\nEnter Password : ");
+
+        return(inputs.getStringInput());
 
     }
 

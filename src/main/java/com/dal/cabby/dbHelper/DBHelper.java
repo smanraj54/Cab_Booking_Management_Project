@@ -2,29 +2,52 @@ package com.dal.cabby.dbHelper;
 
 import java.sql.*;
 
-public class DBHelper {
+public class DBHelper implements IPersistence {
     String database;
     String user;
     String password;
     Connection connection;
     String connUrl;
-    String url = "jdbc:mysql://%s:3306/%s?useSSL=false";
+    String url = "jdbc:mysql://%s:3306/%s?useSSL=false&allowPublicKeyRetrieval=true";
+    private String DEFAULT_MYSQL_USERNAME = "CSCI5308_15_TEST_USER";
+    private String DEFAULT_MYSQL_PASSWORD = "m3ed6rK5gSR";
+    private String DEFAULT_MYSQL_DATABASE = "CSCI5308_15_TEST";
+    private static DBHelper dbHelper;
 
-    DBHelper(String user, String password) {
+    public static DBHelper getInstance() throws SQLException {
+        if(dbHelper == null) {
+            dbHelper = new DBHelper();
+            dbHelper.initialize();
+        }
+        return dbHelper;
+    }
+
+    private DBHelper() {
+        this.database = DEFAULT_MYSQL_DATABASE;
+        this.user = DEFAULT_MYSQL_USERNAME;
+        this.password = DEFAULT_MYSQL_PASSWORD;
+        connUrl = String.format(url, "db-5308.cs.dal.ca", this.database);
+    }
+
+    private DBHelper(String user, String password) {
         this.database = "cabby";
         this.user = user;
         this.password = password;
         connUrl = String.format(url, "localhost", this.database);
     }
 
-    public void initialize() throws SQLException {
-        connection = DriverManager.getConnection(connUrl, user, password);
+    private void initialize() throws SQLException {
+        if(connection == null) {
+            connection = DriverManager.getConnection(connUrl, user, password);
+        }
     }
 
+    @Override
     public void close() throws SQLException {
         connection.close();
     }
 
+    @Override
     public void executeCreateOrUpdateQuery(String query) throws SQLException {
         if (connection == null) {
             throw new RuntimeException("Please call initialize method in DBHelper before calling this method.");
@@ -33,6 +56,7 @@ public class DBHelper {
         st.executeUpdate(query);
     }
 
+    @Override
     public ResultSet executeSelectQuery(String query) throws SQLException {
         Statement statement = connection.createStatement();
         return statement.executeQuery(query);
