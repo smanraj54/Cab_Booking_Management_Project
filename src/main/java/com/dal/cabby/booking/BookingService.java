@@ -70,7 +70,7 @@ public class BookingService implements IBookingService {
 
     @Override
     public Booking getCustomerOpenBooking(int cust_id) throws SQLException {
-        String query = String.format("select * from bookings where cust_id=%d and is_trip_done=false and is_cancelled=false;", cust_id);
+        String query = String.format("select * from bookings where cust_id=%d and is_trip_done=false and is_cancelled=false order by created_at desc limit 1;", cust_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             int bookingId = resultSet.getInt("booking_id");
