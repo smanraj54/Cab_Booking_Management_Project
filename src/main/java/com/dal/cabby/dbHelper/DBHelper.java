@@ -10,10 +10,10 @@ public class DBHelper implements IPersistence {
     private static Statement statement;
     String connUrl;
     String url = "jdbc:mysql://%s:3306/%s?useSSL=false&allowPublicKeyRetrieval=true";
-    private final String DB_HOST = "db-5308.cs.dal.ca";
-    private final String DEFAULT_MYSQL_USERNAME = "CSCI5308_15_TEST_USER";
-    private final String DEFAULT_MYSQL_PASSWORD = "m3ed6rK5gSR";
-    private final String DEFAULT_MYSQL_DATABASE = "CSCI5308_15_TEST";
+    private final String DB_HOST = "35.193.102.29";
+    private final String DEFAULT_MYSQL_USERNAME = "root";
+    private final String DEFAULT_MYSQL_PASSWORD = "group15";
+    private final String DEFAULT_MYSQL_DATABASE = "cabby";
     private static DBHelper dbHelper;
 
     public static DBHelper getInstance() throws SQLException {

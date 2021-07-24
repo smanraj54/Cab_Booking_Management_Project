@@ -103,7 +103,7 @@ public class DBOperations implements IDBOperations {
 
         IPersistence iPersistence = getDBInstance();
         String tableName = getTableName(dataNode.getUserType());
-        String query = String.format("insert into %s (username, name, email, password, status) value ('%s','%s', '%s', '%s', %b)", tableName, dataNode.getUser(), dataNode.getName(), dataNode.getEmail(), dataNode.getPassword(), false);
+        String query = String.format("insert into %s (username, name, email, password) value ('%s','%s', '%s', '%s')", tableName, dataNode.getUser(), dataNode.getName(), dataNode.getEmail(), dataNode.getPassword());
         try {
             iPersistence.executeCreateOrUpdateQuery(query);
         } catch (SQLException throwable) {
