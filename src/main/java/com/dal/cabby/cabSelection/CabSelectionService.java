@@ -41,8 +41,8 @@ public class CabSelectionService {
     }
 
     public Booking preferredCab(int custId, double hour) throws SQLException {
-        System.out.println("Enter your Cab preference");
-        System.out.println("1. Micro and Mini");
+        System.out.println("Enter your cab preference.");
+        System.out.println("1. Micro or Mini");
         System.out.println("2. Prime Sedan");
         System.out.println("3. Prime SUV");
         System.out.println("4. Luxury Class");
