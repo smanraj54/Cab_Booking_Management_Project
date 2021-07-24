@@ -1,4 +1,5 @@
 package com.dal.cabby.cabSelection;
+
 import com.dal.cabby.cabPrice.CabPriceCalculator;
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
@@ -10,16 +11,16 @@ import com.dal.cabby.rating.Ratings;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CabSelectionService {
     CabSelectionDAO bestCab;
     private IPersistence iPersistence;
-    private Inputs inputs;
-    private CabPriceCalculator cabPriceCalculator;
+    private final Inputs inputs;
+    private final CabPriceCalculator cabPriceCalculator;
     private String sourceLocation, destinationLocation;
-    private List<CabSelectionDAO> cabDetails = new ArrayList<>();
+    private final List<CabSelectionDAO> cabDetails = new ArrayList<>();
 
     public CabSelectionService(Inputs inputs) throws SQLException {
         this.inputs = inputs;
@@ -29,6 +30,11 @@ public class CabSelectionService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        CabSelectionService cabSelectionService = new CabSelectionService(new InputFromUser());
+        cabSelectionService.preferredCab(1, 20);
     }
 
     public Booking preferredCab(int custId, double hour) throws SQLException {
@@ -50,7 +56,7 @@ public class CabSelectionService {
     }
 
     private double fetchSourceLocation() throws SQLException {
-        double sourceDistance=0.0;
+        double sourceDistance = 0.0;
         String query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", sourceLocation);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
@@ -101,7 +107,7 @@ public class CabSelectionService {
         int input = inputs.getIntegerInput();
         try {
             System.out.println("Great! We are searching the best cab for you. Please hold on......");
-            for(int i=5;i>0;i--) {
+            for (int i = 5; i > 0; i--) {
                 Thread.sleep(1000);
                 System.out.println(i + "....");
             }
@@ -141,7 +147,7 @@ public class CabSelectionService {
     private CabSelectionDAO withoutGenderPreference() throws SQLException {
         try {
             System.out.println("Great! We are searching the best cab for you. Please hold on......");
-            for(int i=5;i>0;i--) {
+            for (int i = 5; i > 0; i--) {
                 Thread.sleep(1000);
                 System.out.println(i + "....");
             }
@@ -227,11 +233,6 @@ public class CabSelectionService {
         }
         System.out.println("Fastest cab is reaching your location in " + String.format("%.2f", min) + " minutes");
         return selectedCab;
-    }
-
-    public static void main(String[] args) throws SQLException {
-        CabSelectionService cabSelectionService = new CabSelectionService(new InputFromUser());
-        cabSelectionService.preferredCab(1, 20);
     }
 }
 

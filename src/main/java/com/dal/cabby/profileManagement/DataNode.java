@@ -8,7 +8,7 @@ public class DataNode {
     private String name;
     private String email;
     private String password;
-    private UserType userType;
+    private final UserType userType;
 
     public DataNode(String user, String name, String email, String password,
                     UserType userType) {
@@ -27,7 +27,7 @@ public class DataNode {
 
     public void setUser(String user) {
 
-        if(user == null){
+        if (user == null) {
             throw new NullPointerException();
         }
 
@@ -39,18 +39,18 @@ public class DataNode {
         return name;
     }
 
-    public UserType getUserType() {
-
-        return userType;
-    }
-
     public void setName(String name) {
 
-        if(name == null){
+        if (name == null) {
             throw new NullPointerException();
         }
 
         this.name = name;
+    }
+
+    public UserType getUserType() {
+
+        return userType;
     }
 
     public String getEmail() {
@@ -60,7 +60,7 @@ public class DataNode {
 
     public void setEmail(String email) {
 
-        if(email == null){
+        if (email == null) {
             throw new NullPointerException();
         }
 
@@ -74,7 +74,7 @@ public class DataNode {
 
     public void setPassword(String password) {
 
-        if(password == null){
+        if (password == null) {
             throw new NullPointerException();
         }
 

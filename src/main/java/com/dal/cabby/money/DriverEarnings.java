@@ -34,9 +34,9 @@ public class DriverEarnings {
     /**
      * This method will return the earning details in string format
      * Parameters:
-     *   driverID - the id of the driver
+     * driverID - the id of the driver
      * Returns:
-     *   a string with earning details
+     * a string with earning details
      */
     public String getEarnings(int driverID) throws SQLException {
         userID = driverID;
@@ -47,7 +47,7 @@ public class DriverEarnings {
      * This method will provide the options to the driver to select from and
      * give appropriate response
      * Returns:
-     *  a string with earning details
+     * a string with earning details
      */
     private String earnings() throws SQLException {
         System.out.println("\n**** Earnings Page ****");
@@ -75,7 +75,7 @@ public class DriverEarnings {
      * This method will ask the date from driver and will provide the
      * earnings on that date
      * Returns:
-     *   a string with earning details of that day
+     * a string with earning details of that day
      */
     private String dailyEarnings() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
@@ -94,12 +94,12 @@ public class DriverEarnings {
      * This method will ask the month details from driver and will provide the
      * earnings in that month
      * Returns:
-     *   a string with earning details of that month
+     * a string with earning details of that month
      */
     private String monthlyEarnings() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
         String input = inputs.getStringInput();
-        if (input.isEmpty() || (input.indexOf("/")!=2)) {
+        if (input.isEmpty() || (input.indexOf("/") != 2)) {
             return "\nInvalid Entry";
         } else {
             double earning = 0.0;
@@ -119,7 +119,7 @@ public class DriverEarnings {
      * This method will ask the start date and end date from driver and
      * will provide the earnings between those dates
      * Returns:
-     *   a string with earning details between specific period
+     * a string with earning details between specific period
      */
     private String specificPeriodEarnings() throws SQLException {
         System.out.print("Enter the start date (DD/MM/YYYY): ");
@@ -149,10 +149,10 @@ public class DriverEarnings {
     /**
      * This method will check the earning details from database
      * Parameters:
-     *   driverID - id of the driver
-     *   date - date for which earning is being calculated
+     * driverID - id of the driver
+     * date - date for which earning is being calculated
      * Returns:
-     *   earning on that particular date
+     * earning on that particular date
      */
     private double earningOnDate(int driverID, String date) throws SQLException {
         int totalRides = 0;
@@ -176,6 +176,6 @@ public class DriverEarnings {
         }
         // getting commission percentage
         int commissionPercentage = commission.getCommissionPercentage(totalRides, travelDistance, travelTime);
-        return (amountOfRides - ((amountOfRides * commissionPercentage)/100));
+        return (amountOfRides - ((amountOfRides * commissionPercentage) / 100));
     }
 }

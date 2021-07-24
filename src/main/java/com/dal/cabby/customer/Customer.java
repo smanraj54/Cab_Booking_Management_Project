@@ -44,7 +44,7 @@ public class Customer implements ICustomer {
                     boolean isLoginSuccessful = customerProfileManagement.login();
                     if (isLoginSuccessful) {
                         printSuccessMsg("Login successful");
-                        if(!profileStatus.isCustomerApproved(LoggedInProfile.getLoggedInId())) {
+                        if (!profileStatus.isCustomerApproved(LoggedInProfile.getLoggedInId())) {
                             printErrorMsg("You are in deactivated state rigth now. " +
                                     "Please contact Fincare customer care: fincare@dal.ca");
                             return;
@@ -54,13 +54,13 @@ public class Customer implements ICustomer {
                     break;
                 case 2:
                     boolean isRegistered = customerProfileManagement.register();
-                    if(!isRegistered) {
+                    if (!isRegistered) {
                         System.out.println("Registration failed!");
                     }
                     break;
                 case 3:
                     boolean recoveryStatus = customerProfileManagement.forgotPassword();
-                    if(recoveryStatus) {
+                    if (recoveryStatus) {
                         System.out.println("Password reset successful. Please login with new credentials");
                     }
                     break;
@@ -105,7 +105,7 @@ public class Customer implements ICustomer {
                 case 6:
                     customerTasks.buyCoupons();
                     break;
-                case  7:
+                case 7:
                     customerTasks.cancelBooking();
                     break;
                 default:

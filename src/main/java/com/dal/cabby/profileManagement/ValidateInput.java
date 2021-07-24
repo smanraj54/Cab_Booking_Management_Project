@@ -18,7 +18,7 @@ public class ValidateInput {
     }
 
     public boolean validateConfirmPassword(String password,
-                                           String confirmPassword){
+                                           String confirmPassword) {
 
         return confirmPassword.equals(password);
     }

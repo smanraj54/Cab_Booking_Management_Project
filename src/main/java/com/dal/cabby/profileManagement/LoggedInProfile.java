@@ -11,7 +11,8 @@ public class LoggedInProfile {
     static int loggedInId;
     static String loggedInName;
 
-    private LoggedInProfile(){}
+    private LoggedInProfile() {
+    }
 
     public static int getLoggedInId() {
 
@@ -20,7 +21,7 @@ public class LoggedInProfile {
 
     public static void setLoggedInId(int id) {
 
-        if(id < 0){
+        if (id < 0) {
             throw new IndexOutOfBoundsException();
         }
 
@@ -34,7 +35,7 @@ public class LoggedInProfile {
 
     public static void setLoggedInName(String loggedInName) {
 
-        if(loggedInName == null){
+        if (loggedInName == null) {
             throw new NullPointerException();
         }
 

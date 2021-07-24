@@ -1,7 +1,8 @@
 package com.dal.cabby.profileManagement;
 
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class SendEmail {
@@ -23,7 +24,7 @@ public class SendEmail {
     }
 
     private static void messageBodyPreparation(MimeMessage message, String to,
-                          String title, String body) throws MessagingException {
+                                               String title, String body) throws MessagingException {
 
         message.setContent(body, "text/html; charset=utf-8");
         message.setFrom(new InternetAddress(myEmail));
@@ -43,15 +44,15 @@ public class SendEmail {
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
 
-            protected PasswordAuthentication getPasswordAuthentication() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
 
-                System.out.println("Authenticating with Email : "+myEmail+" " +
-                        "and Password : "+password+"");
+                        System.out.println("Authenticating with Email : " + myEmail + " " +
+                                "and Password : " + password + "");
 
-                return new PasswordAuthentication(myEmail, password);
-            }
+                        return new PasswordAuthentication(myEmail, password);
+                    }
 
-        });
+                });
 
         return session;
     }

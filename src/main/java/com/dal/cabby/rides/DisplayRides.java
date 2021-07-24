@@ -19,10 +19,10 @@ import java.util.List;
  */
 public class DisplayRides {
     IPersistence iPersistence;
-    private UserType requesterType;
-    private int requesterID;
     Inputs inputs;
     DateOperations dateOperations;
+    private UserType requesterType;
+    private int requesterID;
 
     /**
      * Constructor of class DisplayRides
@@ -36,10 +36,10 @@ public class DisplayRides {
     /**
      * This method will return the list of rides.
      * Parameters:
-     *   userType - whether the user is driver or customer
-     *   userID - the id of the user
+     * userType - whether the user is driver or customer
+     * userID - the id of the user
      * Returns:
-     *   list of rides
+     * list of rides
      */
     public List<String> getRides(UserType userType, int userID) throws SQLException {
         requesterType = userType;
@@ -51,7 +51,7 @@ public class DisplayRides {
      * This method provides the display options to select from and returns
      * the appropriate result
      * Returns:
-     *   list of rides
+     * list of rides
      */
     private List<String> rides() throws SQLException {
         List<String> totalRides = new ArrayList<>();
@@ -80,7 +80,7 @@ public class DisplayRides {
      * This method ask the user to enter the date and return the ride
      * details.
      * Returns:
-     *   list of completed rides on a particular day
+     * list of completed rides on a particular day
      */
     private List<String> getDailyRides() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
@@ -97,7 +97,7 @@ public class DisplayRides {
      * This method ask the user to enter the month details and return the
      * ride details.
      * Returns:
-     *   list of completed rides in that particular month
+     * list of completed rides in that particular month
      */
     private List<String> getMonthlyRides() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
@@ -118,7 +118,7 @@ public class DisplayRides {
      * This method ask the user to enter the start date and end date
      * and return the ride details.
      * Returns:
-     *   list of completed rides between start date and end date
+     * list of completed rides between start date and end date
      */
     private List<String> getSpecificPeriodRides() throws SQLException {
         System.out.print("Enter the start date (DD/MM/YYYY): ");
@@ -130,7 +130,7 @@ public class DisplayRides {
             String endingDate = dateOperations.getFormattedDate(endDate);
             if (dateOperations.getDateDifference(startingDate, endingDate) < 0) {
                 return Collections.singletonList("Invalid Input. Start date is " +
-                    "greater than end date.");
+                        "greater than end date.");
             } else {
                 return getRidesFromDb(startingDate, endingDate, requesterType, requesterID);
             }
@@ -142,12 +142,12 @@ public class DisplayRides {
     /**
      * This method gets the ride details from the database
      * Parameters:
-     *   startDate - start date
-     *   endDate - end date
-     *   userType - type of user (Customer or Driver)
-     *   userID - id of the user
+     * startDate - start date
+     * endDate - end date
+     * userType - type of user (Customer or Driver)
+     * userID - id of the user
      * Returns:
-     *   list of completed rides between start date and end date
+     * list of completed rides between start date and end date
      */
     private List<String> getRidesFromDb(String startDate, String endDate, UserType userType, int userID) throws SQLException {
         List<String> listOfRides = new ArrayList<>();
@@ -169,8 +169,8 @@ public class DisplayRides {
             String dropLocation = result.getString("destination");
             double rideAmount = result.getDouble("trip_amount");
             String rideDetail = "BookingID: " + bookingID + ", Pickup: " + pickupLocation +
-                ", Destination: " + dropLocation + ", Price: " + rideAmount +
-                ", Status: Completed";
+                    ", Destination: " + dropLocation + ", Price: " + rideAmount +
+                    ", Status: Completed";
             listOfRides.add(rideDetail);
         }
         if (listOfRides.size() == 1) {

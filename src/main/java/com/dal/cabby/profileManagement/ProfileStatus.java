@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ProfileStatus {
-    private IPersistence iPersistence;
+    private final IPersistence iPersistence;
 
     public ProfileStatus() throws SQLException {
         this.iPersistence = DBHelper.getInstance();

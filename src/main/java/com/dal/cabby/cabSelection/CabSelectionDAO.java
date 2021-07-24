@@ -9,21 +9,21 @@ public class CabSelectionDAO {
     public int cabSpeedOnRoute;
     public String driverGender;
 
-    public String toString(){
-        String result=String.format("%s -> Driver_ID: %s -> Gender: %s ",this.cabName,
-                this.driver_Id,this.driverGender);
-        return result;
+    public CabSelectionDAO(String cabName, int cabId, double cabDistanceFromOrigin, int driver_Id,
+                           String routeTrafficDensity, int cabSpeedOnRoute, String driverGender) {
+        this.cabName = cabName;
+        this.cabId = cabId;
+        this.cabDistanceFromOrigin = cabDistanceFromOrigin;
+        this.driver_Id = driver_Id;
+        this.routeTrafficDensity = routeTrafficDensity;
+        this.cabSpeedOnRoute = cabSpeedOnRoute;
+        this.driverGender = driverGender;
     }
 
-    public CabSelectionDAO(String cabName, int cabId, double cabDistanceFromOrigin, int driver_Id,
-                           String routeTrafficDensity,int cabSpeedOnRoute, String driverGender){
-        this.cabName=cabName;
-        this.cabId = cabId;
-        this.cabDistanceFromOrigin=cabDistanceFromOrigin;
-        this.driver_Id=driver_Id;
-        this.routeTrafficDensity=routeTrafficDensity;
-        this.cabSpeedOnRoute=cabSpeedOnRoute;
-        this.driverGender=driverGender;
+    public String toString() {
+        String result = String.format("%s -> Driver_ID: %s -> Gender: %s ", this.cabName,
+                this.driver_Id, this.driverGender);
+        return result;
     }
 
     public String getCabName() {
