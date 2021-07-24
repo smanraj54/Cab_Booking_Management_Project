@@ -107,6 +107,17 @@ class DriverTasks {
         }
         System.out.println("Now, select the booking-id you want to cancel:");
         int bookingId = inputs.getIntegerInput();
+        boolean isBookingPresent = false;
+        for(Booking b : bookingList) {
+            if(b.getBookingId() == bookingId) {
+                isBookingPresent = true;
+                break;
+            }
+        }
+        if (!isBookingPresent) {
+            ConsolePrinter.printErrorMsg("Invalid booking-id: " + bookingId);
+            return;
+        }
         bookingService.cancelBooking(bookingId, UserType.DRIVER);
         ConsolePrinter.printSuccessMsg(
                 String.format("Your booking with bookingId: %d is cancelled", bookingId));
