@@ -26,13 +26,15 @@ public class DateOperations {
     return false;
   }
 
-  // method to get the date in required format
-  public String getFormattedDate(String inputDate) {
-    String[] splitDate = inputDate.split("/");
-    String day = splitDate[0];
-    String month = splitDate[1];
-    String year = splitDate[2];
-    return (year + "-" + month + "-" + day);
+  // method to get the difference between two dates
+  public int getDateDifference(String startDate, String endDate) throws SQLException {
+    int dateDifference = 0;
+    String query = String.format("select datediff('%s','%s') as date_difference", endDate, startDate);
+    ResultSet result = iPersistence.executeSelectQuery(query);
+    while (result.next()) {
+      dateDifference = result.getInt("date_difference");
+    }
+    return dateDifference;
   }
 
   // method to get the last day of month
@@ -46,14 +48,34 @@ public class DateOperations {
     return date;
   }
 
-  // method to get the difference between two dates
-  public int getDateDifference(String startDate, String endDate) throws SQLException {
-    int dateDifference = 0;
-    String query = String.format("select datediff('%s','%s') as date_difference", endDate, startDate);
+  // method to get the next day
+  public String getNextDay(String inputDate) throws SQLException {
+    String date = "";
+    String query = String.format("select adddate('%s',1) as next_day", inputDate);
+    ResultSet result = iPersistence.executeSelectQuery(query);
+    while (result.next()){
+      date = result.getString("next_day");
+    }
+    return date;
+  }
+
+  // method to get the last day of month
+  public String getLastDayOfMonth(String inputDate) throws SQLException {
+    String date = "";
+    String query = String.format("select last_day('%s') as last_date", inputDate);
     ResultSet result = iPersistence.executeSelectQuery(query);
     while (result.next()) {
-      dateDifference = result.getInt("date_difference");
+      date = result.getString("last_date");
     }
-    return dateDifference;
+    return date;
+  }
+
+  // method to get the date in required format
+  public String getFormattedDate(String inputDate) {
+    String[] splitDate = inputDate.split("/");
+    String day = splitDate[0];
+    String month = splitDate[1];
+    String year = splitDate[2];
+    return (year + "-" + month + "-" + day);
   }
 }
