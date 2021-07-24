@@ -11,7 +11,6 @@ import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 
 public class CabSelectionWithGender {
-
     IPersistence iPersistence;
     Inputs inputs;
     CabPriceCalculator cabPriceCalculator;
@@ -28,11 +27,10 @@ public class CabSelectionWithGender {
         }
     }
 
-    CabSelectionDAO withGenderPreference() throws SQLException {
+    public CabSelectionDAO withGenderPreference() throws SQLException {
         List<String> maleArrayList = new ArrayList<>();
         List<String> femaleArrayList = new ArrayList<>();
         String gender;
-        System.out.println("Source Location is:"+ cabSelectionService.sourceLocation);
         System.out.println("Select your gender preference");
         System.out.println("1. Male ");
         System.out.println("2. Female ");
@@ -49,7 +47,7 @@ public class CabSelectionWithGender {
         }
         switch (input) {
             case 1:
-                for (CabSelectionDAO cabDetail : cabSelectionService.getAllNearbyCabs()) {
+                for (CabSelectionDAO cabDetail : cabSelectionService.cabDetails) {
                     gender = cabDetail.driverGender;
                     if (gender.equals("Male")) {
                         maleArrayList.add(cabDetail.cabName);
@@ -96,6 +94,10 @@ public class CabSelectionWithGender {
                     min = timeOfCab;
                 }
             }
+        }
+        System.out.println("Estimated Arrival time of each Cab:");
+        for (Double driverTimeToReach : maleDriverTimeToReach) {
+            System.out.println(String.format("%.2f", driverTimeToReach));
         }
         System.out.println("Fastest cab is reaching your location in " + String.format("%.2f", min) + " minutes");
         return selectedCab;

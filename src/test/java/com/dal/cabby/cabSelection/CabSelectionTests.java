@@ -4,7 +4,6 @@ import com.dal.cabby.io.PredefinedInputs;
 import com.dal.cabby.pojo.Booking;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.sql.SQLException;
 
 public class CabSelectionTests {
