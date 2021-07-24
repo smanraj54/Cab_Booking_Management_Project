@@ -1,7 +1,5 @@
 package com.dal.cabby.customer;
 
-import com.dal.cabby.dbHelper.DBHelper;
-import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.PredefinedInputs;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

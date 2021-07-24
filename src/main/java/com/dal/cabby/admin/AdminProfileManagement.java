@@ -5,7 +5,6 @@ import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.*;
 
 import javax.mail.MessagingException;
-import java.sql.SQLException;
 
 class AdminProfileManagement {
     private final AdminHelper adminHelper;

@@ -2,7 +2,6 @@ package com.dal.cabby.profileManagement;
 
 import com.dal.cabby.io.PredefinedInputs;
 import com.dal.cabby.pojo.UserType;
-import org.junit.jupiter.api.Test;
 
 import javax.mail.MessagingException;
 
