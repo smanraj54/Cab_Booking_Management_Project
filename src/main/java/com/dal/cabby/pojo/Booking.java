@@ -13,7 +13,6 @@ public class Booking {
     boolean hasCustomerCancelled;
 
     public Booking() {
-
     }
 
     public Booking(int booking_id, int customerId, int driverid, int cabId, String source, String destination, String travelTime, double price, boolean isCancelled) {
@@ -82,8 +81,6 @@ public class Booking {
     public void setPrice(double price) {
         this.price = price;
     }
-
-
 
     public int getBookingId() {
         return bookingId;

@@ -1,7 +1,5 @@
 package com.dal.cabby.profileManagement;
 
-import com.dal.cabby.dbHelper.DBHelper;
-import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.driver.Driver;
 import com.dal.cabby.io.PredefinedInputs;
 import org.junit.jupiter.api.Assertions;
@@ -10,10 +8,8 @@ import org.junit.jupiter.api.Test;
 import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.UUID;
 
 import static com.dal.cabby.util.Constants.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class LogoutTest {
     @Test
