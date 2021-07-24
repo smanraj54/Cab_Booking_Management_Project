@@ -22,56 +22,51 @@ public class DriverEarnings {
         }
     }
 
-    public void getEarnings(int driverID) throws SQLException {
+    public String getEarnings(int driverID) throws SQLException {
         userID = driverID;
-        earningsPage();
+        return earningsPage();
     }
 
-    public void earningsPage() throws SQLException {
-        while (true) {
-            System.out.println("\n**** Earnings Page ****");
-            System.out.println("\t1. Daily earnings: ");
-            System.out.println("\t2. Monthly earnings: ");
-            System.out.println("\t3. Earning between a specific period: ");
-            System.out.println("\t4. Return to the previous page: ");
-            System.out.print("Please enter a selection: ");
-            int input = inputs.getIntegerInput();
-            switch (input) {
-                case 1:
-                    dailyEarnings();
-                    break;
-                case 2:
-                    monthlyEarnings();
-                    break;
-                case 3:
-                    specificPeriodEarnings();
-                    break;
-                default:
-                    return;
-            }
+    public String earningsPage() throws SQLException {
+        System.out.println("\n**** Earnings Page ****");
+        System.out.println("1. Daily earnings: ");
+        System.out.println("2. Monthly earnings: ");
+        System.out.println("3. Earning between a specific period: ");
+        System.out.println("4. Return to the previous page: ");
+        System.out.print("Please enter a selection: ");
+        int input = inputs.getIntegerInput();
+        switch (input) {
+            case 1:
+                return dailyEarnings();
+            case 2:
+                return monthlyEarnings();
+            case 3:
+                return specificPeriodEarnings();
+            default:
+                return "\nInvalid Selecttion";
         }
     }
 
     // method to calculate the daily earnings
-    public void dailyEarnings() throws SQLException {
+    public String dailyEarnings() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
         String inputDate = inputs.getStringInput();
         if (validateDate(inputDate)) {
             String[] splitDate = inputDate.split("/");
             String date = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
             double earning = earningOnDate(userID, date);
-            System.out.println("\nTotal earning on " + inputDate + " is $" + earning);
+            return "\nTotal earning on " + inputDate + " is $" + earning;
         } else {
-            System.out.println("\nInvalid Input...");
+            return "\nInvalid Input...";
         }
     }
 
     // method to calculate monthly earnings
-    public void monthlyEarnings() throws SQLException {
+    public String monthlyEarnings() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
         String input = inputs.getStringInput();
         if (input.isEmpty() || (input.indexOf("/")!=2)) {
-            System.out.println("\nInvalid Entry");
+            return "\nInvalid Entry";
         } else {
             double earning = 0.0;
             String month = input.split("/")[0];
@@ -82,11 +77,11 @@ public class DriverEarnings {
                 earning = earning + earningOnDate(userID, startDate);
                 startDate = getNextDay(startDate);
             }
-            System.out.println("\nThe total earnings in " + input + " is $" + earning);
+            return "\nThe total earnings in " + input + " is $" + earning;
         }
     }
 
-    private void specificPeriodEarnings() throws SQLException {
+    private String specificPeriodEarnings() throws SQLException {
         System.out.print("Enter the start date (DD/MM/YYYY): ");
         String startDate = inputs.getStringInput();
         System.out.print("Enter the end date (DD/MM/YYYY): ");
@@ -98,16 +93,16 @@ public class DriverEarnings {
             String[] splitEndDate = endDate.split("/");
             String endingDate = splitEndDate[2] + "-" + splitEndDate[1] + "-" + splitEndDate[0];
             if (getDateDifference(startingDate, endingDate) < 0) {
-                System.out.println("\nInvalid Entry. Start date is greater than end date...");
+                return "\nInvalid Entry. Start date is greater than end date...";
             } else {
                 while (getDateDifference(startingDate, endingDate) > -1) {
                     earning = earning + earningOnDate(userID, startingDate);
                     startingDate = getNextDay(startingDate);
                 }
-                System.out.println("\nTotal earnings between " + startDate + " and " + endDate + " is $" + earning);
+                return "\nTotal earnings between " + startDate + " and " + endDate + " is $" + earning;
             }
         } else {
-            System.out.println("\nInvalid Entry...");
+            return "\nInvalid Entry...";
         }
     }
 
