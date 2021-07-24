@@ -20,14 +20,22 @@ public class DriverEarningsTest {
 
     @Test
     public void testDailyEarnings() throws SQLException {
+
         // cleaning data for testing
-        iPersistence.executeCreateOrUpdateQuery("delete from trips where trip_id in (201,202,203,204);");
+        iPersistence.executeCreateOrUpdateQuery("delete from trips where trip_id in (201,202);");
+        iPersistence.executeCreateOrUpdateQuery("delete from bookings where booking_id in (201,202);");
+
+        // inserting data for testing in booking table
+        iPersistence.executeCreateOrUpdateQuery("insert into bookings(booking_id, " +
+            "created_at, driver_id, cust_id, cab_id, estimated_price, source, destination) values " +
+            "(201, '2010-01-01 20:00:00', 1, 1, 1, 150, 'Halifax', 'Toronto'), " +
+            "(202, '2010-03-10 20:00:00', 1, 2, 2, 150, 'Winnipeg', 'Toronto');");
 
         // inserting data for testing in trips table
         iPersistence.executeCreateOrUpdateQuery("insert into trips(trip_id, driver_id, cust_id, " +
             "booking_id, trip_amount, distance_covered, created_at) values " +
-            "(201, 1, 1, 101, 150, 1600, '2010-07-24 20:00:00'), " +
-            "(202, 1, 2, 102, 80.5, 200, '2010-07-24 20:00:00');");
+            "(201, 1, 1, 201, 150, 1600, '2010-07-24 20:00:00'), " +
+            "(202, 1, 2, 202, 80.5, 200, '2010-07-24 20:00:00');");
 
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(1).add("24/07/2010");
