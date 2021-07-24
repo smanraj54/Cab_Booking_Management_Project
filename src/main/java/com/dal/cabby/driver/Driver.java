@@ -87,6 +87,7 @@ public class Driver implements IDriver {
             System.out.println("6. View your current rating");
             System.out.println("7. Buy Coupons");
             System.out.println("8. Cancel booking");
+            System.out.println("9. View upcoming trips");
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
@@ -115,6 +116,9 @@ public class Driver implements IDriver {
                     break;
                 case 8:
                     driverTasks.cancelBooking();
+                    break;
+                case 9:
+                    driverTasks.viewUpcomingTrip();
                     break;
                 default:
                     System.out.println("\nInvalid Input");

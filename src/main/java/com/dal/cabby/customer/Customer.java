@@ -83,6 +83,7 @@ public class Customer implements ICustomer {
             System.out.println("5. View your current rating");
             System.out.println("6. Buy Coupons");
             System.out.println("7. Cancel booking");
+            System.out.println("8. View upcoming trips");
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
@@ -107,6 +108,9 @@ public class Customer implements ICustomer {
                     break;
                 case 7:
                     customerTasks.cancelBooking();
+                    break;
+                case 8:
+                    customerTasks.viewUpcomingTrip();
                     break;
                 default:
                     System.out.println("\nInvalid Input");

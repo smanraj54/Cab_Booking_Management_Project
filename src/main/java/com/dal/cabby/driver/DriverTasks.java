@@ -13,6 +13,7 @@ import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 import com.dal.cabby.rides.DisplayRides;
+import com.dal.cabby.rides.IDisplayRides;
 import com.dal.cabby.util.Common;
 import com.dal.cabby.util.ConsolePrinter;
 
@@ -55,7 +56,7 @@ class DriverTasks {
     }
 
     void viewRides() throws SQLException {
-        DisplayRides displayRides = new DisplayRides(inputs);
+        IDisplayRides displayRides = new DisplayRides(inputs);
         List<String> rides = displayRides.getRides(UserType.DRIVER, LoggedInProfile.getLoggedInId());
         System.out.println();
         for (String ride : rides) {
@@ -128,5 +129,20 @@ class DriverTasks {
         iBookingService.cancelBooking(bookingId, UserType.DRIVER);
         ConsolePrinter.printSuccessMsg(
                 String.format("Your booking with bookingId: %d is cancelled", bookingId));
+    }
+
+    void viewUpcomingTrip() throws SQLException {
+        IBookingService iBookingService = new BookingService();
+        List<Booking> bookingList = iBookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
+        if (bookingList.size() == 0) {
+            ConsolePrinter.printOutput("You have no booking to cancel.");
+            return;
+        }
+        System.out.println("These are your upcoming trips:");
+        for (Booking booking : bookingList) {
+            String bookingDetails = String.format("Booking details: Source: %s , Destination: %s ,Fare: %f",
+                    booking.getSource(), booking.getDestination(), booking.getPrice());
+            System.out.println(bookingDetails);
+        }
     }
 }
