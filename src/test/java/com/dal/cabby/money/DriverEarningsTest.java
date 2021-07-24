@@ -123,4 +123,33 @@ public class DriverEarningsTest {
             driverEarnings.getEarnings(1), "Driver's earning is not " +
                 "calculated correctly");
     }
+
+    @Test
+    public void testCommission1() throws SQLException {
+
+        // cleaning data for testing
+        iPersistence.executeCreateOrUpdateQuery("delete from trips where trip_id in (201, 202);");
+        iPersistence.executeCreateOrUpdateQuery("delete from bookings where booking_id in (201, 202);");
+
+        // inserting data for testing in booking table
+        iPersistence.executeCreateOrUpdateQuery("insert into bookings(booking_id, " +
+            "created_at, driver_id, cust_id, cab_id, estimated_price,  source, destination) values " +
+            "(201, '2010-07-24 20:00:00', 1, 1, 1, 150, 'Halifax', 'Toronto');");
+
+        // inserting data for testing in trips table
+        iPersistence.executeCreateOrUpdateQuery("insert into trips(trip_id, driver_id, cust_id, " +
+            "booking_id, trip_amount, distance_covered, trip_start_time, trip_end_time, created_at) values " +
+            "(201, 1, 1, 201, 150, 100, '2010-07-24 20:00:00', '2010-07-24 21:00:00', '2010-07-24 20:00:00');");
+
+        /*
+         * total rides: 1, total distance: 100, total time: 1, So 20% commission will be deducted
+         * Total Amount: 150, After deduction of 20% commission: 120
+         */
+
+        PredefinedInputs inputs = new PredefinedInputs();
+        inputs.add(1).add("24/07/2010");
+        DriverEarnings earnings = new DriverEarnings(inputs);
+        assertEquals("\nTotal earning on 24/07/2010 is $120.0",
+            earnings.getEarnings(1), "Earning is not calculated correctly");
+    }
 }
