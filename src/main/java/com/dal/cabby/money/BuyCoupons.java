@@ -23,13 +23,13 @@ public class BuyCoupons {
     iPersistence = DBHelper.getInstance();
   }
 
-  public void getCoupons(int userID, UserType userType) throws SQLException {
+  public String getCoupons(int userID, UserType userType) throws SQLException {
     requesterID = userID;
     requesterType = userType;
-    couponsPage();
+    return couponsPage();
   }
 
-  private void couponsPage() throws SQLException {
+  private String couponsPage() throws SQLException {
     System.out.println("\nBelow are the available coupons: ");
     System.out.println("\nCouponID" + ", " + "CouponName" + ", " +
         "CouponValue" + ", " + "PriceInPoint");
@@ -40,9 +40,9 @@ public class BuyCoupons {
       System.out.print("\nPlease enter the coupon id: ");
       int id = inputs.getIntegerInput();
       int points = checkUserPoints();
-      purchaseCoupon(id, points);
+      return purchaseCoupon(id, points);
     } else {
-      return;
+      return "Thanks for visiting the buy coupons page";
     }
   }
 
@@ -73,12 +73,12 @@ public class BuyCoupons {
     return points;
   }
 
-  private void purchaseCoupon(int couponId, int userPoints) throws SQLException {
+  private String purchaseCoupon(int couponId, int userPoints) throws SQLException {
     int couponPoints = getCouponValue(couponId);
     if (couponPoints > userPoints) {
-      System.out.println("\nYou don't have sufficient points to buy this coupon");
+      return "\nYou don't have sufficient points to buy this coupon";
     } else {
-      beginTransaction(couponId, couponPoints);
+      return beginTransaction(couponId, couponPoints);
     }
   }
 
@@ -94,7 +94,7 @@ public class BuyCoupons {
     return points;
   }
 
-  private void beginTransaction(int couponID, int couponPoints) throws SQLException {
+  private String beginTransaction(int couponID, int couponPoints) throws SQLException {
 
     // query to start transaction
     String query1 = "start transaction;";
@@ -117,6 +117,6 @@ public class BuyCoupons {
     iPersistence.executeCreateOrUpdateQuery(query2);
     iPersistence.executeCreateOrUpdateQuery(query3);
     iPersistence.executeCreateOrUpdateQuery(query4);
-    System.out.println("\nCoupon added in your account successfully");
+    return "\nCoupon added in your account successfully";
   }
 }

@@ -110,6 +110,6 @@ class CustomerTasks {
 
     void buyCoupons() throws SQLException {
         BuyCoupons coupons = new BuyCoupons(inputs);
-        coupons.getCoupons(LoggedInProfile.getLoggedInId(), UserType.CUSTOMER);
+        System.out.println(coupons.getCoupons(LoggedInProfile.getLoggedInId(), UserType.CUSTOMER));
     }
 }
