@@ -107,9 +107,14 @@ public class DriverEarnings {
             String year = input.split("/")[1];
             String startDate = year + "-" + month + "-01";
             String endDate = dateOperations.getLastDayOfMonth(startDate);
-            while (dateOperations.getDateDifference(startDate, endDate) > -1) {
+            int days = dateOperations.getDateDifference(startDate, endDate);
+            for (int i = 0; i <= days; i++) {
                 earning = earning + earningOnDate(userID, startDate);
-                startDate = dateOperations.getNextDay(startDate);
+                if (i >= 0 && i < 9) {
+                    startDate = startDate.substring(0, startDate.length()-1) + (i + 1);
+                } else {
+                    startDate = startDate.substring(0, startDate.length()-2) + (i + 1);
+                }
             }
             return "\nThe total earnings in " + input + " is $" + earning;
         }

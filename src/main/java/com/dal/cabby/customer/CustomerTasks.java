@@ -15,6 +15,7 @@ import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 import com.dal.cabby.rides.DisplayRides;
+import com.dal.cabby.score.CancellationScorer;
 import com.dal.cabby.rides.IDisplayRides;
 import com.dal.cabby.util.Common;
 import com.dal.cabby.util.ConsolePrinter;
@@ -26,8 +27,9 @@ import java.util.List;
 
 class CustomerTasks {
     private final Inputs inputs;
-    private final IPersistence iPersistence;
-    private final IRatings iRatings;
+    private IPersistence iPersistence;
+    private IRatings iRatings;
+    double initialScore = 4.0;
 
     public CustomerTasks(Inputs inputs) throws SQLException {
         this.inputs = inputs;
@@ -96,6 +98,8 @@ class CustomerTasks {
         }
         iBookingService.cancelBooking(booking.getBookingId(), UserType.CUSTOMER);
         ConsolePrinter.printSuccessMsg("Your booking is cancelled successfully");
+        CancellationScorer cancellationScorer = new CancellationScorer();
+        cancellationScorer.customerCancelled(initialScore, false, true);
     }
 
     void viewUpcomingTrip() throws SQLException {

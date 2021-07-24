@@ -28,6 +28,7 @@ public class CancellationScorer implements ICancellationScorer {
             System.out.println("Customer has not cancelled.");
             return initialScore;
         }
+        System.out.println("Please note that your rider score may have been impacted.");
         return score;
 
     }
