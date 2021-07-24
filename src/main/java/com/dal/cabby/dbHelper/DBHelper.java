@@ -6,12 +6,14 @@ public class DBHelper implements IPersistence {
     String database;
     String user;
     String password;
-    Connection connection;
+    private static Connection connection;
+    private static Statement statement;
     String connUrl;
     String url = "jdbc:mysql://%s:3306/%s?useSSL=false&allowPublicKeyRetrieval=true";
-    private String DEFAULT_MYSQL_USERNAME = "CSCI5308_15_TEST_USER";
-    private String DEFAULT_MYSQL_PASSWORD = "m3ed6rK5gSR";
-    private String DEFAULT_MYSQL_DATABASE = "CSCI5308_15_TEST";
+    private final String DB_HOST = "db-5308.cs.dal.ca";
+    private final String DEFAULT_MYSQL_USERNAME = "CSCI5308_15_TEST_USER";
+    private final String DEFAULT_MYSQL_PASSWORD = "m3ed6rK5gSR";
+    private final String DEFAULT_MYSQL_DATABASE = "CSCI5308_15_TEST";
     private static DBHelper dbHelper;
 
     public static DBHelper getInstance() throws SQLException {
@@ -26,24 +28,21 @@ public class DBHelper implements IPersistence {
         this.database = DEFAULT_MYSQL_DATABASE;
         this.user = DEFAULT_MYSQL_USERNAME;
         this.password = DEFAULT_MYSQL_PASSWORD;
-        connUrl = String.format(url, "db-5308.cs.dal.ca", this.database);
-    }
-
-    private DBHelper(String user, String password) {
-        this.database = "cabby";
-        this.user = user;
-        this.password = password;
-        connUrl = String.format(url, "localhost", this.database);
+        connUrl = String.format(url, DB_HOST, this.database);
     }
 
     private void initialize() throws SQLException {
         if(connection == null) {
             connection = DriverManager.getConnection(connUrl, user, password);
         }
+        if (statement == null) {
+            statement = connection.createStatement();
+        }
     }
 
     @Override
     public void close() throws SQLException {
+        statement.close();
         connection.close();
     }
 
@@ -52,13 +51,11 @@ public class DBHelper implements IPersistence {
         if (connection == null) {
             throw new RuntimeException("Please call initialize method in DBHelper before calling this method.");
         }
-        Statement st = connection.createStatement();
-        st.executeUpdate(query);
+        statement.executeUpdate(query);
     }
 
     @Override
     public ResultSet executeSelectQuery(String query) throws SQLException {
-        Statement statement = connection.createStatement();
         return statement.executeQuery(query);
     }
 }
