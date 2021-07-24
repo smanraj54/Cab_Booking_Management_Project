@@ -58,7 +58,7 @@ public class BuyCoupons {
             int points = checkUserPoints();
             return purchaseCoupon(id, points);
         } else {
-            return "Thanks for visiting the buy coupons page";
+            return "\nThanks for visiting the buy coupons page";
         }
     }
 
