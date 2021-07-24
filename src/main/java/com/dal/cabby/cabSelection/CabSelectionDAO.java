@@ -29,47 +29,37 @@ public class CabSelectionDAO {
     public String getCabName() {
         return cabName;
     }
-
     public void setCabName(String cabName) {
         this.cabName = cabName;
     }
-
     public double getCabDistanceFromOrigin() {
         return cabDistanceFromOrigin;
     }
-
     public void setCabDistanceFromOrigin(double cabDistanceFromOrigin) {
         this.cabDistanceFromOrigin = cabDistanceFromOrigin;
     }
-
     public int getDriver_Id() {
         return driver_Id;
     }
-
     public void setDriver_Id(int driver_Id) {
         this.driver_Id = driver_Id;
     }
-
     public String getRouteTrafficDensity() {
         return routeTrafficDensity;
     }
-
     public void setRouteTrafficDensity(String routeTrafficDensity) {
-        this.routeTrafficDensity = routeTrafficDensity;
+        this.routeTrafficDensity
+                = routeTrafficDensity;
     }
-
     public int getCabSpeedOnRoute() {
         return cabSpeedOnRoute;
     }
-
     public void setCabSpeedOnRoute(int cabSpeedOnRoute) {
         this.cabSpeedOnRoute = cabSpeedOnRoute;
     }
-
     public String getDriverGender() {
         return driverGender;
     }
-
     public void setDriverGender(String driverGender) {
         this.driverGender = driverGender;
     }

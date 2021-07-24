@@ -10,9 +10,8 @@ import java.sql.SQLException;
 public class CabPriceDistanceFactor {
     IPersistence iPersistence;
     Inputs inputs;
-
-    public CabPriceDistanceFactor(Inputs inputs) {
-        this.inputs = inputs;
+    public  CabPriceDistanceFactor(Inputs inputs){
+        this.inputs=inputs;
         try {
             iPersistence = DBHelper.getInstance();
         } catch (SQLException throwables) {
