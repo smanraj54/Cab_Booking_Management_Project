@@ -5,6 +5,8 @@ cache:
     - .m2/repository/
     - target/
 
+# build stage will just build the codebase without running
+# any tests or creating any jar file.
 build:
   stage: build
   tags:
@@ -12,9 +14,20 @@ build:
   script:
     - mvn clean compile
 
+# test stage will compile the code and run all the unit tests present in the
+# test folder.
 test:
   stage: test
   tags:
     - ugrad
   script:
     - mvn clean test
+
+# deploy stage will create package the jar and keep it in the target folder.
+# The success of deploy stage will mark the pipeline as passed.
+deploy:
+  stage: deploy
+  tags:
+    - ugrad
+  script:
+    - mvn clean install -DskipTests=true
