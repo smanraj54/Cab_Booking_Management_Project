@@ -17,7 +17,7 @@ import java.util.List;
  * class provides the option to display daily rides, monthly rides, and rides
  * between specific period.
  */
-public class DisplayRides {
+public class DisplayRides implements IDisplayRides {
     IPersistence iPersistence;
     Inputs inputs;
     DateOperations dateOperations;

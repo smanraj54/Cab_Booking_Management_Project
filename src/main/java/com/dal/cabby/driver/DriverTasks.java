@@ -13,6 +13,7 @@ import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 import com.dal.cabby.rides.DisplayRides;
+import com.dal.cabby.rides.IDisplayRides;
 import com.dal.cabby.util.Common;
 import com.dal.cabby.util.ConsolePrinter;
 
@@ -55,7 +56,7 @@ class DriverTasks {
     }
 
     void viewRides() throws SQLException {
-        DisplayRides displayRides = new DisplayRides(inputs);
+        IDisplayRides displayRides = new DisplayRides(inputs);
         List<String> rides = displayRides.getRides(UserType.DRIVER, LoggedInProfile.getLoggedInId());
         System.out.println();
         for (String ride : rides) {
