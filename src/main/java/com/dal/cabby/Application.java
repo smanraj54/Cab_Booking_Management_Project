@@ -16,7 +16,6 @@ public class Application {
             preLoginPage.start();
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         } finally {
             DBHelper dbHelper = null;
             try {

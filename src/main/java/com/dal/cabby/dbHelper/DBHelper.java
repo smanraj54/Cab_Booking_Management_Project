@@ -42,8 +42,12 @@ public class DBHelper implements IPersistence {
 
     @Override
     public void close() throws SQLException {
-        statement.close();
-        connection.close();
+        if (statement != null) {
+            statement.close();
+        }
+        if (connection != null) {
+            connection.close();
+        }
     }
 
     @Override
