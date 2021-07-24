@@ -2,6 +2,7 @@ package com.dal.cabby.profileManagement;
 
 import com.dal.cabby.io.PredefinedInputs;
 import com.dal.cabby.pojo.UserType;
+import org.junit.jupiter.api.Test;
 
 import javax.mail.MessagingException;
 
@@ -15,12 +16,13 @@ class ForgotPasswordTest {
     private String password = "password123";
     private UserType userType = UserType.CUSTOMER;
 
+    @Test
     void passwordUpdateProcess() {
         PredefinedInputs predefinedInputs1 = new PredefinedInputs();
         predefinedInputs1.add(userName).add("\n");
 
         ForgotPassword forgotPassword = new ForgotPassword(predefinedInputs1);
-        predefinedInputs1.add(forgotPassword.getTempPass()).add("\n").add(password).add(password);
+        predefinedInputs1.add(forgotPassword.getTempPass()).add(password).add(password);
 
         IDBOperations idbOperations = new DBOperations(userType);
         String emailVal = idbOperations.fetchEmailForAuthentication(userName, userType);

@@ -69,7 +69,6 @@ public class ForgotPassword implements IForgotPassword {
             System.err.print("Authentication Fail !!!!");
             return false;
         } finally {
-            inputs.getStringInput();
         }
         if (tempPass == enteredPass) {
             System.out.println("\nAuthentication Passed");
