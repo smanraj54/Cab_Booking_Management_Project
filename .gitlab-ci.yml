@@ -17,4 +17,4 @@ test:
   tags:
     - ugrad
   script:
-    - mvn clean test -DskipTests=true
+    - mvn clean test

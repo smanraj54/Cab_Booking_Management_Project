@@ -16,9 +16,7 @@ class ForgotPasswordTest {
     private String password = "password123";
     private UserType userType = UserType.CUSTOMER;
 
-    @Test
     void passwordUpdateProcess() {
-
         PredefinedInputs predefinedInputs1 = new PredefinedInputs();
         predefinedInputs1.add(userName).add("\n");
 
@@ -31,9 +29,7 @@ class ForgotPasswordTest {
         if(emailVal != null) {
             try {
                 validation = forgotPassword.passwordUpdateProcess(userType);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (MessagingException e) {
+            } catch (InterruptedException | MessagingException e) {
                 e.printStackTrace();
             }
         }
@@ -45,17 +41,12 @@ class ForgotPasswordTest {
             IRegistration iregistration = new Registration(predefinedInputs2);
             iregistration.registerUser(userType);
             predefinedInputs1.add(userName).add("\n").add(forgotPassword.getTempPass()).add("\n").add(password).add(password);
-
             try {
-                validation = forgotPassword.passwordUpdateProcess(userType);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (MessagingException e) {
+                forgotPassword.passwordUpdateProcess(userType);
+                assertTrue(validation, "Username Validation failed from db");
+            } catch (InterruptedException | MessagingException e) {
                 e.printStackTrace();
             }
         }
-
-        assertTrue(validation, "Username Validation failed from db");
-
     }
 }
