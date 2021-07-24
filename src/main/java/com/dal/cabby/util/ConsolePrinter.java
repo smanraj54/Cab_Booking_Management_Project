@@ -1,9 +1,9 @@
 package com.dal.cabby.util;
 
 public class ConsolePrinter {
+    public static final String CYAN_COLOR_CODE = "\u001B[46m";
     private final static String RED_COLOR_CODE = "\u001B[31m";
     private final static String GREEN_COLOR_CODE = "\u001B[32m";
-    public static final String CYAN_COLOR_CODE = "\u001B[46m";
     private final static String RESET_COLOR_CODE = "\u001B[0m";
 
     public static void printErrorMsg(String errMsg) {

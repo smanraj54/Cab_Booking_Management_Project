@@ -11,8 +11,8 @@ import java.util.List;
 class AdminTasks {
     private final AdminHelper adminHelper;
     private final Inputs inputs;
-    private IPersistence iPersistence;
     ProfileStatus profileStatus;
+    private final IPersistence iPersistence;
 
     public AdminTasks(AdminHelper adminHelper, Inputs inputs, IPersistence iPersistence) throws SQLException {
         this.adminHelper = adminHelper;

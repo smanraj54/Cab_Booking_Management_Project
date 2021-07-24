@@ -7,10 +7,10 @@ public class CancellationScorer implements ICancellationScorer {
         double score = initialScore;
         if (hasCancelled) {
             score -= 0.3;
-        }
-        else {
+        } else {
             System.out.println("Driver has not cancelled.");
-            return initialScore;}
+            return initialScore;
+        }
         return score;
 
     }
@@ -24,8 +24,7 @@ public class CancellationScorer implements ICancellationScorer {
             } else {
                 score -= 0.2;
             }
-        }
-        else {
+        } else {
             System.out.println("Customer has not cancelled.");
             return initialScore;
         }

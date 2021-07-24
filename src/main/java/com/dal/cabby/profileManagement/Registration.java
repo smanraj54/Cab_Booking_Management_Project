@@ -43,7 +43,7 @@ public class Registration implements IRegistration {
         }
 
         DataNode dataNode = new DataNode(userName, name, email, password,
-                            userType);
+                userType);
         idbOperations.entryRegistration(dataNode);
         System.out.println("Registration successful");
 
@@ -67,7 +67,7 @@ public class Registration implements IRegistration {
         return null;
     }
 
-    private boolean confirmPassword(String password, ValidateInput validateInput){
+    private boolean confirmPassword(String password, ValidateInput validateInput) {
 
         String confirmPassword;
 
@@ -93,14 +93,14 @@ public class Registration implements IRegistration {
         return false;
     }
 
-    private String inputName(){
+    private String inputName() {
 
         System.out.println("\n\n");
         System.out.print("\nEnter Name : ");
-        return(inputs.getStringInput());
+        return (inputs.getStringInput());
     }
 
-    private String inputEmail(IDBOperations idbOperations, UserType userType, ValidateInput validateInput){
+    private String inputEmail(IDBOperations idbOperations, UserType userType, ValidateInput validateInput) {
         String email;
         for (int t = 0; t < 3; t++) {
             System.out.print("\nEnter Email : ");
@@ -130,7 +130,7 @@ public class Registration implements IRegistration {
         return null;
     }
 
-    private String inputUserName(IDBOperations idbOperations, UserType userType){
+    private String inputUserName(IDBOperations idbOperations, UserType userType) {
         String userName;
         for (int t = 0; t < 3; t++) {
             System.out.print("\nEnter new Username : ");

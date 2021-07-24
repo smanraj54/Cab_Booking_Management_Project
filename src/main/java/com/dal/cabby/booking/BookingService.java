@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 public class BookingService {
-    private IPersistence iPersistence;
+    private final IPersistence iPersistence;
 
     public BookingService() throws SQLException {
         this.iPersistence = DBHelper.getInstance();
@@ -69,7 +69,7 @@ public class BookingService {
         String query = String.format("select * from bookings where cust_id=%d and is_trip_done=false and is_cancelled=false;", cust_id);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
-            int bookingId = resultSet.getInt("booking_id");;
+            int bookingId = resultSet.getInt("booking_id");
             int customerId = resultSet.getInt("cust_id");
             int driverId = resultSet.getInt("driver_id");
             int cabId = resultSet.getInt("cab_id");
@@ -88,7 +88,7 @@ public class BookingService {
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
         List<Booking> bookings = new ArrayList<>();
         while (resultSet.next()) {
-            int bookingId = resultSet.getInt("booking_id");;
+            int bookingId = resultSet.getInt("booking_id");
             int customerId = resultSet.getInt("cust_id");
             int driverId = resultSet.getInt("driver_id");
             int cabId = resultSet.getInt("cab_id");

@@ -24,8 +24,8 @@ import java.util.List;
 
 class CustomerTasks {
     private final Inputs inputs;
-    private IPersistence iPersistence;
-    private IRatings iRatings;
+    private final IPersistence iPersistence;
+    private final IRatings iRatings;
 
     public CustomerTasks(Inputs inputs) throws SQLException {
         this.inputs = inputs;
@@ -56,7 +56,7 @@ class CustomerTasks {
         CabSelectionService cabSelectionService = new CabSelectionService(inputs);
         System.out.println("Select travel time(MM/dd/yyyy HH:mm):");
         String travelTime = inputs.getStringInput();
-        double hour=0.0;
+        double hour = 0.0;
         try {
             Date date = Common.parseDate(travelTime, "MM/dd/yyyy HH:mm");
             hour = date.getHours();
@@ -72,7 +72,7 @@ class CustomerTasks {
         BookingService bookingService = new BookingService();
         bookingService.saveBooking(booking);
         ConsolePrinter.printSuccessMsg("Congratulations!. Your booking is confirmed!");
-        String bookingDetails = String.format("Booking details: Source: %s , Destination: %s , Travel time: %s, Fare: %f" ,
+        String bookingDetails = String.format("Booking details: Source: %s , Destination: %s , Travel time: %s, Fare: %f",
                 booking.getSource(), booking.getDestination(), booking.getTravelTime(), booking.getPrice());
         ConsolePrinter.printOutput(bookingDetails);
     }
@@ -85,7 +85,7 @@ class CustomerTasks {
             return;
         }
         System.out.println("Do you want to cancel this booking?(y/n)");
-        String bookingDetails = String.format("Booking details: Source: %s , Destination: %s , Travel time: %s, Fare: %f" ,
+        String bookingDetails = String.format("Booking details: Source: %s , Destination: %s , Travel time: %s, Fare: %f",
                 booking.getSource(), booking.getDestination(), booking.getTravelTime(), booking.getPrice());
         ConsolePrinter.printOutput(bookingDetails);
         String input = inputs.getStringInput();

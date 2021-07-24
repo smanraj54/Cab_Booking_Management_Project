@@ -10,7 +10,7 @@ public class Login implements ILogin {
 
     Inputs inputs;
 
-    public Login(Inputs inputs){
+    public Login(Inputs inputs) {
         this.inputs = inputs;
     }
 
@@ -24,7 +24,7 @@ public class Login implements ILogin {
         userNameOrEmail = inputUserName();
         password = inputPassword();
 
-        if(db_operations.validateLoginUser(userNameOrEmail, password, userType)){
+        if (db_operations.validateLoginUser(userNameOrEmail, password, userType)) {
             return true;
         }
 
@@ -38,19 +38,19 @@ public class Login implements ILogin {
         return false;
     }
 
-    private String inputUserName(){
+    private String inputUserName() {
 
         System.out.print("\nEnter UserName or Email : ");
 
-        return(inputs.getStringInput());
+        return (inputs.getStringInput());
 
     }
 
-    private String inputPassword(){
+    private String inputPassword() {
 
         System.out.print("\nEnter Password : ");
 
-        return(inputs.getStringInput());
+        return (inputs.getStringInput());
 
     }
 
