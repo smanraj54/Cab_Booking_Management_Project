@@ -103,7 +103,7 @@ public class DisplayRides {
     private List<String> getRidesFromDb(String startDate, String endDate, UserType userType, int userID) throws SQLException {
         List<String> listOfRides = new ArrayList<>();
         listOfRides.add("Ride Details ->");
-        String query = String.format("select distinct \n" +
+        String query = String.format("select \n" +
                 "bookings.booking_id,\n" +
                 "bookings.source,\n" +
                 "bookings.destination,\n" +
