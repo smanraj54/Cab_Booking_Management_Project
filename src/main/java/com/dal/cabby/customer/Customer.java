@@ -78,7 +78,7 @@ public class Customer implements ICustomer {
     @Override
     public void performCustomerTasks() throws SQLException, ParseException {
         while (true) {
-            System.out.println("Please enter input:");
+            System.out.println("\nPlease enter input:");
             System.out.println("1. Logout");
             System.out.println("2. Book Cabs");
             System.out.println("3. View previous Rides");

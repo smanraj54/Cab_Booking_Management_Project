@@ -18,6 +18,7 @@ import com.dal.cabby.util.ConsolePrinter;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 class CustomerTasks {
     private final Inputs inputs;
@@ -90,8 +91,12 @@ class CustomerTasks {
     }
 
     void showRides() throws SQLException {
-        DisplayRides rides = new DisplayRides(inputs);
-        rides.getRides(UserType.CUSTOMER, LoggedInProfile.getLoggedInId());
+        DisplayRides displayRides = new DisplayRides(inputs);
+        List<String> rides = displayRides.getRides(UserType.CUSTOMER, LoggedInProfile.getLoggedInId());
+        System.out.println();
+        for (String ride : rides) {
+            System.out.println(ride);
+        }
     }
 
     void viewRatings() throws SQLException {
