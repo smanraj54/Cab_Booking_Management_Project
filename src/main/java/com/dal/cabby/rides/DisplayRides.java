@@ -4,6 +4,7 @@ import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.util.DateOperations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,24 +12,48 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class displays the rides completed by user (Driver and Customer). This
+ * class provides the option to display daily rides, monthly rides, and rides
+ * between specific period.
+ */
 public class DisplayRides {
     IPersistence iPersistence;
     private UserType requesterType;
     private int requesterID;
     Inputs inputs;
+    DateOperations dateOperations;
+
+    /**
+     * Constructor of class DisplayRides
+     */
     public DisplayRides(Inputs inputs) throws SQLException {
         this.inputs = inputs;
+        dateOperations = new DateOperations();
         iPersistence = DBHelper.getInstance();
     }
 
+    /**
+     * This method will return the list of rides.
+     * Parameters:
+     *   userType - whether the user is driver or customer
+     *   userID - the id of the user
+     * Returns:
+     *   list of rides
+     */
     public List<String> getRides(UserType userType, int userID) throws SQLException {
         requesterType = userType;
         requesterID = userID;
-        return ridesPage();
+        return rides();
     }
 
-    // method to display ride page options and get input from the user
-    private List<String> ridesPage() throws SQLException {
+    /**
+     * This method provides the display options to select from and returns
+     * the appropriate result
+     * Returns:
+     *   list of rides
+     */
+    private List<String> rides() throws SQLException {
         List<String> totalRides = new ArrayList<>();
         System.out.println("\n**** Rides Page ****");
         System.out.println("1. Daily rides");
@@ -51,19 +76,29 @@ public class DisplayRides {
         }
     }
 
-    // method to get daily rides
+    /**
+     * This method ask the user to enter the date and return the ride
+     * details.
+     * Returns:
+     *   list of completed rides on a particular day
+     */
     private List<String> getDailyRides() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
         String inputDate = inputs.getStringInput().trim();
-        if (!validateDate(inputDate)) {
+        if (!dateOperations.validateDate(inputDate)) {
             return Collections.singletonList("Invalid Input");
         } else {
-            String date = getFormattedDate(inputDate);
+            String date = dateOperations.getFormattedDate(inputDate);
             return getRidesFromDb(date, date, requesterType, requesterID);
         }
     }
 
-    // method to get monthly rides
+    /**
+     * This method ask the user to enter the month details and return the
+     * ride details.
+     * Returns:
+     *   list of completed rides in that particular month
+     */
     private List<String> getMonthlyRides() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
         String input = inputs.getStringInput().trim();
@@ -72,23 +107,28 @@ public class DisplayRides {
             String month = splitInput[0];
             String year = splitInput[1];
             String startDate = year + "-" + month + "-01";
-            String endDate = getLastDay(startDate);
+            String endDate = dateOperations.getLastDay(startDate);
             return getRidesFromDb(startDate, endDate, requesterType, requesterID);
         } else {
             return Collections.singletonList("Invalid Input");
         }
     }
 
-    // method to get rides between specific time period
+    /**
+     * This method ask the user to enter the start date and end date
+     * and return the ride details.
+     * Returns:
+     *   list of completed rides between start date and end date
+     */
     private List<String> getSpecificPeriodRides() throws SQLException {
         System.out.print("Enter the start date (DD/MM/YYYY): ");
         String startDate = inputs.getStringInput().trim();
         System.out.print("Enter the end date (DD/MM/YYYY): ");
         String endDate = inputs.getStringInput().trim();
-        if (validateDate(startDate) && validateDate(endDate)) {
-            String startingDate = getFormattedDate(startDate);
-            String endingDate = getFormattedDate(endDate);
-            if (getDateDifference(startingDate, endingDate) < 0) {
+        if (dateOperations.validateDate(startDate) && dateOperations.validateDate(endDate)) {
+            String startingDate = dateOperations.getFormattedDate(startDate);
+            String endingDate = dateOperations.getFormattedDate(endDate);
+            if (dateOperations.getDateDifference(startingDate, endingDate) < 0) {
                 return Collections.singletonList("Invalid Input. Start date is " +
                     "greater than end date.");
             } else {
@@ -99,7 +139,16 @@ public class DisplayRides {
         }
     }
 
-    // method to get rides from the database
+    /**
+     * This method gets the ride details from the database
+     * Parameters:
+     *   startDate - start date
+     *   endDate - end date
+     *   userType - type of user (Customer or Driver)
+     *   userID - id of the user
+     * Returns:
+     *   list of completed rides between start date and end date
+     */
     private List<String> getRidesFromDb(String startDate, String endDate, UserType userType, int userID) throws SQLException {
         List<String> listOfRides = new ArrayList<>();
         listOfRides.add("Ride Details ->");
@@ -126,56 +175,13 @@ public class DisplayRides {
         }
         if (listOfRides.size() == 1) {
             listOfRides.add(("No rides to display"));
-            return listOfRides;
-        } else {
-            return listOfRides;
         }
+        return listOfRides;
     }
 
-    // method for date validation
-    private boolean validateDate(String date) {
-        if (date != null && date.length() == 10 && date.indexOf("/") == 2 && date.lastIndexOf("/") == 5) {
-            String[] splitDate = date.split("/");
-            String day = splitDate[0];
-            String month = splitDate[1];
-            String year = splitDate[2];
-            return !day.equals("00") && !month.equals("00") && !year.equals("0000");
-        }
-        return false;
-    }
-
-    // method to get the date in required format
-    private String getFormattedDate(String inputDate) {
-        String[] splitDate = inputDate.split("/");
-        String day = splitDate[0];
-        String month = splitDate[1];
-        String year = splitDate[2];
-        return (year + "-" + month + "-" + day);
-    }
-
-    // method to get the last day of month
-    private String getLastDay(String inputDate) throws SQLException {
-        String date = "";
-        String query = String.format("select last_day('%s') as last_date", inputDate);
-        ResultSet result = iPersistence.executeSelectQuery(query);
-        while (result.next()) {
-            date = result.getString("last_date");
-        }
-        return date;
-    }
-
-    // method to get the difference between two dates
-    private int getDateDifference(String startDate, String endDate) throws SQLException {
-        int dateDifference = 0;
-        String query = String.format("select datediff('%s','%s') as date_difference", endDate, startDate);
-        ResultSet result = iPersistence.executeSelectQuery(query);
-        while (result.next()) {
-            dateDifference = result.getInt("date_difference");
-        }
-        return dateDifference;
-    }
-
-    // method to get the column name for user category
+    /**
+     * method to get the column name for user category
+     */
     private String getColumnName(UserType userType) {
         if (userType == UserType.DRIVER) {
             return "driver_id";
