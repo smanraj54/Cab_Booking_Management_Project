@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
-public class PriceWithAmenitiesTest {
+public class PriceWithAmenitiesTests {
 
     @Test
     void microAndMiniWithAmenitiesTest() throws SQLException {
