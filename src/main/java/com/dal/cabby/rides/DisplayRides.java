@@ -4,6 +4,7 @@ import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.util.DateOperations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,19 +17,22 @@ public class DisplayRides {
     private UserType requesterType;
     private int requesterID;
     Inputs inputs;
+    DateOperations dateOperations;
+
     public DisplayRides(Inputs inputs) throws SQLException {
         this.inputs = inputs;
+        dateOperations = new DateOperations();
         iPersistence = DBHelper.getInstance();
     }
 
     public List<String> getRides(UserType userType, int userID) throws SQLException {
         requesterType = userType;
         requesterID = userID;
-        return ridesPage();
+        return rides();
     }
 
     // method to display ride page options and get input from the user
-    private List<String> ridesPage() throws SQLException {
+    private List<String> rides() throws SQLException {
         List<String> totalRides = new ArrayList<>();
         System.out.println("\n**** Rides Page ****");
         System.out.println("1. Daily rides");
@@ -55,10 +59,10 @@ public class DisplayRides {
     private List<String> getDailyRides() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
         String inputDate = inputs.getStringInput().trim();
-        if (!validateDate(inputDate)) {
+        if (!dateOperations.validateDate(inputDate)) {
             return Collections.singletonList("Invalid Input");
         } else {
-            String date = getFormattedDate(inputDate);
+            String date = dateOperations.getFormattedDate(inputDate);
             return getRidesFromDb(date, date, requesterType, requesterID);
         }
     }
@@ -72,7 +76,7 @@ public class DisplayRides {
             String month = splitInput[0];
             String year = splitInput[1];
             String startDate = year + "-" + month + "-01";
-            String endDate = getLastDay(startDate);
+            String endDate = dateOperations.getLastDay(startDate);
             return getRidesFromDb(startDate, endDate, requesterType, requesterID);
         } else {
             return Collections.singletonList("Invalid Input");
@@ -85,10 +89,10 @@ public class DisplayRides {
         String startDate = inputs.getStringInput().trim();
         System.out.print("Enter the end date (DD/MM/YYYY): ");
         String endDate = inputs.getStringInput().trim();
-        if (validateDate(startDate) && validateDate(endDate)) {
-            String startingDate = getFormattedDate(startDate);
-            String endingDate = getFormattedDate(endDate);
-            if (getDateDifference(startingDate, endingDate) < 0) {
+        if (dateOperations.validateDate(startDate) && dateOperations.validateDate(endDate)) {
+            String startingDate = dateOperations.getFormattedDate(startDate);
+            String endingDate = dateOperations.getFormattedDate(endDate);
+            if (dateOperations.getDateDifference(startingDate, endingDate) < 0) {
                 return Collections.singletonList("Invalid Input. Start date is " +
                     "greater than end date.");
             } else {
@@ -126,53 +130,8 @@ public class DisplayRides {
         }
         if (listOfRides.size() == 1) {
             listOfRides.add(("No rides to display"));
-            return listOfRides;
-        } else {
-            return listOfRides;
         }
-    }
-
-    // method for date validation
-    private boolean validateDate(String date) {
-        if (date != null && date.length() == 10 && date.indexOf("/") == 2 && date.lastIndexOf("/") == 5) {
-            String[] splitDate = date.split("/");
-            String day = splitDate[0];
-            String month = splitDate[1];
-            String year = splitDate[2];
-            return !day.equals("00") && !month.equals("00") && !year.equals("0000");
-        }
-        return false;
-    }
-
-    // method to get the date in required format
-    private String getFormattedDate(String inputDate) {
-        String[] splitDate = inputDate.split("/");
-        String day = splitDate[0];
-        String month = splitDate[1];
-        String year = splitDate[2];
-        return (year + "-" + month + "-" + day);
-    }
-
-    // method to get the last day of month
-    private String getLastDay(String inputDate) throws SQLException {
-        String date = "";
-        String query = String.format("select last_day('%s') as last_date", inputDate);
-        ResultSet result = iPersistence.executeSelectQuery(query);
-        while (result.next()) {
-            date = result.getString("last_date");
-        }
-        return date;
-    }
-
-    // method to get the difference between two dates
-    private int getDateDifference(String startDate, String endDate) throws SQLException {
-        int dateDifference = 0;
-        String query = String.format("select datediff('%s','%s') as date_difference", endDate, startDate);
-        ResultSet result = iPersistence.executeSelectQuery(query);
-        while (result.next()) {
-            dateDifference = result.getInt("date_difference");
-        }
-        return dateDifference;
+        return listOfRides;
     }
 
     // method to get the column name for user category
