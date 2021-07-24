@@ -79,7 +79,7 @@ public class Driver implements IDriver {
     @Override
     public void performDriverTasks() throws SQLException, ParseException {
         while (true) {
-            System.out.println("1. Logout");
+            System.out.println("\n1. Logout");
             System.out.println("2. Start trip");
             System.out.println("3. View previous rides");
             System.out.println("4. View incomes");

@@ -7,6 +7,9 @@ import com.dal.cabby.pojo.UserType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class DisplayRides {
     IPersistence iPersistence;
@@ -18,54 +21,50 @@ public class DisplayRides {
         iPersistence = DBHelper.getInstance();
     }
 
-    public void getRides(UserType userType, int userID) throws SQLException {
+    public List<String> getRides(UserType userType, int userID) throws SQLException {
         requesterType = userType;
         requesterID = userID;
-        ridesPage();
+        return ridesPage();
     }
 
     // method to display ride page options and get input from the user
-    private void ridesPage() throws SQLException {
-        while (true) {
-            System.out.println("\n**** Rides Page ****");
-            System.out.println("\t1. Daily rides");
-            System.out.println("\t2. Monthly rides");
-            System.out.println("\t3. Rides between a specific period");
-            System.out.println("\t4. Return to the previous page");
-            System.out.print("Please enter a selection: ");
-            int selection = inputs.getIntegerInput();
-            switch (selection) {
-                case 1:
-                    getDailyRides();
-                    break;
-                case 2:
-                    getMonthlyRides();
-                    break;
-                case 3:
-                    getSpecificPeriodRides();
-                    break;
-                case 4:
-                    return;
-                default:
-                    System.out.println("\nInvalid selection");
-            }
+    private List<String> ridesPage() throws SQLException {
+        List<String> totalRides = new ArrayList<>();
+        System.out.println("\n**** Rides Page ****");
+        System.out.println("1. Daily rides");
+        System.out.println("2. Monthly rides");
+        System.out.println("3. Rides between a specific period");
+        System.out.println("4. Return to the previous page");
+        System.out.print("Please enter a selection: ");
+        int selection = inputs.getIntegerInput();
+        switch (selection) {
+            case 1:
+                return getDailyRides();
+            case 2:
+                return getMonthlyRides();
+            case 3:
+                return getSpecificPeriodRides();
+            case 4:
+                return totalRides;
+            default:
+                return Collections.singletonList("Invalid selection");
         }
     }
 
     // method to get daily rides
-    private void getDailyRides() throws SQLException {
+    private List<String> getDailyRides() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
         String inputDate = inputs.getStringInput();
-        if (validateDate(inputDate)) {
-            String date = getFormattedDate(inputDate);
-            getRidesFromDb(date, date, requesterType, requesterID);
+        if (!validateDate(inputDate)) {
+            return Collections.singletonList("Invalid Input");
         } else {
-            System.out.println("\nInvalid Input");
+            String date = getFormattedDate(inputDate);
+            return getRidesFromDb(date, date, requesterType, requesterID);
         }
     }
 
     // method to get monthly rides
-    private void getMonthlyRides() throws SQLException {
+    private List<String> getMonthlyRides() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
         String input = inputs.getStringInput();
         if (input.length() != 0 && input.indexOf("/") == 2) {
@@ -74,14 +73,14 @@ public class DisplayRides {
             String year = splitInput[1];
             String startDate = year + "-" + month + "-01";
             String endDate = getLastDay(startDate);
-            getRidesFromDb(startDate, endDate, requesterType, requesterID);
+            return getRidesFromDb(startDate, endDate, requesterType, requesterID);
         } else {
-            System.out.println("\nInvalid Input");
+            return Collections.singletonList("Invalid Input");
         }
     }
 
     // method to get rides between specific time period
-    private void getSpecificPeriodRides() throws SQLException {
+    private List<String> getSpecificPeriodRides() throws SQLException {
         System.out.print("Enter the start date (DD/MM/YYYY): ");
         String startDate = inputs.getStringInput();
         System.out.print("Enter the end date (DD/MM/YYYY): ");
@@ -90,18 +89,21 @@ public class DisplayRides {
             String startingDate = getFormattedDate(startDate);
             String endingDate = getFormattedDate(endDate);
             if (getDateDifference(startingDate, endingDate) < 0) {
-                System.out.println("\nInvalid Input. Start date is greater than end date.");
+                return Collections.singletonList("Invalid Input. Start date is " +
+                    "greater than end date.");
             } else {
-                getRidesFromDb(startingDate, endingDate, requesterType, requesterID);
+                return getRidesFromDb(startingDate, endingDate, requesterType, requesterID);
             }
         } else {
-            System.out.println("\nInvalid Input");
+            return Collections.singletonList("Invalid Input");
         }
     }
 
     // method to get rides from the database
-    private void getRidesFromDb(String startDate, String endDate, UserType userType, int userID) throws SQLException {
-        String query = String.format("select\n" +
+    private List<String> getRidesFromDb(String startDate, String endDate, UserType userType, int userID) throws SQLException {
+        List<String> listOfRides = new ArrayList<>();
+        listOfRides.add("Ride Details ->");
+        String query = String.format("select distinct \n" +
                 "bookings.booking_id,\n" +
                 "bookings.source,\n" +
                 "bookings.destination,\n" +
@@ -112,13 +114,21 @@ public class DisplayRides {
                 "and trips.%s = %d\n" +
                 "order by trips.booking_id;", startDate, endDate, getColumnName(userType), userID);
         ResultSet result = iPersistence.executeSelectQuery(query);
-        System.out.println("\nRide Details -> ");
         while (result.next()) {
             String bookingID = result.getString("booking_id");
             String pickupLocation = result.getString("source");
             String dropLocation = result.getString("destination");
             double rideAmount = result.getDouble("trip_amount");
-            System.out.println("BookingID: " + bookingID + ", Pickup: " + pickupLocation + ", Destination: " + dropLocation + ", Price: " + rideAmount + ", Status: Completed");
+            String rideDetail = "BookingID: " + bookingID + ", Pickup: " + pickupLocation +
+                ", Destination: " + dropLocation + ", Price: " + rideAmount +
+                ", Status: Completed";
+            listOfRides.add(rideDetail);
+        }
+        if (listOfRides.size() == 1) {
+            listOfRides.add(("No rides to display"));
+            return listOfRides;
+        } else {
+            return listOfRides;
         }
     }
 

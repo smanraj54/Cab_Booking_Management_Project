@@ -53,7 +53,11 @@ class DriverTasks {
 
     void viewRides() throws SQLException {
         DisplayRides displayRides = new DisplayRides(inputs);
-        displayRides.getRides(UserType.DRIVER, LoggedInProfile.getLoggedInId());
+        List<String> rides = displayRides.getRides(UserType.DRIVER, LoggedInProfile.getLoggedInId());
+        System.out.println();
+        for (String ride : rides) {
+            System.out.println(ride);
+        }
     }
 
     void viewIncomes() throws SQLException {
