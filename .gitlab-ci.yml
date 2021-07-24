@@ -18,10 +18,3 @@ test:
     - ugrad
   script:
     - mvn clean test
-
-install:
-  stage: install
-  tags:
-    - ugrad
-  script:
-    - mvn clean test -DskipTests=true
