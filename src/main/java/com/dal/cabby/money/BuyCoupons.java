@@ -75,10 +75,12 @@ public class BuyCoupons {
 
   private String purchaseCoupon(int couponId, int userPoints) throws SQLException {
     int couponPoints = getCouponValue(couponId);
-    if (couponPoints > userPoints) {
+    if (!isCouponValid(couponId)) {
+      return "\nInvalid coupon code";
+    } else if (couponPoints > userPoints) {
       return "\nYou don't have sufficient points to buy this coupon";
     } else {
-      return beginTransaction(couponId, couponPoints);
+    return beginTransaction(couponId, couponPoints);
     }
   }
 
@@ -92,6 +94,16 @@ public class BuyCoupons {
       points = result.getInt("price_in_points");
     }
     return points;
+  }
+
+  private boolean isCouponValid(int couponID) throws SQLException {
+    int couponCount = 0;
+    ResultSet result = iPersistence.executeSelectQuery("select count(*) id_count " +
+        "from coupons where coupon_id = " + couponID + ";");
+    while (result.next()) {
+      couponCount = result.getInt("id_count");
+    }
+    return couponCount != 0;
   }
 
   private String beginTransaction(int couponID, int couponPoints) throws SQLException {
