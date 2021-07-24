@@ -62,7 +62,7 @@ class DriverTasks {
 
     void viewIncomes() throws SQLException {
         DriverEarnings driverEarnings = new DriverEarnings(inputs);
-        driverEarnings.getEarnings(LoggedInProfile.getLoggedInId());
+        System.out.println(driverEarnings.getEarnings(LoggedInProfile.getLoggedInId()));
     }
 
     void rateCustomer() throws SQLException {
