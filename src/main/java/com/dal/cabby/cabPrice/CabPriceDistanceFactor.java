@@ -10,7 +10,6 @@ import com.dal.cabby.io.Inputs;
 public class CabPriceDistanceFactor {
     IPersistence iPersistence;
     Inputs inputs;
-
     public  CabPriceDistanceFactor(Inputs inputs){
         this.inputs=inputs;
         try {
