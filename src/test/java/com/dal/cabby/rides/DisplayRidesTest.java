@@ -140,6 +140,19 @@ public class DisplayRidesTest {
   }
 
   @Test
+
+  void invalidDateInput() throws SQLException {
+    PredefinedInputs inputs = new PredefinedInputs();
+    inputs.add(3).add("31/07/2020").add("01/07/2020");
+    DisplayRides rides = new DisplayRides(inputs);
+
+    assertEquals(Collections.singletonList("Invalid Input. Start date is " +
+            "greater than end date."),
+        rides.getRides(UserType.DRIVER, 1),
+        "Issue in detecting invalid date");
+  }
+
+  @Test
   void invalidDateTest() throws SQLException {
     PredefinedInputs inputs = new PredefinedInputs();
     inputs.add(1).add("00/07/2020");

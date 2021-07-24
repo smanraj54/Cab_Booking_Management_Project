@@ -54,7 +54,7 @@ public class DisplayRides {
     // method to get daily rides
     private List<String> getDailyRides() throws SQLException {
         System.out.print("Enter the date in DD/MM/YYYY format: ");
-        String inputDate = inputs.getStringInput();
+        String inputDate = inputs.getStringInput().trim();
         if (!validateDate(inputDate)) {
             return Collections.singletonList("Invalid Input");
         } else {
@@ -66,8 +66,8 @@ public class DisplayRides {
     // method to get monthly rides
     private List<String> getMonthlyRides() throws SQLException {
         System.out.print("Enter the month in MM/YYYY format: ");
-        String input = inputs.getStringInput();
-        if (input.length() != 0 && input.indexOf("/") == 2) {
+        String input = inputs.getStringInput().trim();
+        if (input.length() == 7 && input.indexOf("/") == 2) {
             String[] splitInput = input.split("/");
             String month = splitInput[0];
             String year = splitInput[1];
@@ -82,9 +82,9 @@ public class DisplayRides {
     // method to get rides between specific time period
     private List<String> getSpecificPeriodRides() throws SQLException {
         System.out.print("Enter the start date (DD/MM/YYYY): ");
-        String startDate = inputs.getStringInput();
+        String startDate = inputs.getStringInput().trim();
         System.out.print("Enter the end date (DD/MM/YYYY): ");
-        String endDate = inputs.getStringInput();
+        String endDate = inputs.getStringInput().trim();
         if (validateDate(startDate) && validateDate(endDate)) {
             String startingDate = getFormattedDate(startDate);
             String endingDate = getFormattedDate(endDate);
