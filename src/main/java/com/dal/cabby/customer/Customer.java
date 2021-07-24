@@ -1,12 +1,9 @@
 package com.dal.cabby.customer;
 
-import com.dal.cabby.dbHelper.DBHelper;
-import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.profileManagement.ProfileStatus;
 import com.dal.cabby.util.Common;
-import com.dal.cabby.util.ConsolePrinter;
 
 import javax.mail.MessagingException;
 import java.sql.SQLException;
