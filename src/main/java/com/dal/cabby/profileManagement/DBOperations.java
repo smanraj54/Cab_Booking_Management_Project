@@ -6,24 +6,32 @@ import com.dal.cabby.pojo.UserType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/*
+    DB Operation used in the profile management feature implementation are
+    implemented in this class
+*/
 public class DBOperations implements IDBOperations {
 
-    UserType userType;
+    UserType userType;      // user type is the user persona
+
+    // queries with table name and the username and email values as variables
     private final String queryUser = "Select * from %s where username = '%s'";
     private final String queryEmail = "Select * from %s where email = '%s'";
 
+    // constructor initialised with the user type
     DBOperations(UserType userType) {
 
         this.userType = userType;
     }
 
+    // Username validate from the table
     @Override
     public boolean dbUserNameValidation(String userName) {
 
         return dbContainsUserName(userName, userType);
     }
 
+    // Username validate from the table
     @Override
     public boolean dbContainsUserName(String userName, UserType userType) {
 
@@ -39,6 +47,7 @@ public class DBOperations implements IDBOperations {
         return foundUser;
     }
 
+    //Email value is validated from the database
     @Override
     public boolean dbContainsEmail(String email, UserType userType) {
 
@@ -54,6 +63,7 @@ public class DBOperations implements IDBOperations {
         return foundUser;
     }
 
+    // fetching particular value from database using a query
     private String getValueFromDB(String userName, String columnName, UserType userType, String query) {
 
         String tableName = getTableName(userType);
@@ -78,6 +88,7 @@ public class DBOperations implements IDBOperations {
         return value;
     }
 
+    // Fetching Email Value from database
     @Override
     public String getEmailValue(String email, String keywordSearch, UserType userType, String query) {
 
@@ -98,6 +109,7 @@ public class DBOperations implements IDBOperations {
         return emailValue;
     }
 
+    // Registering a new database entry using datanode object
     @Override
     public void entryRegistration(DataNode dataNode) {
 
@@ -111,6 +123,7 @@ public class DBOperations implements IDBOperations {
         }
     }
 
+    // fetching the database instance
     private IPersistence getDBInstance() {
         IPersistence iPersistence = null;
         try {
@@ -121,8 +134,10 @@ public class DBOperations implements IDBOperations {
         return iPersistence;
     }
 
+    // Validating the login User by fetching data and comparing from database
     @Override
-    public boolean validateLoginUser(String userNameOrEmail, String password, UserType userType) {
+    public boolean validateLoginUser(String userNameOrEmail, String password,
+                                     UserType userType) {
 
         boolean userNameLogin = dbContainsUserName(userNameOrEmail, userType);
         boolean emailLogin = dbContainsEmail(userNameOrEmail, userType);
@@ -130,22 +145,30 @@ public class DBOperations implements IDBOperations {
         boolean userTypeValidate = false;
 
         if (userNameLogin) {
-            passwordValidate = validateKeyword(userNameOrEmail, "password", password, userType, queryUser);
-            userTypeValidate = validateKeyword(userNameOrEmail, "username", userNameOrEmail, userType, queryUser);
+            passwordValidate = validateKeyword(userNameOrEmail,
+                    "password", password, userType, queryUser);
+            userTypeValidate = validateKeyword(userNameOrEmail,
+                    "username", userNameOrEmail, userType, queryUser);
         } else if (emailLogin) {
-            passwordValidate = validateKeyword(userNameOrEmail, "password", password, userType, queryEmail);
-            userTypeValidate = validateKeyword(userNameOrEmail, "email", userNameOrEmail, userType, queryEmail);
+            passwordValidate = validateKeyword(userNameOrEmail,
+                    "password", password, userType, queryEmail);
+            userTypeValidate = validateKeyword(userNameOrEmail,
+                    "email", userNameOrEmail, userType, queryEmail);
         }
 
         return (passwordValidate && userTypeValidate);
     }
 
-    private boolean validateKeyword(String userNameOrEmail, String keyword, String keywordValue, UserType userType, String query) {
+    // Validating the keywords from database
+    private boolean validateKeyword(String userNameOrEmail, String keyword,
+                                    String keywordValue, UserType userType,
+                                    String query) {
 
         String value = getValueFromDB(userNameOrEmail, keyword, userType, query);
         return value != null && value.equals(keywordValue);
     }
 
+    // fetching email from database against the username
     @Override
     public String fetchEmailForAuthentication(String user, UserType userType) {
 
@@ -156,7 +179,8 @@ public class DBOperations implements IDBOperations {
             if (!dbContainsUserName(user, userType)) {
                 return null;
             }
-            email = getValueFromDB(user, "email", userType, queryUser);
+            email = getValueFromDB(user, "email", userType,
+                    queryUser);
         } else {
             email = user;
         }
@@ -164,12 +188,15 @@ public class DBOperations implements IDBOperations {
         return email;
     }
 
+    // updating the password in db while forgot password scenario
     @Override
-    public void updateEmailPassword(String email, String newPassword, UserType userType) {
+    public void updateEmailPassword(String email, String newPassword,
+                                    UserType userType) {
 
         IPersistence iPersistence = null;
         String tableName = getTableName(userType);
-        String query = String.format("UPDATE %s set password = '%s'where email = '%s'", tableName, newPassword, email);
+        String query = String.format("UPDATE %s set password = " +
+                "'%s'where email = '%s'", tableName, newPassword, email);
         try {
             iPersistence = DBHelper.getInstance();
             iPersistence.executeCreateOrUpdateQuery(query);
@@ -179,6 +206,7 @@ public class DBOperations implements IDBOperations {
 
     }
 
+    //
     @Override
     public String getTableName(UserType userType) {
 
