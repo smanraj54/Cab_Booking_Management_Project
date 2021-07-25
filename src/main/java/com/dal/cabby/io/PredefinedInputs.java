@@ -3,6 +3,10 @@ package com.dal.cabby.io;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements the Inputs interface. It will store all the predefined inputs in the arraylist and
+ * will return to the Application when asked.
+ */
 public class PredefinedInputs implements Inputs {
     int currentIndex;
     private final List<Object> preDefinedInputs;
@@ -12,6 +16,9 @@ public class PredefinedInputs implements Inputs {
         currentIndex = 0;
     }
 
+    /**
+     * @return return the integer input which is stored in the List.
+     */
     @Override
     public int getIntegerInput() {
         Object o = getElement();
@@ -22,6 +29,9 @@ public class PredefinedInputs implements Inputs {
         }
     }
 
+    /**
+     * @return return the String input which is stored in the List.
+     */
     @Override
     public String getStringInput() {
         Object o = getElement();
@@ -32,6 +42,9 @@ public class PredefinedInputs implements Inputs {
         }
     }
 
+    /**
+     * @return return the Double input which is stored in the List.
+     */
     @Override
     public double getDoubleInput() {
         Object o = getElement();
@@ -42,6 +55,9 @@ public class PredefinedInputs implements Inputs {
         }
     }
 
+    /**
+     * @return return the Word input which is stored in the List.
+     */
     @Override
     public String getWordInput() {
         Object o = getElement();
@@ -57,6 +73,9 @@ public class PredefinedInputs implements Inputs {
         return null;
     }
 
+    /**
+     * @return return next element present in the List.
+     */
     private Object getElement() {
         if (currentIndex > preDefinedInputs.size() - 1) {
             throw new RuntimeException(String.format("Index %s is outside of current inputs size"));
@@ -66,6 +85,9 @@ public class PredefinedInputs implements Inputs {
         return o;
     }
 
+    /**
+     * @return Add the predefined input in the List.
+     */
     public PredefinedInputs add(Object o) {
         preDefinedInputs.add(o);
         return this;

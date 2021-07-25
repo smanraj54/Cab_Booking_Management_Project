@@ -12,10 +12,12 @@ import java.text.ParseException;
 import static com.dal.cabby.util.ConsolePrinter.printErrorMsg;
 import static com.dal.cabby.util.ConsolePrinter.printSuccessMsg;
 
+/**
+ * This class implements presentation layer for the Customer.
+ */
 public class Customer implements ICustomer {
     private final Inputs inputs;
-    private CustomerTasks customerTasks;
-    private CustomerProfileManagement customerProfileManagement;
+    private CustomerBusinessLayer customerBusinessLayer;
     private ProfileStatus profileStatus;
 
     public Customer(Inputs inputs) throws SQLException {
@@ -24,8 +26,7 @@ public class Customer implements ICustomer {
     }
 
     private void initialize() throws SQLException {
-        customerTasks = new CustomerTasks(inputs);
-        customerProfileManagement = new CustomerProfileManagement(inputs);
+        customerBusinessLayer = new CustomerBusinessLayer(inputs);
         profileStatus = new ProfileStatus();
     }
 
@@ -41,7 +42,7 @@ public class Customer implements ICustomer {
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    boolean isLoginSuccessful = customerProfileManagement.login();
+                    boolean isLoginSuccessful = customerBusinessLayer.login();
                     if (isLoginSuccessful) {
                         printSuccessMsg("Login successful");
                         if (!profileStatus.isCustomerApproved(LoggedInProfile.getLoggedInId())) {
@@ -53,13 +54,13 @@ public class Customer implements ICustomer {
                     }
                     break;
                 case 2:
-                    boolean isRegistered = customerProfileManagement.register();
+                    boolean isRegistered = customerBusinessLayer.register();
                     if (!isRegistered) {
                         System.out.println("Registration failed!");
                     }
                     break;
                 case 3:
-                    boolean recoveryStatus = customerProfileManagement.forgotPassword();
+                    boolean recoveryStatus = customerBusinessLayer.forgotPassword();
                     if (recoveryStatus) {
                         System.out.println("Password reset successful. Please login with new credentials");
                     }
@@ -87,30 +88,30 @@ public class Customer implements ICustomer {
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    if (customerProfileManagement.logout()) {
+                    if (customerBusinessLayer.logout()) {
                         return;
                     }
                     break;
                 case 2:
-                    customerTasks.bookRides();
+                    customerBusinessLayer.bookRides();
                     break;
                 case 3:
-                    customerTasks.showRides();
+                    customerBusinessLayer.showRides();
                     break;
                 case 4:
-                    customerTasks.rateDriver();
+                    customerBusinessLayer.rateDriver();
                     break;
                 case 5:
-                    customerTasks.viewRatings();
+                    customerBusinessLayer.viewRatings();
                     break;
                 case 6:
-                    customerTasks.buyCoupons();
+                    customerBusinessLayer.buyCoupons();
                     break;
                 case 7:
-                    customerTasks.cancelBooking();
+                    customerBusinessLayer.cancelBooking();
                     break;
                 case 8:
-                    customerTasks.viewUpcomingTrip();
+                    customerBusinessLayer.viewUpcomingTrip();
                     break;
                 default:
                     System.out.println("\nInvalid Input");

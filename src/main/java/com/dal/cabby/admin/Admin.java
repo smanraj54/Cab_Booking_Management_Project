@@ -1,6 +1,5 @@
 package com.dal.cabby.admin;
 
-import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.util.Common;
 
@@ -8,23 +7,30 @@ import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
+/**
+ * This class is responsible for Admin portal. It will expose 2nd page
+ * which consists of Login, Registration and Password Recovery.
+ * After successful login, it will show the 3rd page which consists of Admin
+ * tasks.
+ */
 public class Admin implements IAdmin {
     private final Inputs inputs;
-    private final IPersistence iPersistence;
-    AdminHelper adminHelper;
-    private AdminTasks adminTasks;
-    private AdminProfileManagement adminProfileManagement;
+    AdminDBLayer adminDBLayer;
+    private AdminBusinessLayer adminBusinessLayer;
 
-    public Admin(Inputs inputs, IPersistence iPersistence) throws SQLException {
+    public Admin(Inputs inputs) throws SQLException {
         this.inputs = inputs;
-        this.iPersistence = iPersistence;
         initialize();
     }
 
+    /**
+     * Initializes instance of dependent objects.
+     *
+     * @throws SQLException
+     */
     private void initialize() throws SQLException {
-        adminHelper = new AdminHelper(iPersistence);
-        adminTasks = new AdminTasks(adminHelper, inputs, iPersistence);
-        adminProfileManagement = new AdminProfileManagement(adminHelper, inputs);
+        adminDBLayer = new AdminDBLayer();
+        adminBusinessLayer = new AdminBusinessLayer(adminDBLayer, inputs);
     }
 
     @Override
@@ -32,27 +38,34 @@ public class Admin implements IAdmin {
         profileManagementTasks();
     }
 
+    /**
+     * This method show the options for Login, Registration and Password recovery.
+     *
+     * @throws SQLException
+     * @throws MessagingException
+     * @throws InterruptedException
+     */
     @Override
-    public void profileManagementTasks() throws SQLException, ParseException, MessagingException, InterruptedException {
+    public void profileManagementTasks() throws SQLException, MessagingException, InterruptedException {
         while (true) {
             Common.page1Options();
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    boolean isLoginSuccessful = adminProfileManagement.login();
+                    boolean isLoginSuccessful = adminBusinessLayer.login();
                     if (isLoginSuccessful) {
                         System.out.println("Login successful");
                         performAdminTasks();
                     }
                     break;
                 case 2:
-                    boolean isRegistered = adminProfileManagement.register();
+                    boolean isRegistered = adminBusinessLayer.register();
                     if (!isRegistered) {
                         System.out.println("Registration failed!");
                     }
                     break;
                 case 3:
-                    boolean recoveryStatus = adminProfileManagement.forgotPassword();
+                    boolean recoveryStatus = adminBusinessLayer.forgotPassword();
                     if (recoveryStatus) {
                         System.out.println("Password reset successful. Please login with new credentials");
                     }
@@ -65,6 +78,13 @@ public class Admin implements IAdmin {
         }
     }
 
+    /**
+     * After successful login, Admin will enter the 3rd page which consists
+     * of 4 tasks: Approve drivers, Approve Customers, Deactivate drivers and
+     * Deactivate customers.
+     *
+     * @throws SQLException
+     */
     @Override
     public void performAdminTasks() throws SQLException {
         while (true) {
@@ -77,22 +97,22 @@ public class Admin implements IAdmin {
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    boolean isLogoutSuccessful = adminProfileManagement.logout();
+                    boolean isLogoutSuccessful = adminBusinessLayer.logout();
                     if (isLogoutSuccessful) {
                         return;
                     }
                     break;
                 case 2:
-                    adminTasks.approveDriverAccounts();
+                    adminBusinessLayer.approveDriverAccounts();
                     break;
                 case 3:
-                    adminTasks.approveCustomerAccounts();
+                    adminBusinessLayer.approveCustomerAccounts();
                     break;
                 case 4:
-                    adminTasks.deRegisterDriver();
+                    adminBusinessLayer.deRegisterDriver();
                     break;
                 case 5:
-                    adminTasks.deRegisterCustomer();
+                    adminBusinessLayer.deRegisterCustomer();
                     break;
                 default:
                     System.out.println("Invalid input entered");
