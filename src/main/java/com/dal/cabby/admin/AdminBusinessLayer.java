@@ -12,7 +12,7 @@ import java.util.List;
 class AdminBusinessLayer {
     private final AdminDBLayer adminDBLayer;
     private final Inputs inputs;
-    ProfileStatus profileStatus;
+    private final ProfileStatus profileStatus;
 
     public AdminBusinessLayer(AdminDBLayer adminDBLayer, Inputs inputs) throws SQLException {
         this.adminDBLayer = adminDBLayer;

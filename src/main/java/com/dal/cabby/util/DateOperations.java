@@ -7,8 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DateOperations {
-
-    IPersistence iPersistence;
+    private final IPersistence iPersistence;
 
     public DateOperations() throws SQLException {
         iPersistence = DBHelper.getInstance();

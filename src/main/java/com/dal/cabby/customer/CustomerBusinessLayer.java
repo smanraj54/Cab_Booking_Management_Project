@@ -26,7 +26,7 @@ import java.util.List;
 
 class CustomerBusinessLayer {
     private final Inputs inputs;
-    double initialScore = 4.0;
+    private double initialScore = 4.0;
     private final IRatings iRatings;
 
     public CustomerBusinessLayer(Inputs inputs) throws SQLException {

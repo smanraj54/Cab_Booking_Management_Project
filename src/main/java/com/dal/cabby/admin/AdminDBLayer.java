@@ -14,7 +14,7 @@ import java.util.List;
  * global Persistence module to operate any database related queries.
  */
 class AdminDBLayer {
-    IPersistence iPersistence;
+    private final IPersistence iPersistence;
 
     AdminDBLayer() throws SQLException {
         this.iPersistence = DBHelper.getInstance();
