@@ -3,26 +3,26 @@ package com.dal.cabby.admin;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Profile;
-import com.dal.cabby.profileManagement.ProfileStatus;
+import com.dal.cabby.pojo.UserType;
+import com.dal.cabby.profileManagement.*;
 
+import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.util.List;
 
-class AdminTasks {
-    private final AdminHelper adminHelper;
+class AdminBusinessLayer {
+    private final AdminDBLayer adminDBLayer;
     private final Inputs inputs;
     ProfileStatus profileStatus;
-    private final IPersistence iPersistence;
 
-    public AdminTasks(AdminHelper adminHelper, Inputs inputs, IPersistence iPersistence) throws SQLException {
-        this.adminHelper = adminHelper;
+    public AdminBusinessLayer(AdminDBLayer adminDBLayer, Inputs inputs) throws SQLException {
+        this.adminDBLayer = adminDBLayer;
         this.inputs = inputs;
-        this.iPersistence = iPersistence;
         profileStatus = new ProfileStatus();
     }
 
     void approveDriverAccounts() throws SQLException {
-        List<Profile> profileList = adminHelper.listOfDriversToBeApproved();
+        List<Profile> profileList = adminDBLayer.listOfDriversToBeApproved();
         if (profileList.size() == 0) {
             System.out.println("There is no driver in the system whose account is pending.");
             return;
@@ -38,7 +38,7 @@ class AdminTasks {
     }
 
     void approveCustomerAccounts() throws SQLException {
-        List<Profile> profileList = adminHelper.listOfCustomersToBeApproved();
+        List<Profile> profileList = adminDBLayer.listOfCustomersToBeApproved();
         if (profileList.size() == 0) {
             System.out.println("There is no customer in the system whose account is pending.");
             return;
@@ -66,5 +66,34 @@ class AdminTasks {
         int driver_id = inputs.getIntegerInput();
         profileStatus.deactivateDriver(driver_id);
         System.out.printf("Driver with id: %d is de-registered in the system\n", driver_id);
+    }
+
+    boolean login() throws InterruptedException {
+        System.out.println("Welcome to Admin login page");
+        ILogin ILogin = new Login(inputs);
+        if (ILogin.attemptLogin(UserType.ADMIN)) {
+            System.out.println("Login successful");
+            System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
+                    LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    boolean register() {
+        System.out.println("Welcome to Admin registration page");
+        IRegistration IRegistration = new Registration(inputs);
+        return IRegistration.registerUser(UserType.ADMIN);
+    }
+
+    boolean forgotPassword() throws MessagingException, InterruptedException {
+        System.out.println("Welcome to Admin forgot password page");
+        IForgotPassword IForgotPassword = new ForgotPassword(inputs);
+        return IForgotPassword.passwordUpdateProcess(UserType.ADMIN);
+    }
+
+    boolean logout() {
+        return new Logout(inputs).logout();
     }
 }

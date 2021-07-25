@@ -1,5 +1,6 @@
 package com.dal.cabby.admin;
 
+import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.pojo.Profile;
 
@@ -8,14 +9,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-  This is a utility class for Admin class.
+/**
+ * This class acts as DB layer for the Admin class. It talks with the
+ * global Persistence module to operate any database related queries.
  */
-class AdminHelper {
+class AdminDBLayer {
     IPersistence iPersistence;
 
-    AdminHelper(IPersistence iPersistence) {
-        this.iPersistence = iPersistence;
+    AdminDBLayer() throws SQLException {
+        this.iPersistence = DBHelper.getInstance();
     }
 
     List<Profile> listOfDriversToBeApproved() throws SQLException {
