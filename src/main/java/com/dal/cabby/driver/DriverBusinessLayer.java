@@ -14,6 +14,7 @@ import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 import com.dal.cabby.rides.DisplayRides;
 import com.dal.cabby.rides.IDisplayRides;
+import com.dal.cabby.score.CancellationScorer;
 import com.dal.cabby.util.Common;
 import com.dal.cabby.util.ConsolePrinter;
 
@@ -30,6 +31,7 @@ class DriverBusinessLayer {
     private final Inputs inputs;
     private IRatings iRatings = null;
     private IBookingService iBookingService = null;
+    private double initialScore = 4.0;
 
     public DriverBusinessLayer(Inputs inputs) throws SQLException {
         this.inputs = inputs;
@@ -223,6 +225,8 @@ class DriverBusinessLayer {
             return;
         }
         iBookingService.cancelBooking(bookingId, UserType.DRIVER);
+        CancellationScorer cancellationScorer = new CancellationScorer();
+        cancellationScorer.driverCancelled(initialScore, true);
         ConsolePrinter.printSuccessMsg(
                 String.format("Your booking with bookingId: %d is cancelled", bookingId));
     }

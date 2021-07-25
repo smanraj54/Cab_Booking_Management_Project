@@ -11,6 +11,7 @@ public class CancellationScorer implements ICancellationScorer {
             System.out.println("Driver has not cancelled.");
             return initialScore;
         }
+        System.out.println("Please note that your driver score may have been impacted.");
         return score;
 
     }
