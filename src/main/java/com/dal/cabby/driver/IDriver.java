@@ -4,6 +4,9 @@ import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
+/**
+ * This interface acts as Presentation layer for the Driver layer.
+ */
 public interface IDriver {
 
     /**

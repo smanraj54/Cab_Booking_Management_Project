@@ -1,6 +1,5 @@
 package com.dal.cabby.admin;
 
-import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Profile;
 import com.dal.cabby.pojo.UserType;

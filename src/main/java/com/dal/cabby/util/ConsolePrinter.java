@@ -1,5 +1,9 @@
 package com.dal.cabby.util;
 
+/**
+ * This class implements few methods which prints any String value
+ * in formatted and colored way.
+ */
 public class ConsolePrinter {
     public static final String CYAN_COLOR_CODE = "\u001B[46m";
     private final static String RED_COLOR_CODE = "\u001B[31m";
