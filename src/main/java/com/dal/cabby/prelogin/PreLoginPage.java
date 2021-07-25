@@ -42,7 +42,7 @@ public class PreLoginPage {
 
         switch (input) {
             case 1:
-                Admin admin = new Admin(inputs, iPersistence);
+                Admin admin = new Admin(inputs);
                 admin.performTasks();
                 break;
             case 2:

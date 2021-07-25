@@ -9,7 +9,7 @@ import com.dal.cabby.money.BuyCoupons;
 import com.dal.cabby.money.DriverEarnings;
 import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
-import com.dal.cabby.profileManagement.LoggedInProfile;
+import com.dal.cabby.profileManagement.*;
 import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 import com.dal.cabby.rides.DisplayRides;
@@ -17,21 +17,87 @@ import com.dal.cabby.rides.IDisplayRides;
 import com.dal.cabby.util.Common;
 import com.dal.cabby.util.ConsolePrinter;
 
+import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 
-class DriverTasks {
+/**
+ * This class implements the business layer for the driver user. It implements
+ * the business layer for the profile managements and driver tasks.
+ */
+class DriverBusinessLayer {
     private final Inputs inputs;
-    private final IRatings iRatings;
-    private final IBookingService iBookingService;
+    private IRatings iRatings = null;
+    private IBookingService iBookingService = null;
 
-    public DriverTasks(Inputs inputs) throws SQLException {
+    public DriverBusinessLayer(Inputs inputs) throws SQLException {
         this.inputs = inputs;
+        initialize();
+    }
+
+    /**
+     * This method initialize the instance for the dependent objects.
+     *
+     * @throws SQLException
+     */
+    private void initialize() throws SQLException {
         iRatings = new Ratings();
         iBookingService = new BookingService();
     }
 
+    /**
+     * @return return true for succesfull login, else return false.
+     * @throws InterruptedException
+     */
+    public boolean login() throws InterruptedException {
+        System.out.println("Welcome to Driver login page");
+        ILogin ILogin = new Login(inputs);
+        if (ILogin.attemptLogin(UserType.DRIVER)) {
+            System.out.println("Login successful");
+            System.out.printf("LoggedID: %d, LoggedIn name: %s\n",
+                    LoggedInProfile.getLoggedInId(), LoggedInProfile.getLoggedInName());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @return return true for successful registration else return false.
+     */
+    public boolean register() {
+        System.out.println("Welcome to Driver registration page");
+        IRegistration IRegistration = new Registration(inputs);
+        return IRegistration.registerUser(UserType.DRIVER);
+    }
+
+    /**
+     * This method implements password recovery option for Driver user.
+     *
+     * @return return true for successful password recovery else return false.
+     * @throws MessagingException
+     * @throws InterruptedException
+     */
+    public boolean forgotPassword() throws MessagingException, InterruptedException {
+        System.out.println("Welcome to Driver forgot password page");
+        IForgotPassword IForgotPassword = new ForgotPassword(inputs);
+        return IForgotPassword.passwordUpdateProcess(UserType.DRIVER);
+    }
+
+    /**
+     * @return return true for successful logout else return false.
+     */
+    boolean logout() {
+        return new Logout(inputs).logout();
+    }
+
+    /**
+     * Implements the start trip from upcoming trips options.
+     *
+     * @throws SQLException
+     * @throws ParseException
+     */
     void startTrip() throws SQLException, ParseException {
         List<Booking> bookingsList = iBookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
         if (bookingsList.size() == 0) {
@@ -55,6 +121,11 @@ class DriverTasks {
         }
     }
 
+    /**
+     * Implements view previous rides for the driver user.
+     *
+     * @throws SQLException
+     */
     void viewRides() throws SQLException {
         IDisplayRides displayRides = new DisplayRides(inputs);
         List<String> rides = displayRides.getRides(UserType.DRIVER, LoggedInProfile.getLoggedInId());
@@ -64,11 +135,21 @@ class DriverTasks {
         }
     }
 
+    /**
+     * Implements incomes from past rides.
+     *
+     * @throws SQLException
+     */
     void viewIncomes() throws SQLException {
         DriverEarnings driverEarnings = new DriverEarnings(inputs);
         System.out.println(driverEarnings.getEarnings(LoggedInProfile.getLoggedInId()));
     }
 
+    /**
+     * Rate the customer for the previous rides.
+     *
+     * @throws SQLException
+     */
     void rateCustomer() throws SQLException {
         System.out.println("Rating customer for the completed trip is " +
                 "mandatory in the Cabby. It helps us to improve our services." +
@@ -87,6 +168,11 @@ class DriverTasks {
                 cust_id, bonus));
     }
 
+    /**
+     * View average rating for the driver.
+     *
+     * @throws SQLException
+     */
     void viewRatings() throws SQLException {
         double avgRating = iRatings.getAverageRatingOfDriver(LoggedInProfile.getLoggedInId());
         if (avgRating == 0) {
@@ -96,11 +182,21 @@ class DriverTasks {
         System.out.println("Your average rating is: " + avgRating);
     }
 
+    /**
+     * Buy coupons from the money.
+     *
+     * @throws SQLException
+     */
     void buyCoupons() throws SQLException {
         BuyCoupons buyCoupons = new BuyCoupons(inputs);
         System.out.println(buyCoupons.getCoupons(LoggedInProfile.getLoggedInId(), UserType.DRIVER));
     }
 
+    /**
+     * Cancel the upcoming booking.
+     *
+     * @throws SQLException
+     */
     void cancelBooking() throws SQLException {
         IBookingService iBookingService = new BookingService();
         List<Booking> bookingList = iBookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());
@@ -131,6 +227,11 @@ class DriverTasks {
                 String.format("Your booking with bookingId: %d is cancelled", bookingId));
     }
 
+    /**
+     * View upcoming trips of the driver.
+     *
+     * @throws SQLException
+     */
     void viewUpcomingTrip() throws SQLException {
         IBookingService iBookingService = new BookingService();
         List<Booking> bookingList = iBookingService.getDriverOpenBookings(LoggedInProfile.getLoggedInId());

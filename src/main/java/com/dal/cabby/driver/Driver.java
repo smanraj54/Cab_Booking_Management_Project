@@ -1,7 +1,5 @@
 package com.dal.cabby.driver;
 
-import com.dal.cabby.dbHelper.DBHelper;
-import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
 import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.profileManagement.ProfileStatus;
@@ -14,22 +12,27 @@ import java.text.ParseException;
 import static com.dal.cabby.util.ConsolePrinter.printErrorMsg;
 import static com.dal.cabby.util.ConsolePrinter.printSuccessMsg;
 
+/**
+ * This class implements IDriver interface and implements the
+ * presentation layer of the Driver user.
+ */
 public class Driver implements IDriver {
     private final Inputs inputs;
-    private final IPersistence iPersistence;
-    private DriverTasks driverTasks;
-    private DriverProfileManagement driverProfileManagement;
+    private DriverBusinessLayer driverBusinessLayer;
     private ProfileStatus profileStatus;
 
     public Driver(Inputs inputs) throws SQLException, ParseException {
         this.inputs = inputs;
-        this.iPersistence = DBHelper.getInstance();
-        intialiaze();
+        intialize();
     }
 
-    private void intialiaze() throws SQLException {
-        driverTasks = new DriverTasks(inputs);
-        driverProfileManagement = new DriverProfileManagement(inputs);
+    /**
+     * Initialize the instance of the dependent objects.
+     *
+     * @throws SQLException
+     */
+    private void intialize() throws SQLException {
+        driverBusinessLayer = new DriverBusinessLayer(inputs);
         profileStatus = new ProfileStatus();
     }
 
@@ -38,6 +41,14 @@ public class Driver implements IDriver {
         profileManagementTasks();
     }
 
+    /**
+     * This method implements presentation layer for Login, Registration and Password recovery.
+     *
+     * @throws SQLException
+     * @throws ParseException
+     * @throws MessagingException
+     * @throws InterruptedException
+     */
     @Override
     public void profileManagementTasks() throws SQLException, ParseException, MessagingException, InterruptedException {
         while (true) {
@@ -45,7 +56,7 @@ public class Driver implements IDriver {
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    boolean isLoginSuccessful = driverProfileManagement.login();
+                    boolean isLoginSuccessful = driverBusinessLayer.login();
                     if (isLoginSuccessful) {
                         printSuccessMsg("Login successful");
                         if (!profileStatus.isDriverAproved(LoggedInProfile.getLoggedInId())) {
@@ -57,13 +68,13 @@ public class Driver implements IDriver {
                     }
                     break;
                 case 2:
-                    boolean isRegistered = driverProfileManagement.register();
+                    boolean isRegistered = driverBusinessLayer.register();
                     if (!isRegistered) {
                         System.out.println("Registration failed!");
                     }
                     break;
                 case 3:
-                    boolean recoveryStatus = driverProfileManagement.forgotPassword();
+                    boolean recoveryStatus = driverBusinessLayer.forgotPassword();
                     if (recoveryStatus) {
                         System.out.println("Password reset successful. Please login with new credentials");
                     }
@@ -76,6 +87,13 @@ public class Driver implements IDriver {
         }
     }
 
+    /**
+     * This method implements the presentation layer for the Driver tasks
+     * which he will be able to perform once he do successfull login.
+     *
+     * @throws SQLException
+     * @throws ParseException
+     */
     @Override
     public void performDriverTasks() throws SQLException, ParseException {
         while (true) {
@@ -91,34 +109,34 @@ public class Driver implements IDriver {
             int input = inputs.getIntegerInput();
             switch (input) {
                 case 1:
-                    boolean isLogoutSuccessful = driverProfileManagement.logout();
+                    boolean isLogoutSuccessful = driverBusinessLayer.logout();
                     if (isLogoutSuccessful) {
                         return;
                     }
                     break;
                 case 2:
-                    driverTasks.startTrip();
+                    driverBusinessLayer.startTrip();
                     break;
                 case 3:
-                    driverTasks.viewRides();
+                    driverBusinessLayer.viewRides();
                     break;
                 case 4:
-                    driverTasks.viewIncomes();
+                    driverBusinessLayer.viewIncomes();
                     break;
                 case 5:
-                    driverTasks.rateCustomer();
+                    driverBusinessLayer.rateCustomer();
                     break;
                 case 6:
-                    driverTasks.viewRatings();
+                    driverBusinessLayer.viewRatings();
                     break;
                 case 7:
-                    driverTasks.buyCoupons();
+                    driverBusinessLayer.buyCoupons();
                     break;
                 case 8:
-                    driverTasks.cancelBooking();
+                    driverBusinessLayer.cancelBooking();
                     break;
                 case 9:
-                    driverTasks.viewUpcomingTrip();
+                    driverBusinessLayer.viewUpcomingTrip();
                     break;
                 default:
                     System.out.println("\nInvalid Input");
