@@ -13,12 +13,10 @@ import java.text.ParseException;
 
 // Prelogin page when user visit the Cabby app
 public class PreLoginPage {
-    Inputs inputs;
-    IPersistence iPersistence;
+    private final Inputs inputs;
 
     public PreLoginPage(Inputs inputs) throws SQLException {
         this.inputs = inputs;
-        this.iPersistence = DBHelper.getInstance();
     }
 
     /* Starting point of Prelogin page. */
@@ -55,7 +53,6 @@ public class PreLoginPage {
                 break;
             default:
                 System.out.println("Invalid input: " + input);
-                return;
         }
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
  * will return to the Application when asked.
  */
 public class PredefinedInputs implements Inputs {
-    int currentIndex;
+    private int currentIndex;
     private final List<Object> preDefinedInputs;
 
     public PredefinedInputs() {
@@ -78,7 +78,7 @@ public class PredefinedInputs implements Inputs {
      */
     private Object getElement() {
         if (currentIndex > preDefinedInputs.size() - 1) {
-            throw new RuntimeException(String.format("Index %s is outside of current inputs size"));
+            throw new RuntimeException(String.format("Index %d is outside of current inputs size", currentIndex));
         }
         Object o = preDefinedInputs.get(currentIndex);
         currentIndex++;
