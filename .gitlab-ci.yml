@@ -1,33 +1,109 @@
-image: maven:latest
+#image: maven:latest
+#
+#cache:
+#  paths:
+#    - .m2/repository/
+#    - target/
+#
+## build stage will just build the codebase without running
+## any tests or creating any jar file.
+#build:
+#  stage: build
+#  tags:
+#    - ugrad
+#  script:
+#    - mvn clean compile
+#
+## test stage will compile the code and run all the unit tests present in the
+## test folder.
+#test:
+#  stage: test
+#  tags:
+#    - ugrad
+#  script:
+#    - mvn clean test
+#
+## deploy stage will create package the jar and keep it in the target folder.
+## The success of deploy stage will mark the pipeline as passed.
+#deploy:
+#  stage: deploy
+#  tags:
+#    - ugrad
+#  script:
+#    - mvn clean install -DskipTests=true
 
-cache:
-  paths:
-    - .m2/repository/
-    - target/
+variables:
+  # This is a place for you to define variables you can use
+  # later in the script by referring to the variable like so:
+  #   ${EXAMPLE_VARIABLE}
+  EXAMPLE_VARIABLE: "Example"
 
-# build stage will just build the codebase without running
-# any tests or creating any jar file.
-build:
+
+image: node:latest
+
+before_script:
+  # Do anything you have to do before your stages below here.
+  # For example, do you need to change permissions on a build folder
+  # or modify a file to insert a variable from your CI config here?
+  - apt-get update -qy
+  - apt-get install -y openssh-client
+  - eval $(ssh-agent -s)
+  - echo "$PROD_DEPLOY_SSH_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+
+stages:
+  # These are the three states we want, building the app, testing it by
+  # executing unit tests and checking the results, and finally if this
+  - build
+  # You will need to define this stage somewhere below.
+  - test
+  # I will provide this example for you below.
+  - develop
+
+  - production
+
+buildStep:
+  image: maven:latest
   stage: build
   tags:
     - ugrad
+  artifacts:
+    paths:
+      - group15/target/*.jar
   script:
-    - mvn clean compile
+    mvn clean install
 
-# test stage will compile the code and run all the unit tests present in the
-# test folder.
-test:
+testStep:
+  image: maven:latest
   stage: test
   tags:
     - ugrad
   script:
-    - mvn clean test
+    mvn verify
 
-# deploy stage will create package the jar and keep it in the target folder.
-# The success of deploy stage will mark the pipeline as passed.
-deploy:
-  stage: deploy
+deployStep:
+  stage: develop
   tags:
+    # I am tagging the ugrad runner, read this document to learn why:
+    # https://helpdesk.cs.dal.ca/gitlab
     - ugrad
+  artifacts:
+    paths:
+      # Change this directory to the path that contains your built executable
+      - group15/target
+  before_script:
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOY_SSH_KEY" | tr -d '\r' | ssh-add -
   script:
-    - mvn clean install -DskipTests=true
+    - echo "dbURL=$DATABASE_URL" > config.properties
+    - echo "dbUserName=$TEST_DATABASE_USERNAME" >> config.properties
+    - echo "dbPassword=$TEST_DATABASE_PASSWORD" >> config.properties
+    - echo "dbDriver=$TEST_DATABASE" >> config.properties
+    - echo "$CI_COMMIT_REF_NAME"
+    - zip -r ${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHORT_SHA}.zip . -i /group15/target/*.jar
+    - scp -r -o StrictHostKeyChecking=no ${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHORT_SHA}.zip "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHORT_SHA}.zip"
+    - scp -r -o StrictHostKeyChecking=no config.properties "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/config.properties"
+  only:
+    - develop
