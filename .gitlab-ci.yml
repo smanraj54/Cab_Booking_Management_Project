@@ -39,7 +39,7 @@ variables:
   EXAMPLE_VARIABLE: "Example"
 
 
-image: node:latest
+image: maven:latest
 
 before_script:
   # Do anything you have to do before your stages below here.
@@ -63,24 +63,41 @@ stages:
 
   - production
 
+## build stage will just build the codebase without running
+## any tests or creating any jar file.
+#build:
+#  stage: build
+#  tags:
+#    - ugrad
+#  script:
+#    - mvn clean compile
+#
+## test stage will compile the code and run all the unit tests present in the
+## test folder.
+#test:
+#  stage: test
+#  tags:
+#    - ugrad
+#  script:
+#    - mvn clean test
+
+
 buildStep:
-  image: maven:latest
   stage: build
   tags:
     - ugrad
   artifacts:
     paths:
-      - group15/target/*.jar
+      - target/*.jar
   script:
-    mvn clean install
+    mvn clean compile
 
 testStep:
-  image: maven:latest
   stage: test
   tags:
     - ugrad
   script:
-    mvn verify
+    mvn clean test
 
 deployStep:
   stage: develop
