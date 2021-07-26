@@ -41,17 +41,6 @@ variables:
 
 image: maven:latest
 
-before_script:
-  # Do anything you have to do before your stages below here.
-  # For example, do you need to change permissions on a build folder
-  # or modify a file to insert a variable from your CI config here?
-  - apt-get update -qy
-  - apt-get install -y openssh-client
-  - eval $(ssh-agent -s)
-  - echo "$PROD_DEPLOY_SSH_KEY" | tr -d '\r' | ssh-add -
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-
 stages:
   # These are the three states we want, building the app, testing it by
   # executing unit tests and checking the results, and finally if this
@@ -60,44 +49,43 @@ stages:
   - test
   # I will provide this example for you below.
   - develop
-
   - production
 
-## build stage will just build the codebase without running
-## any tests or creating any jar file.
-#build:
-#  stage: build
-#  tags:
-#    - ugrad
-#  script:
-#    - mvn clean compile
-#
-## test stage will compile the code and run all the unit tests present in the
-## test folder.
-#test:
-#  stage: test
-#  tags:
-#    - ugrad
-#  script:
-#    - mvn clean test
-
-
-buildStep:
+# build stage will just build the codebase without running
+# any tests or creating any jar file.
+build:
   stage: build
   tags:
     - ugrad
-  artifacts:
-    paths:
-      - target/*.jar
   script:
-    mvn clean compile
+    - mvn clean compile
 
-testStep:
+# test stage will compile the code and run all the unit tests present in the
+# test folder.
+test:
   stage: test
   tags:
     - ugrad
   script:
-    mvn clean test
+    - mvn clean test
+
+
+#buildStep:
+#  stage: build
+#  tags:
+#    - ugrad
+#  artifacts:
+#    paths:
+#      - target/*.jar
+#  script:
+#    mvn clean compile
+#
+#testStep:
+#  stage: test
+#  tags:
+#    - ugrad
+#  script:
+#    mvn clean test
 
 deployStep:
   stage: develop
@@ -105,14 +93,14 @@ deployStep:
     # I am tagging the ugrad runner, read this document to learn why:
     # https://helpdesk.cs.dal.ca/gitlab
     - ugrad
-  artifacts:
-    paths:
-      # Change this directory to the path that contains your built executable
-      - group15/target
-  before_script:
-    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$DEPLOY_SSH_KEY" | tr -d '\r' | ssh-add -
+#  artifacts:
+#    paths:
+#      # Change this directory to the path that contains your built executable
+#      - group15/target
+#  before_script:
+#    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+#    - eval $(ssh-agent -s)
+#    - echo "$DEPLOY_SSH_KEY" | tr -d '\r' | ssh-add -
   script:
     - echo "dbURL=$DATABASE_URL" > config.properties
     - echo "dbUserName=$TEST_DATABASE_USERNAME" >> config.properties
