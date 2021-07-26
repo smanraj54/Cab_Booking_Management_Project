@@ -8,7 +8,7 @@
     <artifactId>cabby</artifactId>
     <version>1.0</version>
     <name>Cabby</name>
-    <description>Group14 project: A springboot based application</description>
+    <description>Group15 project: Cabby: The rider Provider</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -53,6 +53,7 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <addClasspath>true</addClasspath>
                             <mainClass>com.dal.cabby.Application</mainClass>
                         </manifest>
                     </archive>
