@@ -15,7 +15,6 @@ import java.text.ParseException;
  */
 public class Admin implements IAdmin {
     private final Inputs inputs;
-    AdminDBLayer adminDBLayer;
     private AdminBusinessLayer adminBusinessLayer;
 
     public Admin(Inputs inputs) throws SQLException {
@@ -29,7 +28,7 @@ public class Admin implements IAdmin {
      * @throws SQLException
      */
     private void initialize() throws SQLException {
-        adminDBLayer = new AdminDBLayer();
+        AdminDBLayer adminDBLayer = new AdminDBLayer();
         adminBusinessLayer = new AdminBusinessLayer(adminDBLayer, inputs);
     }
 

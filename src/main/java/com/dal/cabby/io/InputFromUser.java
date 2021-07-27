@@ -7,7 +7,7 @@ import java.util.Scanner;
  * any input which is being asked by the application.
  */
 public class InputFromUser implements Inputs {
-    Scanner scanner;
+    private final Scanner scanner;
 
     public InputFromUser() {
         scanner = new Scanner(System.in);
@@ -44,7 +44,6 @@ public class InputFromUser implements Inputs {
      */
     @Override
     public String getWordInput() {
-        String value = scanner.next();
-        return value;
+        return scanner.next();
     }
 }

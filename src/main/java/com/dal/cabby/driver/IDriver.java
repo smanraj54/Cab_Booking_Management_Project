@@ -1,5 +1,7 @@
 package com.dal.cabby.driver;
 
+import com.dal.cabby.user.User;
+
 import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -7,19 +9,7 @@ import java.text.ParseException;
 /**
  * This interface acts as Presentation layer for the Driver layer.
  */
-public interface IDriver {
-
-    /**
-     * Consists of list of steps, like profile-managemnents, driver tasks, etc
-     */
-    void performTasks() throws SQLException, ParseException, MessagingException, InterruptedException;
-
-    /**
-     * Performs basic operations like login, registration and password
-     * recovery.
-     */
-    void profileManagementTasks() throws SQLException, ParseException, MessagingException, InterruptedException;
-
+public interface IDriver extends User {
     /**
      * Performs drivers related tasks like start trip, rate customer, etc.
      */
