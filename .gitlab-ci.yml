@@ -23,6 +23,9 @@ build:
     - ugrad
   script:
     - mvn clean compile
+  artifacts:
+    paths:
+       - target/*.jar
 
 # test stage will compile the code and run all the unit tests present in the
 # test folder.
@@ -54,7 +57,7 @@ deploy:
     - ls target/
     - ls -lrth ~/.ssh
     - echo "$CI_COMMIT_REF_NAME"
-    - zip -r ${CI_COMMIT_SHORT_SHA}.zip . -i target
+    - zip -r ${CI_COMMIT_SHORT_SHA}.zip . -i target/*.jar
     - ls -lrth ${CI_COMMIT_SHORT_SHA}.zip
     - scp -r -o StrictHostKeyChecking=no ${CI_COMMIT_SHORT_SHA}.zip "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_COMMIT_SHORT_SHA}.zip"
     - scp -r -o StrictHostKeyChecking=no config.properties "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/config.properties"
