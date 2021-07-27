@@ -7,7 +7,7 @@ import com.dal.cabby.io.Inputs;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CabPriceNormalBooking {
+public class CabPriceNormalBooking implements ICabPriceNormalBooking {
     IPersistence iPersistence;
     Inputs inputs;
     public CabPriceNormalBooking(Inputs inputs){
@@ -19,6 +19,7 @@ public class CabPriceNormalBooking {
         }
     }
 
+    @Override
     public double distanceFactor(String source, double distance, int cabType, double hour) throws SQLException {
         double shortDistance = 5; //For initial few kilometers 5 dollars would be charged per Km
         String rideArea = null;
