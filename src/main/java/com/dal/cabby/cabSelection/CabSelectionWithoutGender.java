@@ -12,6 +12,7 @@ import com.dal.cabby.rating.Ratings;
 public class CabSelectionWithoutGender {
     IPersistence iPersistence;
     Inputs inputs;
+    CabSelectionDBLayer cabSelectionDBLayer;
     CabSelectionService cabSelectionService;
     CabPriceCalculator cabPriceCalculator;
 
@@ -24,9 +25,12 @@ public class CabSelectionWithoutGender {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        cabSelectionDBLayer=new CabSelectionDBLayer(inputs,cabSelectionService);
     }
 
     public CabSelectionDAO withoutGenderPreference() throws SQLException {
+        List<CabSelectionDAO> mainArrayList;
+        mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
         try {
             System.out.println("Great! We are searching the best cab for you. Please hold on......");
             for (int i = 5; i > 0; i--) {
@@ -38,7 +42,7 @@ public class CabSelectionWithoutGender {
             System.out.println(e.getMessage());
         }
         List<String> arrayList = new ArrayList<>();
-        for (CabSelectionDAO cabDetail : cabSelectionService.cabDetails) {
+        for (CabSelectionDAO cabDetail : mainArrayList) {
             arrayList.add(cabDetail.cabName);
         } /*
         Created this arrayList to store names of Nearby cabs which will be passed to a function along with
@@ -56,7 +60,7 @@ public class CabSelectionWithoutGender {
         CabSelectionDAO selectedCab = null;
         IRatings iRatings = new Ratings();
         double min = Double.MAX_VALUE;
-        for (CabSelectionDAO cabDetail : cabSelectionService.cabDetails) {
+        for (CabSelectionDAO cabDetail : cabSelectionDBLayer.cabDetails) {
             double timeOfCab = (cabDetail.cabDistanceFromOrigin) / (cabDetail.cabSpeedOnRoute);
             timeToReach.add(timeOfCab);
             int driverId = cabDetail.driver_Id;

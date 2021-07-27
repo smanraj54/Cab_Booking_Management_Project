@@ -13,8 +13,9 @@ import com.dal.cabby.rating.Ratings;
 public class CabSelectionWithGender {
     IPersistence iPersistence;
     Inputs inputs;
-    CabPriceCalculator cabPriceCalculator;
     CabSelectionService cabSelectionService;
+    CabSelectionDBLayer cabSelectionDBLayer;
+    CabPriceCalculator cabPriceCalculator;
 
     public CabSelectionWithGender(Inputs inputs,CabSelectionService cabSelectionService){
         this.inputs=inputs;
@@ -25,12 +26,15 @@ public class CabSelectionWithGender {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        cabSelectionDBLayer=new CabSelectionDBLayer(inputs,cabSelectionService);
     }
 
     public CabSelectionDAO withGenderPreference() throws SQLException {
+        List<CabSelectionDAO> mainArrayList;
         List<String> maleArrayList = new ArrayList<>();
         List<String> femaleArrayList = new ArrayList<>();
         String gender;
+        mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
         System.out.println("Select your gender preference");
         System.out.println("1. Male ");
         System.out.println("2. Female ");
@@ -47,7 +51,7 @@ public class CabSelectionWithGender {
         }
         switch (input) {
             case 1:
-                for (CabSelectionDAO cabDetail : cabSelectionService.cabDetails) {
+                for (CabSelectionDAO cabDetail : mainArrayList) {
                     gender = cabDetail.driverGender;
                     if (gender.equals("Male")) {
                         maleArrayList.add(cabDetail.cabName);
@@ -58,7 +62,7 @@ public class CabSelectionWithGender {
                 }
                 return bestNearbyCabOfMaleDriver();
             case 2:
-                for (CabSelectionDAO cabDetail : cabSelectionService.cabDetails) {
+                for (CabSelectionDAO cabDetail : mainArrayList) {
                     gender = cabDetail.driverGender;
                     if (gender.equals("Female")) {
                         femaleArrayList.add(cabDetail.cabName);
@@ -81,7 +85,7 @@ public class CabSelectionWithGender {
         CabSelectionDAO selectedCab = null;
         double min = Double.MAX_VALUE;
         IRatings iRatings = new Ratings();
-        for (CabSelectionDAO cabDetail : cabSelectionService.cabDetails) {
+        for (CabSelectionDAO cabDetail : cabSelectionDBLayer.cabDetails) {
             gender = cabDetail.driverGender;
             if (gender.equals("Male")) {
                 double timeOfCab = (cabDetail.cabDistanceFromOrigin) / (cabDetail.cabSpeedOnRoute);
@@ -109,7 +113,7 @@ public class CabSelectionWithGender {
         CabSelectionDAO selectedCab = null;
         double min = Double.MAX_VALUE;
         IRatings iRatings = new Ratings();
-        for (CabSelectionDAO cabDetail : cabSelectionService.cabDetails) {
+        for (CabSelectionDAO cabDetail : cabSelectionDBLayer.cabDetails) {
             gender = cabDetail.driverGender;
             if (gender.equals("Female")) {
                 double timeOfCab = (cabDetail.cabDistanceFromOrigin) / (cabDetail.cabSpeedOnRoute);
