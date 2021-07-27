@@ -2,7 +2,7 @@ package com.dal.cabby.customer;
 
 import com.dal.cabby.booking.BookingService;
 import com.dal.cabby.booking.IBookingService;
-import com.dal.cabby.cabSelection.CabSelectionService;
+import com.dal.cabby.cabSelection.CabSelection;
 import com.dal.cabby.incentives.DriverBonus;
 import com.dal.cabby.incentives.IDriverBonus;
 import com.dal.cabby.io.Inputs;
@@ -83,7 +83,7 @@ class CustomerBusinessLayer {
 
     void bookRides() throws SQLException, ParseException {
         int custId = LoggedInProfile.getLoggedInId();
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
+        CabSelection cabSelection = new CabSelection(inputs);
         System.out.println("Select travel time(MM/dd/yyyy HH:mm):");
         String travelTime = inputs.getStringInput();
         double hour = 0.0;
@@ -96,7 +96,7 @@ class CustomerBusinessLayer {
             ConsolePrinter.printErrorMsg("Your cab booking failed due to wrong date entered. Please try again");
             return;
         }
-        Booking booking = cabSelectionService.preferredCab(custId, hour);
+        Booking booking = cabSelection.preferredCab(custId, hour);
         booking.setCustomerId(custId);
         booking.setTravelTime(travelTime);
         IBookingService iBookingService = new BookingService();
