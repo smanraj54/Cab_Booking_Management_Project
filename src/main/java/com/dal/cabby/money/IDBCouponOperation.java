@@ -5,6 +5,10 @@ import com.dal.cabby.pojo.UserType;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * This interface list down all the coupon related methods to get from
+ * database.
+ */
 public interface IDBCouponOperation {
 
     /**

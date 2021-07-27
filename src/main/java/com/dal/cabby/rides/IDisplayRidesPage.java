@@ -4,6 +4,9 @@ import com.dal.cabby.pojo.UserType;
 
 import java.sql.SQLException;
 
+/**
+ * This interface acts as a presentation layer for displaying rides
+ */
 public interface IDisplayRidesPage {
 
     /**

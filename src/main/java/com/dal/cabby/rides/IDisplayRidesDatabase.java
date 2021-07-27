@@ -5,6 +5,9 @@ import com.dal.cabby.pojo.UserType;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * This interface has the method to get the ride details from the database
+ */
 public interface IDisplayRidesDatabase {
 
     /**
