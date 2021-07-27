@@ -60,4 +60,3 @@ deploy:
     - scp -r -o StrictHostKeyChecking=no config.properties "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/config.properties"
   only:
     - develop
-    - master
