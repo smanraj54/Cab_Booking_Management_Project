@@ -1,10 +1,6 @@
 package com.dal.cabby.cabPrice;
-
-import com.dal.cabby.cabSelection.CabSelectionDBLayer;
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
-import com.dal.cabby.io.Inputs;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -19,6 +15,11 @@ public class CabPriceDBLayer {
             throwables.printStackTrace();
         }
     }
+
+    /*
+        This method fetch source and destination locations from database and calculates distance between
+        source and destination locations.
+     */
     public double locationsDistanceFromOrigin(String source, String destination) throws SQLException {
         double distance=0.0;
         double sourceDistanceFromOrigin = 0.0;

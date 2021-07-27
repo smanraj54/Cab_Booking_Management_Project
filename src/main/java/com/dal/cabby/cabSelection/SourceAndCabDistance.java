@@ -4,6 +4,10 @@ import java.sql.SQLException;
 
 public class SourceAndCabDistance {
 
+    /*
+        This method calculate distance between Source i.e, (location from where user is booking cab) and
+        Nearby Cabs. It takes two parameters i.e, source location and names of nearby cabs.
+     */
     public double calculateDistance(Double source,Double destination) throws SQLException {
         double distance=0.0;
         if(source > 0 && destination > 0) {

@@ -1,21 +1,17 @@
 package com.dal.cabby.cabPrice;
-
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
-
 import java.sql.SQLException;
 
-public class CabPriceRideSharing {
+public class CabPriceRideSharing implements ICabPriceRideSharing {
     Inputs inputs;
     IPersistence iPersistence;
     CabPriceNormalBooking cabPriceNormalBooking;
 
-    //CabPriceCalculator cabPriceCalculator;
     public CabPriceRideSharing(Inputs inputs) {
         this.inputs = inputs;
         cabPriceNormalBooking = new CabPriceNormalBooking(inputs);
-        //cabPriceCalculator=new CabPriceCalculator(inputs);
         try {
             iPersistence = DBHelper.getInstance();
         } catch (SQLException e) {
@@ -23,6 +19,11 @@ public class CabPriceRideSharing {
         }
     }
 
+    /*
+        This method calculates price, which has to be reduced from total price. We are giving 10% discount on
+        sharing ride with 1 co-passenger and 15% discount on sharing ride with 2 co-passengers.
+     */
+    @Override
     public double rideSharing(String source, double distance, int cabCategory, double hour) throws SQLException {
         System.out.println("Choose number of co-passengers: ");
         System.out.println("One co-passenger");
