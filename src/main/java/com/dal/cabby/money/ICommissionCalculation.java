@@ -1,5 +1,8 @@
 package com.dal.cabby.money;
 
+/**
+ * This interface has the method to get the commission percentage
+ */
 public interface ICommissionCalculation {
 
     /**

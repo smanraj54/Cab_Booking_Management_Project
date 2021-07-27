@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is used to get the ride details from the database
+ */
 public class DisplayRidesDatabase implements IDisplayRidesDatabase {
     private IPersistence iPersistence;
 

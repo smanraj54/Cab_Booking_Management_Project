@@ -2,6 +2,9 @@ package com.dal.cabby.util;
 
 import java.sql.SQLException;
 
+/**
+ * This interface list down all the methods related to the date operations
+ */
 public interface IDateOperations {
 
     /**
