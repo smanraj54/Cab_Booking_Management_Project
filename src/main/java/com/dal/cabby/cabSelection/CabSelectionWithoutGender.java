@@ -32,12 +32,12 @@ public class CabSelectionWithoutGender {
     }
 
     /*
-        This method pass names of all nearby cabs to price Calculation class to calculate distance between
-        Source Location and Cab location which is further used in calculating price.
-     */
+        This method pass names of all nearby cabs to DB Layer to calculate distance between Source
+         Location and Cab location which will be used as one of the parameter two parameters
+         (2nd one is Traffic Density) in Fetching optimal cab.
+    */
     public CabSelectionDAO withoutGenderPreference() throws SQLException {
-        List<CabSelectionDAO> mainArrayList;
-        mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
+        List<CabSelectionDAO> mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
         try {
             System.out.println("Great! We are searching the best cab for you. Please hold on......");
             for (int i = 5; i > 0; i--) {
@@ -57,7 +57,7 @@ public class CabSelectionWithoutGender {
         */
 
         for (String s : arrayList) {
-            cabPriceCalculator.locationAndCabDistanceFromOrigin(cabSelection.sourceLocation, s);
+            cabSelectionDBLayer.locationAndCabDistanceFromOrigin(cabSelection.sourceLocation, s);
         }
         return bestNearbyCabWithoutFilter();
     }
