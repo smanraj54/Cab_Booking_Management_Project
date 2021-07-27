@@ -206,7 +206,9 @@ public class DBOperations implements IDBOperations {
 
     }
 
-    //
+    /* this method is called to fetch the User table name from the database for
+    *  storing data fetched from the registration page
+    * */
     @Override
     public String getTableName(UserType userType) {
 
@@ -221,6 +223,9 @@ public class DBOperations implements IDBOperations {
         }
     }
 
+    /*
+        This method return the ID column name from the userType.
+     */
     @Override
     public String getIDColumnName(UserType userType) {
 

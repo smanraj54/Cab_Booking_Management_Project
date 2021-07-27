@@ -8,11 +8,19 @@ import static java.lang.Thread.sleep;
 public class Registration implements IRegistration {
     Inputs inputs;
 
+    /*
+        In the constructor we are setting the input interface and generating
+        the temporary password which can be used in the forgot password function
+     */
     public Registration(Inputs inputs) {
 
         this.inputs = inputs;
     }
 
+    /*
+        This method is used to register new user and update the dataNode which
+        is further used in db operation to write into the db
+     */
     @Override
     public boolean registerUser(UserType userType) {
 
@@ -50,6 +58,10 @@ public class Registration implements IRegistration {
         return true;
     }
 
+    /*
+        this method get the password from the user and validate it with the
+        input confirm password value
+     */
     @Override
     public String getPassword(ValidateInput validateInput) {
         String password;
@@ -67,7 +79,12 @@ public class Registration implements IRegistration {
         return null;
     }
 
-    private boolean confirmPassword(String password, ValidateInput validateInput) {
+    /*
+        Fetching the confirm password input using PresentationLayer for validating the input with the
+        password entered before to create the user in database later
+     */
+    private boolean confirmPassword(String password,
+                                    ValidateInput validateInput) {
 
         String confirmPassword;
 
@@ -93,6 +110,10 @@ public class Registration implements IRegistration {
         return false;
     }
 
+    /*
+        This method is used to fetch the name from input using PresentationLayer and store it for
+        further use
+     */
     private String inputName() {
 
         System.out.println("\n\n");
@@ -100,7 +121,13 @@ public class Registration implements IRegistration {
         return (inputs.getStringInput());
     }
 
-    private String inputEmail(IDBOperations idbOperations, UserType userType, ValidateInput validateInput) {
+    /*
+        In this method the email is fetched from the user using
+        PresentationLayer and validated with regex for syntax and also with db
+        table entries to catch any duplicate entry using Database Layer
+     */
+    private String inputEmail(IDBOperations idbOperations, UserType userType,
+                              ValidateInput validateInput) {
         String email;
         for (int t = 0; t < 3; t++) {
             System.out.print("\nEnter Email : ");
@@ -130,7 +157,12 @@ public class Registration implements IRegistration {
         return null;
     }
 
-    private String inputUserName(IDBOperations idbOperations, UserType userType) {
+    /*
+        In this method the username is taken as input from the user using
+        PresentationLayer
+     */
+    private String inputUserName(IDBOperations idbOperations,
+                                 UserType userType) {
         String userName;
         for (int t = 0; t < 3; t++) {
             System.out.print("\nEnter new Username : ");

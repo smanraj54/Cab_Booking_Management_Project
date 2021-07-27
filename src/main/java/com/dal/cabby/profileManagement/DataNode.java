@@ -4,6 +4,8 @@ import com.dal.cabby.pojo.UserType;
 
 /*
     DataNode of all the details of a user used for registering and login
+    The dataNode object is used to store the registration details which are used
+    later by the DBOperations class to make an entry in the database
 */
 
 public class DataNode {
