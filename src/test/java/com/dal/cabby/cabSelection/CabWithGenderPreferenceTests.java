@@ -11,8 +11,8 @@ public class CabWithGenderPreferenceTests {
     void microAndMiniNormalBookingWithGenderTest() throws SQLException {
         PredefinedInputs inputs=new PredefinedInputs();
         inputs.add(1).add("Halifax").add("Dartmouth").add(1).add(2).add(1);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
          /* a. Total distance = 22 KM (Price for distance= 84.5)
             b. No extra charge on Micro and Mini Cab category
             c. 5% extra charge for Urban area as Halifax comes in Urban area = 4.23
@@ -25,8 +25,8 @@ public class CabWithGenderPreferenceTests {
     void microAndMiniRideSharingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(1).add("Halifax").add("Sydney").add(1).add(1).add(2).add(1);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 17 KM (Price for distance = 67)
            b. No extra charge on Micro and Mini Cab category
            c. Ride is not during office hours so no extra charge for this parameter.
@@ -41,8 +41,8 @@ public class CabWithGenderPreferenceTests {
     void microAndMiniWithAmenitiesWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(1).add("Halifax").add("Toronto").add(1).add(2).add(3).add(2);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 113 KM (Price for distance= 403)
            b. No extra charge on Micro and Mini Cab category
            c. Ride is not during office hours so no extra charge for this parameter.
@@ -56,8 +56,8 @@ public class CabWithGenderPreferenceTests {
     void primeSedanNormalBookingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(2).add("Sydney").add("Dartmouth").add(1).add(2).add(1);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 39KM (Price for distance= 144)
            b. 10% extra charge for Prime Sedan Cab type  => (10% of 144)= 14.4
            c. 5% extra charge for Urban area as Sydney comes in Urban area=7.92
@@ -70,8 +70,8 @@ public class CabWithGenderPreferenceTests {
     void primeSedanRideSharingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(2).add("Dartmouth").add("Toronto").add(1).add(2).add(2).add(1);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 91KM (Price for distance= 326)
            b. Cab type is prime Sedan so 10% extra charge => (10% of 326)= 32.6
            c. Ride is not during office hours so no extra charge for this parameter.
@@ -85,8 +85,8 @@ public class CabWithGenderPreferenceTests {
     void primeSedanWithAmenitiesWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(2).add("Yarmouth").add("Halifax").add(1).add(1).add(3).add(3);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 12KM (Price for distance= 49.5)
            b. Cab type is prime Sedan so 10% extra charge => (10% of 49.5)= 4.95
            c. Ride is not during office hours so no extra charge for this parameter.
@@ -100,8 +100,8 @@ public class CabWithGenderPreferenceTests {
     void primeSUVNormalBookingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(3).add("Toronto").add("Halifax").add(1).add(1).add(1);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 113KM (Price for distance= 403)
            b. Cab type is prime SUV so 25% extra charge => (25% of 403 )= 100.75
            c. 5% extra charge for Urban area as Toronto comes in Urban area = 25.19
@@ -114,8 +114,8 @@ public class CabWithGenderPreferenceTests {
     void primeSUVRideSharingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(3).add("Sydney").add("BedFord").add(1).add(2).add(2).add(2);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 26KM (Price for distance= 98.5)
            b. Cab type is prime SUV so 25% extra charge => (25% of 98.5 )= 24.63
            c. 5% extra charge for Urban area as Sydney comes in Urban area = 6.16
@@ -129,8 +129,8 @@ public class CabWithGenderPreferenceTests {
     void primeSUVWithAmenitiesWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(3).add("Halifax").add("Winnipeg").add(1).add(2).add(3).add(2);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 45KM (Price for distance= 165)
            b. Cab type is prime SUV so 25% extra charge => (25% of 165 )= 41.25
            c. 5% extra charge for Urban area as Halifax comes in Urban area =10.31
@@ -144,8 +144,8 @@ public class CabWithGenderPreferenceTests {
     void luxuryClassNormalBookingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(4).add("Toronto").add("Montreal").add(1).add(2).add(1);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 338 KM (Price for distance= 1190.5)
            b. Cab type is LUXURY Class so 40% extra charge => (40% of 1190.5 )= 476.2
            c. 5% extra charge for Urban area as Toronto comes in Urban area = 83.34
@@ -159,8 +159,8 @@ public class CabWithGenderPreferenceTests {
     void luxuryClassRideSharingWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(4).add("Halifax").add("Winnipeg").add(1).add(2).add(2).add(2);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 45KM (Price for distance= 165)
            b. Cab type is LUXURY Class so 40% extra charge => (40% of 165 )= 66
            c. 5% extra charge for Urban area as Halifax comes in Urban area = 11.55
@@ -174,8 +174,8 @@ public class CabWithGenderPreferenceTests {
     void luxuryClassWithAmenitiesWithGenderTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(4).add("Dartmouth").add("Kentville").add(1).add(2).add(3).add(3);
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
-        Booking booking=cabSelectionService.preferredCab(1,20);
+        CabSelection cabSelection = new CabSelection(inputs);
+        Booking booking= cabSelection.preferredCab(1,20);
         /* a. Total distance = 121 KM (Price for distance= 431)
            b. Cab type is LUXURY Class so 40% extra charge => (40% of 431 )= 172.4
            c. No extra charge for Rural area as Dartmouth comes in rural area.
