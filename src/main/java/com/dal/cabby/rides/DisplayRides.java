@@ -1,7 +1,5 @@
 package com.dal.cabby.rides;
 
-import com.dal.cabby.dbHelper.DBHelper;
-import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.util.DateOperations;
 import com.dal.cabby.util.IDateOperations;
@@ -16,7 +14,6 @@ import java.util.List;
  * between specific period.
  */
 public class DisplayRides implements IDisplayRides {
-    private IPersistence iPersistence;
     private IDateOperations dateOperations;
     private IDisplayRidesDatabase database;
 
@@ -24,7 +21,6 @@ public class DisplayRides implements IDisplayRides {
      * Constructor of class DisplayRides
      */
     public DisplayRides() throws SQLException {
-        iPersistence = DBHelper.getInstance();
         dateOperations = new DateOperations();
         database = new DisplayRidesDatabase();
     }
