@@ -6,23 +6,10 @@ cache:
     - target/
 
 stages:
-  # These are the three states we want, building the app, testing it by
-  # executing unit tests and checking the results, and finally if this
-  - build
-  # You will need to define this stage somewhere below.
   - test
-  # I will provide this example for you below.
+  - build
   - develop
   - production
-
-# build stage will just build the codebase without running
-# any tests or creating any jar file.
-build:
-  stage: build
-  tags:
-    - ugrad
-  script:
-    - mvn clean compile
 
 # test stage will compile the code and run all the unit tests present in the
 # test folder.
@@ -32,6 +19,19 @@ test:
     - ugrad
   script:
     - mvn clean test
+    
+# build stage will just build the codebase without running
+# any tests or creating any jar file.
+build:
+  stage: build
+  tags:
+    - ugrad
+  script:
+    - mvn clean install -DskipTests=true
+    - ls
+  artifacts:
+    paths:
+       - target/*.jar
 
 
 ## deploy stage will create package the jar and keep it in the target folder.
@@ -40,14 +40,23 @@ deploy:
   stage: develop
   tags:
     - ugrad
+  before_script:
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOY_SSH_KEY" | tr -d '\r' | ssh-add -    
   script:
     - echo "dbURL=$DATABASE_URL" > config.properties
     - echo "dbUserName=$TEST_DATABASE_USERNAME" >> config.properties
     - echo "dbPassword=$TEST_DATABASE_PASSWORD" >> config.properties
     - echo "dbDriver=$TEST_DATABASE" >> config.properties
+    - pwd
+    - ls -lrth
+    - ls target/
+    - ls -lrth ~/.ssh
     - echo "$CI_COMMIT_REF_NAME"
-    - zip -r ${CI_COMMIT_SHORT_SHA}.zip . -i target/cabby-1.0-jar-with-dependencies.jar
-    - scp -r -o StrictHostKeyChecking=no ${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHORT_SHA}.zip "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHORT_SHA}.zip"
+    - zip -r ${CI_COMMIT_SHORT_SHA}.zip . -i target/*.jar
+    - ls -lrth ${CI_COMMIT_SHORT_SHA}.zip
+    - scp -r -o StrictHostKeyChecking=no ${CI_COMMIT_SHORT_SHA}.zip "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_COMMIT_SHORT_SHA}.zip"
     - scp -r -o StrictHostKeyChecking=no config.properties "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/config.properties"
   only:
     - develop
