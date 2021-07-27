@@ -1,6 +1,8 @@
 package com.dal.cabby.driver;
 
 import com.dal.cabby.io.Inputs;
+import com.dal.cabby.money.DriverEarnings;
+import com.dal.cabby.money.IDriverEarnings;
 import com.dal.cabby.profileManagement.LoggedInProfile;
 import com.dal.cabby.profileManagement.ProfileStatus;
 import com.dal.cabby.util.Common;
@@ -20,6 +22,7 @@ public class Driver implements IDriver {
     private final Inputs inputs;
     private DriverBusinessLayer driverBusinessLayer;
     private ProfileStatus profileStatus;
+    private IDriverEarnings driverEarnings;
 
     public Driver(Inputs inputs) throws SQLException, ParseException {
         this.inputs = inputs;
@@ -34,6 +37,7 @@ public class Driver implements IDriver {
     private void intialize() throws SQLException {
         driverBusinessLayer = new DriverBusinessLayer(inputs);
         profileStatus = new ProfileStatus();
+        driverEarnings = new DriverEarnings();
     }
 
     @Override
@@ -121,7 +125,7 @@ public class Driver implements IDriver {
                     driverBusinessLayer.viewRides();
                     break;
                 case 4:
-                    driverBusinessLayer.viewIncomes();
+                    earningsPage();
                     break;
                 case 5:
                     driverBusinessLayer.rateCustomer();
@@ -142,6 +146,42 @@ public class Driver implements IDriver {
                     System.out.println("\nInvalid Input");
                     break;
             }
+        }
+    }
+
+    private void earningsPage() throws SQLException {
+        int userID = LoggedInProfile.getLoggedInId();
+        System.out.println("\n**** Earnings Page ****");
+        System.out.println("1. Daily earnings: ");
+        System.out.println("2. Monthly earnings: ");
+        System.out.println("3. Earning between a specific period: ");
+        System.out.println("4. Return to the previous page: ");
+        System.out.print("Please enter a selection: ");
+        int input = inputs.getIntegerInput();
+        switch (input) {
+            case 1:
+                System.out.print("Enter the date in DD/MM/YYYY format: ");
+                String inputDate = inputs.getStringInput();
+                System.out.println(driverEarnings.getDailyEarnings(userID, inputDate));
+                break;
+            case 2:
+                System.out.print("Enter the month in MM/YYYY format: ");
+                String inputMonth = inputs.getStringInput();
+                System.out.println(driverEarnings.getMonthlyEarnings(userID, inputMonth));
+                break;
+            case 3:
+                System.out.print("Enter the start date (DD/MM/YYYY): ");
+                String startDate = inputs.getStringInput();
+                System.out.print("Enter the end date (DD/MM/YYYY): ");
+                String endDate = inputs.getStringInput();
+                System.out.println(driverEarnings.getSpecificPeriodEarnings(userID, startDate,
+                    endDate));
+                break;
+            case 4:
+                return;
+            default:
+                System.out.println("\nInvalid Selection");
+                break;
         }
     }
 }

@@ -20,6 +20,9 @@ public class CabSelectionDAO {
         this.driverGender = driverGender;
     }
 
+    /*
+        This method converts Object-type data into String type.
+     */
     public String toString() {
         String result = String.format("%s -> Driver_ID: %s -> Gender: %s ", this.cabName,
                 this.driver_Id, this.driverGender);
@@ -48,8 +51,7 @@ public class CabSelectionDAO {
         return routeTrafficDensity;
     }
     public void setRouteTrafficDensity(String routeTrafficDensity) {
-        this.routeTrafficDensity
-                = routeTrafficDensity;
+        this.routeTrafficDensity = routeTrafficDensity;
     }
     public int getCabSpeedOnRoute() {
         return cabSpeedOnRoute;

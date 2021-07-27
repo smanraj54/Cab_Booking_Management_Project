@@ -5,15 +5,14 @@ import com.dal.cabby.booking.IBookingService;
 import com.dal.cabby.incentives.CustomerBonus;
 import com.dal.cabby.incentives.ICustomerBonus;
 import com.dal.cabby.io.Inputs;
-import com.dal.cabby.money.BuyCoupons;
-import com.dal.cabby.money.DriverEarnings;
+import com.dal.cabby.money.BuyCouponsPage;
 import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.*;
 import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
-import com.dal.cabby.rides.DisplayRides;
-import com.dal.cabby.rides.IDisplayRides;
+import com.dal.cabby.rides.DisplayRidesPage;
+import com.dal.cabby.rides.IDisplayRidesPage;
 import com.dal.cabby.score.CancellationScorer;
 import com.dal.cabby.util.Common;
 import com.dal.cabby.util.ConsolePrinter;
@@ -49,7 +48,7 @@ class DriverBusinessLayer {
     }
 
     /**
-     * @return return true for succesfull login, else return false.
+     * @return return true for successful login, else return false.
      * @throws InterruptedException
      */
     public boolean login() throws InterruptedException {
@@ -129,22 +128,8 @@ class DriverBusinessLayer {
      * @throws SQLException
      */
     void viewRides() throws SQLException {
-        IDisplayRides displayRides = new DisplayRides(inputs);
-        List<String> rides = displayRides.getRides(UserType.DRIVER, LoggedInProfile.getLoggedInId());
-        System.out.println();
-        for (String ride : rides) {
-            System.out.println(ride);
-        }
-    }
-
-    /**
-     * Implements incomes from past rides.
-     *
-     * @throws SQLException
-     */
-    void viewIncomes() throws SQLException {
-        DriverEarnings driverEarnings = new DriverEarnings(inputs);
-        System.out.println(driverEarnings.getEarnings(LoggedInProfile.getLoggedInId()));
+        IDisplayRidesPage ridesPage = new DisplayRidesPage();
+        ridesPage.ridesOptions(LoggedInProfile.getLoggedInId(), UserType.DRIVER);
     }
 
     /**
@@ -190,8 +175,8 @@ class DriverBusinessLayer {
      * @throws SQLException
      */
     void buyCoupons() throws SQLException {
-        BuyCoupons buyCoupons = new BuyCoupons(inputs);
-        System.out.println(buyCoupons.getCoupons(LoggedInProfile.getLoggedInId(), UserType.DRIVER));
+        BuyCouponsPage couponsPage = new BuyCouponsPage();
+        couponsPage.couponsPage(LoggedInProfile.getLoggedInId(), UserType.DRIVER);
     }
 
     /**

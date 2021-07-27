@@ -2,18 +2,18 @@ package com.dal.cabby.customer;
 
 import com.dal.cabby.booking.BookingService;
 import com.dal.cabby.booking.IBookingService;
-import com.dal.cabby.cabSelection.CabSelectionService;
+import com.dal.cabby.cabSelection.CabSelection;
 import com.dal.cabby.incentives.DriverBonus;
 import com.dal.cabby.incentives.IDriverBonus;
 import com.dal.cabby.io.Inputs;
-import com.dal.cabby.money.BuyCoupons;
+import com.dal.cabby.money.BuyCouponsPage;
 import com.dal.cabby.pojo.Booking;
 import com.dal.cabby.pojo.UserType;
 import com.dal.cabby.profileManagement.*;
 import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
-import com.dal.cabby.rides.DisplayRides;
-import com.dal.cabby.rides.IDisplayRides;
+import com.dal.cabby.rides.DisplayRidesPage;
+import com.dal.cabby.rides.IDisplayRidesPage;
 import com.dal.cabby.score.CancellationScorer;
 import com.dal.cabby.util.Common;
 import com.dal.cabby.util.ConsolePrinter;
@@ -22,7 +22,6 @@ import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 
 class CustomerBusinessLayer {
     private final Inputs inputs;
@@ -83,7 +82,7 @@ class CustomerBusinessLayer {
 
     void bookRides() throws SQLException, ParseException {
         int custId = LoggedInProfile.getLoggedInId();
-        CabSelectionService cabSelectionService = new CabSelectionService(inputs);
+        CabSelection cabSelection = new CabSelection(inputs);
         System.out.println("Select travel time(MM/dd/yyyy HH:mm):");
         String travelTime = inputs.getStringInput();
         double hour = 0.0;
@@ -96,7 +95,7 @@ class CustomerBusinessLayer {
             ConsolePrinter.printErrorMsg("Your cab booking failed due to wrong date entered. Please try again");
             return;
         }
-        Booking booking = cabSelectionService.preferredCab(custId, hour);
+        Booking booking = cabSelection.preferredCab(custId, hour);
         booking.setCustomerId(custId);
         booking.setTravelTime(travelTime);
         IBookingService iBookingService = new BookingService();
@@ -142,12 +141,8 @@ class CustomerBusinessLayer {
     }
 
     void showRides() throws SQLException {
-        IDisplayRides displayRides = new DisplayRides(inputs);
-        List<String> rides = displayRides.getRides(UserType.CUSTOMER, LoggedInProfile.getLoggedInId());
-        System.out.println();
-        for (String ride : rides) {
-            System.out.println(ride);
-        }
+        IDisplayRidesPage ridesPage = new DisplayRidesPage();
+        ridesPage.ridesOptions(LoggedInProfile.getLoggedInId(), UserType.CUSTOMER);
     }
 
     void viewRatings() throws SQLException {
@@ -160,7 +155,7 @@ class CustomerBusinessLayer {
     }
 
     void buyCoupons() throws SQLException {
-        BuyCoupons coupons = new BuyCoupons(inputs);
-        System.out.println(coupons.getCoupons(LoggedInProfile.getLoggedInId(), UserType.CUSTOMER));
+        BuyCouponsPage couponsPage = new BuyCouponsPage();
+        couponsPage.couponsPage(LoggedInProfile.getLoggedInId(), UserType.CUSTOMER);
     }
 }

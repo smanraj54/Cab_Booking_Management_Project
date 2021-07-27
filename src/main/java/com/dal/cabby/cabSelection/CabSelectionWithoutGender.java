@@ -9,24 +9,36 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 
-public class CabSelectionWithoutGender {
+public class CabSelectionWithoutGender implements ICabSelectionWithoutGender {
     IPersistence iPersistence;
     Inputs inputs;
-    CabSelectionService cabSelectionService;
+    CabSelectionDBLayer cabSelectionDBLayer;
+    CabSelection cabSelection;
     CabPriceCalculator cabPriceCalculator;
 
-    public CabSelectionWithoutGender(Inputs inputs,CabSelectionService cabSelectionService){
+    /*
+        This is the constructor of class which interacts with DB Layer to fetch Nearby Cabs
+     */
+    public CabSelectionWithoutGender(Inputs inputs, CabSelection cabSelection){
         this.inputs=inputs;
-        this.cabSelectionService=cabSelectionService;
+        this.cabSelection = cabSelection;
         cabPriceCalculator=new CabPriceCalculator(inputs);
         try {
             iPersistence=DBHelper.getInstance();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        cabSelectionDBLayer=new CabSelectionDBLayer(inputs, cabSelection);
     }
 
+    /*
+        This method pass names of all nearby cabs to DB Layer to calculate distance between Source
+         Location and Cab location which will be used as one of the parameter two parameters
+         (2nd one is Traffic Density) in Fetching optimal cab.
+    */
+    @Override
     public CabSelectionDAO withoutGenderPreference() throws SQLException {
+        List<CabSelectionDAO> mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
         try {
             System.out.println("Great! We are searching the best cab for you. Please hold on......");
             for (int i = 5; i > 0; i--) {
@@ -38,7 +50,7 @@ public class CabSelectionWithoutGender {
             System.out.println(e.getMessage());
         }
         List<String> arrayList = new ArrayList<>();
-        for (CabSelectionDAO cabDetail : cabSelectionService.cabDetails) {
+        for (CabSelectionDAO cabDetail : mainArrayList) {
             arrayList.add(cabDetail.cabName);
         } /*
         Created this arrayList to store names of Nearby cabs which will be passed to a function along with
@@ -46,17 +58,21 @@ public class CabSelectionWithoutGender {
         */
 
         for (String s : arrayList) {
-            cabPriceCalculator.locationAndCabDistanceFromOrigin(cabSelectionService.sourceLocation, s);
+            cabSelectionDBLayer.locationAndCabDistanceFromOrigin(cabSelection.sourceLocation, s);
         }
         return bestNearbyCabWithoutFilter();
     }
 
+    /*
+    This method return best possible cab/ optimal cab based on customer's preference after
+    checking Traffic density on routes.
+     */
     private CabSelectionDAO bestNearbyCabWithoutFilter() throws SQLException {
         List<Double> timeToReach = new ArrayList<>();
         CabSelectionDAO selectedCab = null;
         IRatings iRatings = new Ratings();
         double min = Double.MAX_VALUE;
-        for (CabSelectionDAO cabDetail : cabSelectionService.cabDetails) {
+        for (CabSelectionDAO cabDetail : cabSelectionDBLayer.cabDetails) {
             double timeOfCab = (cabDetail.cabDistanceFromOrigin) / (cabDetail.cabSpeedOnRoute);
             timeToReach.add(timeOfCab);
             int driverId = cabDetail.driver_Id;
