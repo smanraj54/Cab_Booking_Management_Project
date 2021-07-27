@@ -2,7 +2,6 @@ package com.dal.cabby.money;
 
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
-import com.dal.cabby.io.PredefinedInputs;
 import com.dal.cabby.pojo.UserType;
 import org.junit.jupiter.api.Test;
 
@@ -17,11 +16,10 @@ public class BuyCouponsTest {
     IPersistence persistence = DBHelper.getInstance();
     persistence.executeCreateOrUpdateQuery("update user_points set total_points = 100 " +
         "where user_id = 1 and user_type = 'CUSTOMER';");
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add("y").add(101);
-    BuyCoupons buyCoupons = new BuyCoupons(inputs);
+
+    BuyCoupons buyCoupons = new BuyCoupons();
     assertEquals("\nCoupon added in your account successfully",
-        buyCoupons.getCoupons(1, UserType.CUSTOMER),
+        buyCoupons.purchaseCoupon(101, 1, UserType.CUSTOMER),
         "Coupon is not added");
   }
 
@@ -30,21 +28,17 @@ public class BuyCouponsTest {
     IPersistence persistence = DBHelper.getInstance();
     persistence.executeCreateOrUpdateQuery("update user_points set total_points = 100 " +
         "where user_id = 1 and user_type = 'CUSTOMER';");
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add("y").add(103);
-    BuyCoupons buyCoupons = new BuyCoupons(inputs);
+    BuyCoupons buyCoupons = new BuyCoupons();
     assertEquals("\nYou don't have sufficient points to buy this coupon",
-        buyCoupons.getCoupons(1, UserType.CUSTOMER),
+        buyCoupons.purchaseCoupon(103, 1, UserType.CUSTOMER),
         "Coupon is not added");
   }
 
   @Test
   void testBuyCouponInvalidID() throws SQLException {
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add("y").add(200);
-    BuyCoupons buyCoupons = new BuyCoupons(inputs);
+    BuyCoupons buyCoupons = new BuyCoupons();
     assertEquals("\nInvalid coupon code",
-        buyCoupons.getCoupons(1, UserType.CUSTOMER),
+        buyCoupons.purchaseCoupon(200, 1, UserType.CUSTOMER),
         "Coupon is not added");
   }
 }
