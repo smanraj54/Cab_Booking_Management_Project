@@ -7,9 +7,14 @@ import java.util.Properties;
 
 public class SendEmail {
 
-    private static final String myEmail = "software5408group15@gmail.com";
+    // Default sender's email credentials
+    private static final String senderEmail = "software5408group15@gmail.com";
     private static final String password = "software5408group15123";
 
+    /*
+        Static method to create session with getting the email of receiver,
+        title and body strings.
+     */
     public static void sendEmail(String to, String title, String body)
             throws MessagingException {
 
@@ -23,16 +28,24 @@ public class SendEmail {
         System.out.println("Email Sent Successfully!!!");
     }
 
+    /*
+        Creating a proper message using sender's, receiver's mail ids and body
+        and title.
+     */
     private static void messageBodyPreparation(MimeMessage message, String to,
-                                               String title, String body) throws MessagingException {
+                                               String title, String body)
+            throws MessagingException {
 
         message.setContent(body, "text/html; charset=utf-8");
-        message.setFrom(new InternetAddress(myEmail));
+        message.setFrom(new InternetAddress(senderEmail));
         message.setRecipients(Message.RecipientType.TO,
                 InternetAddress.parse(to));
         message.setSubject(title);
     }
 
+    /*
+        Creating a session with the connection of Javax.mail
+     */
     private static Session sessionCreate() {
 
         Properties props = new Properties();
@@ -44,12 +57,15 @@ public class SendEmail {
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
 
-                    protected PasswordAuthentication getPasswordAuthentication() {
+                    protected PasswordAuthentication
+                    getPasswordAuthentication() {
 
-                        System.out.println("Authenticating with Email : " + myEmail + " " +
+                        System.out.println("Authenticating with Email : " +
+                                senderEmail + " " +
                                 "and Password : " + password + "");
 
-                        return new PasswordAuthentication(myEmail, password);
+                        return new PasswordAuthentication(senderEmail,
+                                password);
                     }
 
                 });

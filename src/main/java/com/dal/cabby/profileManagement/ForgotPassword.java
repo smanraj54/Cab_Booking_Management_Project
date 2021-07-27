@@ -12,6 +12,10 @@ public class ForgotPassword implements IForgotPassword {
     private final Inputs inputs;
     private final int tempPass;
 
+    /*
+        In the constructor we are setting the input interface and generating
+        the temporary password which can be used in the forgot password function
+     */
     public ForgotPassword(Inputs inputs) {
 
         this.inputs = inputs;
@@ -23,9 +27,13 @@ public class ForgotPassword implements IForgotPassword {
         return tempPass;
     }
 
-
+    /*
+        This is the method used to update the password of a user in database
+        after proper validation and authentication
+     */
     @Override
-    public boolean passwordUpdateProcess(UserType userType) throws InterruptedException, MessagingException {
+    public boolean passwordUpdateProcess(UserType userType)
+            throws InterruptedException, MessagingException {
 
         IDBOperations IDBOperations = new DBOperations(userType);
         boolean authenticationPass = false;
@@ -58,6 +66,11 @@ public class ForgotPassword implements IForgotPassword {
         return true;
     }
 
+    /*
+        This method is used to validate the temporary password which is sent
+        to the user on his email. If the password is incorrect three times
+        then the user is not allowed to change the password
+     */
     private boolean validateTempPass(int tempPass) {
 
         System.out.print("\nEnter temp password sent to your registered email : ");
@@ -84,6 +97,10 @@ public class ForgotPassword implements IForgotPassword {
         return tempPass == enteredPass;
     }
 
+    /*
+        This method is used to get entry of new password from the user
+        and validate it with confirm password field.
+     */
     private String getNewPassword() {
 
         //System.out.print("\nEnter new Password : ");
@@ -101,7 +118,14 @@ public class ForgotPassword implements IForgotPassword {
         return newPassword;
     }
 
-    private String getEmailfromUser(IDBOperations idbOperations, UserType userType) throws InterruptedException {
+    /*
+        This method fetch the email id of the user from its userName. This
+        method is coupled with the DBOperations class which runs the DBHelper
+        class
+     */
+    private String getEmailfromUser(IDBOperations idbOperations,
+                                    UserType userType)
+            throws InterruptedException {
         String email = null;
         for (int t = 0; t < 3; t++) {
             System.out.print("\nEnter UserName or Email : ");
@@ -122,6 +146,10 @@ public class ForgotPassword implements IForgotPassword {
         return email;
     }
 
+    /*
+        This method is to generate Temporary password for the user to
+        authenticate
+     */
     private int generateTemporaryPassword(int rangeOfPassword) {
 
         if (tempPass > 0) {
@@ -136,7 +164,12 @@ public class ForgotPassword implements IForgotPassword {
         return tempPass;
     }
 
-    private boolean sendTemporaryPasswordViaEmail(String email, int tempPass) throws MessagingException {
+    /*
+        This method is used to send the email to the user with the temporary
+        password for validation.
+     */
+    private boolean sendTemporaryPasswordViaEmail(String email, int tempPass)
+            throws MessagingException {
 
         if (email == null) {
             throw new NullPointerException();
@@ -145,7 +178,9 @@ public class ForgotPassword implements IForgotPassword {
         try {
             SendEmail.sendEmail(email,
                     "Temporary password for RESET!!",
-                    "<h2>Your Temporary Password is : " + tempPass + "</h2><p>Its advised not to share this email!!!</p>");
+                    "<h2>Your Temporary Password is : " + tempPass +
+                            "</h2><p>Its advised not to share this email!!!</p>"
+            );
             return true;
         } catch (Exception ee) {
             System.out.println(ee);
@@ -153,7 +188,11 @@ public class ForgotPassword implements IForgotPassword {
         }
     }
 
-    private boolean checkTemporaryPass(int tempPass) throws InterruptedException {
+    /*
+        Testing teh temporary passowrd with the user input password
+     */
+    private boolean checkTemporaryPass(int tempPass)
+            throws InterruptedException {
         for (int t = 0; t < 3; t++) {
             if (validateTempPass(tempPass)) {
                 return true;
