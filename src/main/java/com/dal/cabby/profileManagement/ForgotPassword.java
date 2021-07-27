@@ -123,7 +123,9 @@ public class ForgotPassword implements IForgotPassword {
         method is coupled with the DBOperations class which runs the DBHelper
         class
      */
-    private String getEmailfromUser(IDBOperations idbOperations, UserType userType) throws InterruptedException {
+    private String getEmailfromUser(IDBOperations idbOperations,
+                                    UserType userType)
+            throws InterruptedException {
         String email = null;
         for (int t = 0; t < 3; t++) {
             System.out.print("\nEnter UserName or Email : ");
@@ -166,7 +168,8 @@ public class ForgotPassword implements IForgotPassword {
         This method is used to send the email to the user with the temporary
         password for validation.
      */
-    private boolean sendTemporaryPasswordViaEmail(String email, int tempPass) throws MessagingException {
+    private boolean sendTemporaryPasswordViaEmail(String email, int tempPass)
+            throws MessagingException {
 
         if (email == null) {
             throw new NullPointerException();
@@ -175,7 +178,9 @@ public class ForgotPassword implements IForgotPassword {
         try {
             SendEmail.sendEmail(email,
                     "Temporary password for RESET!!",
-                    "<h2>Your Temporary Password is : " + tempPass + "</h2><p>Its advised not to share this email!!!</p>");
+                    "<h2>Your Temporary Password is : " + tempPass +
+                            "</h2><p>Its advised not to share this email!!!</p>"
+            );
             return true;
         } catch (Exception ee) {
             System.out.println(ee);
@@ -186,7 +191,8 @@ public class ForgotPassword implements IForgotPassword {
     /*
         Testing teh temporary passowrd with the user input password
      */
-    private boolean checkTemporaryPass(int tempPass) throws InterruptedException {
+    private boolean checkTemporaryPass(int tempPass)
+            throws InterruptedException {
         for (int t = 0; t < 3; t++) {
             if (validateTempPass(tempPass)) {
                 return true;
