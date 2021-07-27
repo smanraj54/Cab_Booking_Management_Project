@@ -6,6 +6,9 @@ import com.dal.cabby.dbHelper.IPersistence;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * This class is used to perform different operations on input date
+ */
 public class DateOperations implements IDateOperations {
     private final IPersistence iPersistence;
 
