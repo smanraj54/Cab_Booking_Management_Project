@@ -1,10 +1,5 @@
 image: maven:latest
 
-cache:
-  paths:
-    - .m2/repository/
-    - target/
-
 stages:
   # These are the three states we want, building the app, testing it by
   # executing unit tests and checking the results, and finally if this
