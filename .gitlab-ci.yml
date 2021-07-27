@@ -49,10 +49,10 @@ deploy:
     - ls -lrth
     - ls target/
     - ls -lrth ~/.ssh
-    - cat ~/.ssh/id_rsa.pub 
     - echo "$CI_COMMIT_REF_NAME"
     - zip -r ${CI_COMMIT_SHORT_SHA}.zip . -i target
-    - scp -r -o StrictHostKeyChecking=no ${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHORT_SHA}.zip "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHORT_SHA}.zip"
+    - ls -lrth ${CI_COMMIT_SHORT_SHA}.zip
+    - scp -r -o StrictHostKeyChecking=no ${CI_COMMIT_SHORT_SHA}.zip "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHORT_SHA}.zip"
     - scp -r -o StrictHostKeyChecking=no config.properties "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/config.properties"
   only:
     - develop
