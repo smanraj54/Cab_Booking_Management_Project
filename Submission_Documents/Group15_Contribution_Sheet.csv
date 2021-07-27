@@ -1,0 +1,55 @@
+﻿Resource or Class,Method,Author
+DBOperations,dbUserNameValidation(String userName),Manraj Singh
+,"dbContainsUserName(String userName, UserType userType)",Manraj Singh
+,"dbContainsEmail(String email, UserType userType)",Manraj Singh
+,"getValueFromDB(String userName, String columnName, UserType userType, String query)",Manraj Singh
+,"getEmailValue(String email, String keywordSearch, UserType userType, String query)",Manraj Singh
+,entryRegistration(DataNode dataNode),Manraj Singh
+,getDBInstance(),Manraj Singh
+,"validateLoginUser(String userNameOrEmail, String password, UserType userType)",Manraj Singh
+,"validateKeyword(String userNameOrEmail, String keyword, String keywordValue, UserType userType, String query)",Manraj Singh
+,"fetchEmailForAuthentication(String user, UserType userType)",Manraj Singh
+,"updateEmailPassword(String email, String newPassword, UserType userType)",Manraj Singh
+,getTableName(UserType userType),Manraj Singh
+,getIDColumnName(UserType userType),Manraj Singh
+,,
+ForgotPassword,ForgotPassword(Inputs inputs),Manraj Singh
+,getTempPass(),Manraj Singh
+,passwordUpdateProcess(UserType userType),Manraj Singh
+,validateTempPass(int tempPass),Manraj Singh
+,getNewPassword(),Manraj Singh
+,"getEmailfromUser(IDBOperations idbOperations, UserType userType)",Manraj Singh
+,generateTemporaryPassword(int rangeOfPassword),Manraj Singh
+,"sendTemporaryPasswordViaEmail(String email, int tempPass)",Manraj Singh
+,checkTemporaryPass(int tempPass),Manraj Singh
+,,
+DataNode,"DataNode(String user, String name, String email, String password, UserType userType)",Manraj Singh
+,getUser(),Manraj Singh
+,setUser(String user),Manraj Singh
+,getName(),Manraj Singh
+,setName(String name),Manraj Singh
+,getUserType(),Manraj Singh
+,getEmail(),Manraj Singh
+,setEmail(String email),Manraj Singh
+,getPassword(),Manraj Singh
+,setPassword(String password),Manraj Singh
+,,
+Login,Login(Inputs inputs),Manraj Singh
+,attemptLogin(UserType userType),Manraj Singh
+,inputUserName(),Manraj Singh
+,inputPassword(),Manraj Singh
+,,
+Registration,Registration(Inputs inputs),Manraj Singh
+,registerUser(UserType userType),Manraj Singh
+,getPassword(ValidateInput validateInput),Manraj Singh
+,"confirmPassword(String password, ValidateInput validateInput)",Manraj Singh
+,inputName(),Manraj Singh
+,"inputEmail(IDBOperations idbOperations, UserType userType, ValidateInput validateInput)",Manraj Singh
+,"inputUserName(IDBOperations idbOperations, UserType userType)",Manraj Singh
+,,
+SendEmail,"sendEmail(String to, String title, String body)",Manraj Singh
+,"messageBodyPreparation(MimeMessage message, String to, String title, String body)",Manraj Singh
+,sessionCreate(),Manraj Singh
+,,
+ValidateInput,validateEmail(String email),Manraj Singh
+,"validateConfirmPassword(String password, String confirmPassword)",Manraj Singh

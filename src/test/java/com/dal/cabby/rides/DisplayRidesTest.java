@@ -2,7 +2,6 @@ package com.dal.cabby.rides;
 
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
-import com.dal.cabby.io.PredefinedInputs;
 import com.dal.cabby.pojo.UserType;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +13,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DisplayRidesTest {
-
   IPersistence iPersistence = DBHelper.getInstance();
 
   public DisplayRidesTest() throws SQLException {
@@ -39,17 +37,14 @@ public class DisplayRidesTest {
         "(101, 1, 1, 101, 150, 1600, '2020-07-24 20:00:00'), " +
         "(102, 2, 2, 102, 80.5, 200, '2020-07-24 20:00:00');");
 
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(1).add("24/07/2020");
-    IDisplayRides rides = new DisplayRides(inputs);
-
+    IDisplayRides rides = new DisplayRides();
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
     expected.add("BookingID: 101, Pickup: Halifax, Destination: Toronto, " +
         "Price: 150.0, Status: Completed");
 
     assertEquals(Collections.singletonList(expected),
-        Collections.singletonList(rides.getRides(UserType.DRIVER, 1)),
+        Collections.singletonList(rides.getDailyRides(1, UserType.DRIVER, "24/07/2020")),
         "Daily Rides returned for driver are not correct");
   }
 
@@ -76,10 +71,7 @@ public class DisplayRidesTest {
         "(103, 1, 3, 103, 150, 1600, '2020-07-20 20:00:00'), " +
         "(104, 1, 4, 104, 80.5, 200, '2020-07-31 20:00:00');");
 
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(2).add("07/2020");  // user inputs
-    IDisplayRides rides = new DisplayRides(inputs);
-
+    IDisplayRides rides = new DisplayRides();
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
     expected.add("BookingID: 101, Pickup: Halifax, Destination: Toronto, " +
@@ -92,7 +84,7 @@ public class DisplayRidesTest {
         "Price: 80.5, Status: Completed");
 
     assertEquals(Collections.singletonList(expected),
-        Collections.singletonList(rides.getRides(UserType.DRIVER, 1)),
+        Collections.singletonList(rides.getMonthlyRides(1, UserType.DRIVER, "07/2020")),
         "Monthly Rides returned for driver are not correct");
   }
 
@@ -119,9 +111,7 @@ public class DisplayRidesTest {
         "(103, 1, 3, 103, 150, 1600, '2020-04-20 20:00:00'), " +
         "(104, 1, 4, 104, 80.5, 200, '2020-07-31 20:00:00');");
 
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(3).add("01/01/2020").add("31/07/2020");  // user inputs
-    IDisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides();
 
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
@@ -135,53 +125,47 @@ public class DisplayRidesTest {
         "Price: 80.5, Status: Completed");
 
     assertEquals(Collections.singletonList(expected),
-        Collections.singletonList(rides.getRides(UserType.DRIVER, 1)),
+        Collections.singletonList(rides.getSpecificPeriodRides(1,
+            UserType.DRIVER, "01/01/2020" , "31/07/2020")),
         "Rides returned between specific period for driver are not correct");
   }
 
   @Test
 
   void invalidDateInput() throws SQLException {
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(3).add("31/07/2020").add("01/07/2020");
-    IDisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides();
 
     assertEquals(Collections.singletonList("Invalid Input. Start date is " +
             "greater than end date."),
-        rides.getRides(UserType.DRIVER, 1),
+        rides.getSpecificPeriodRides(1, UserType.DRIVER,
+            "31/07/2020", "01/07/2020"),
         "Issue in detecting invalid date");
   }
 
   @Test
   void invalidDateTest() throws SQLException {
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(1).add("00/07/2020");
-    IDisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides();
 
     assertEquals(Collections.singletonList("Invalid Input"),
-        rides.getRides(UserType.DRIVER, 1),
+        rides.getDailyRides(1, UserType.DRIVER, "00/07/2020"),
         "Issue in detecting invalid date");
   }
 
   @Test
   void invalidMonthTest() throws SQLException {
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(1).add("01/00/2020");
-    IDisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides();
 
     assertEquals(Collections.singletonList("Invalid Input"),
-        rides.getRides(UserType.DRIVER, 1),
+        rides.getDailyRides(1, UserType.DRIVER, "01/00/2020"),
         "Issue in detecting invalid date");
   }
 
   @Test
   void invalidYearTest() throws SQLException {
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(1).add("01/07/0000");
-    IDisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides();
 
     assertEquals(Collections.singletonList("Invalid Input"),
-        rides.getRides(UserType.DRIVER, 1),
+        rides.getDailyRides(1, UserType.DRIVER, "01/07/0000"),
         "Issue in detecting invalid date");
   }
 
@@ -204,18 +188,15 @@ public class DisplayRidesTest {
         "(101, 1, 1, 101, 150, 1600, '2020-07-24 20:00:00'), " +
         "(102, 2, 2, 102, 80.5, 200, '2020-07-24 20:00:00');");
 
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(1).add("24/07/2020");
-    IDisplayRides rides = new DisplayRides(inputs);
-
+    IDisplayRides rides = new DisplayRides();
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
     expected.add("BookingID: 101, Pickup: Halifax, Destination: Toronto, " +
         "Price: 150.0, Status: Completed");
 
     assertEquals(Collections.singletonList(expected),
-        Collections.singletonList(rides.getRides(UserType.CUSTOMER, 1)),
-        "Daily Rides returned for customer are not correct");
+        Collections.singletonList(rides.getDailyRides(1, UserType.CUSTOMER,
+            "24/07/2020")), "Daily Rides returned for customer are not correct");
   }
 
   @Test
@@ -241,10 +222,7 @@ public class DisplayRidesTest {
         "(103, 3, 1, 103, 150, 1600, '2020-07-20 20:00:00'), " +
         "(104, 4, 1, 104, 80.5, 200, '2020-07-31 20:00:00');");
 
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(2).add("07/2020");  // user inputs
-    IDisplayRides rides = new DisplayRides(inputs);
-
+    IDisplayRides rides = new DisplayRides();
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
     expected.add("BookingID: 101, Pickup: Halifax, Destination: Toronto, " +
@@ -257,8 +235,9 @@ public class DisplayRidesTest {
         "Price: 80.5, Status: Completed");
 
     assertEquals(Collections.singletonList(expected),
-        Collections.singletonList(rides.getRides(UserType.CUSTOMER, 1)),
-        "Monthly Rides returned for customer are not correct");
+        Collections.singletonList(rides.getMonthlyRides(1,
+            UserType.CUSTOMER, "07/2020")), "Monthly Rides returned for " +
+            "customer are not correct");
   }
 
   @Test
@@ -284,10 +263,7 @@ public class DisplayRidesTest {
         "(103, 3, 2, 103, 150, 1600, '2020-04-20 20:00:00'), " +
         "(104, 4, 2, 104, 80.5, 200, '2020-07-31 20:00:00');");
 
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(3).add("01/01/2020").add("31/07/2020");  // user inputs
-    IDisplayRides rides = new DisplayRides(inputs);
-
+    IDisplayRides rides = new DisplayRides();
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
     expected.add("BookingID: 101, Pickup: Halifax, Destination: Toronto, " +
@@ -300,22 +276,21 @@ public class DisplayRidesTest {
         "Price: 80.5, Status: Completed");
 
     assertEquals(Collections.singletonList(expected),
-        Collections.singletonList(rides.getRides(UserType.CUSTOMER, 2)),
-        "Rides returned between specific period for customer are not correct");
+        Collections.singletonList(rides.getSpecificPeriodRides(2,
+            UserType.CUSTOMER, "01/01/2020", "31/07/2020")),"Rides " +
+            "returned between specific period for customer are not correct");
   }
 
   @Test
   void testWhenNoRides() throws SQLException {
-    PredefinedInputs inputs = new PredefinedInputs();
-    inputs.add(1).add("01/07/2000");
-    IDisplayRides rides = new DisplayRides(inputs);
+    IDisplayRides rides = new DisplayRides();
 
     List<String> expected = new ArrayList<>();
     expected.add("Ride Details ->");
     expected.add("No rides to display");
 
     assertEquals(Collections.singletonList(expected),
-        Collections.singletonList(rides.getRides(UserType.DRIVER, 1)),
+        Collections.singletonList(rides.getDailyRides(1, UserType.DRIVER, "01/07/2020")),
         "Incorrect output when there is no ride to display");
   }
 }

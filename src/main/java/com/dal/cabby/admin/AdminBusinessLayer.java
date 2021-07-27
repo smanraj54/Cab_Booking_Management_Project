@@ -9,6 +9,10 @@ import javax.mail.MessagingException;
 import java.sql.SQLException;
 import java.util.List;
 
+/*
+This class acts business layere for the Admin module. It takes inputs from
+the presentation layer of Admin class.
+ */
 class AdminBusinessLayer {
     private final AdminDBLayer adminDBLayer;
     private final Inputs inputs;
@@ -20,6 +24,9 @@ class AdminBusinessLayer {
         profileStatus = new ProfileStatus();
     }
 
+    /*
+    Approve the given driver.
+    */
     void approveDriverAccounts() throws SQLException {
         List<Profile> profileList = adminDBLayer.listOfDriversToBeApproved();
         if (profileList.size() == 0) {
@@ -36,6 +43,9 @@ class AdminBusinessLayer {
         System.out.printf("Driver with id: %d is approved in the system\n", driver_id);
     }
 
+    /*
+    Approve the deactivated customer.
+     */
     void approveCustomerAccounts() throws SQLException {
         List<Profile> profileList = adminDBLayer.listOfCustomersToBeApproved();
         if (profileList.size() == 0) {
@@ -53,6 +63,9 @@ class AdminBusinessLayer {
         System.out.printf("Customer with id: %d is approved in the system\n", cust_id);
     }
 
+    /*
+    Deactivate the given customer.
+     */
     void deRegisterCustomer() throws SQLException {
         System.out.println("Enter the customer id:");
         int cust_id = inputs.getIntegerInput();
@@ -60,6 +73,9 @@ class AdminBusinessLayer {
         System.out.printf("Customer with id: %d is de-registered in the system\n", cust_id);
     }
 
+    /*
+    Deactivate the given driver.
+     */
     void deRegisterDriver() throws SQLException {
         System.out.println("Enter the driver id:");
         int driver_id = inputs.getIntegerInput();
@@ -67,6 +83,10 @@ class AdminBusinessLayer {
         System.out.printf("Driver with id: %d is de-registered in the system\n", driver_id);
     }
 
+    /*
+    Login method for the Admin. After successful login, print the ID and profile
+    name.
+     */
     boolean login() throws InterruptedException {
         System.out.println("Welcome to Admin login page");
         ILogin ILogin = new Login(inputs);
@@ -80,18 +100,29 @@ class AdminBusinessLayer {
         }
     }
 
+    /*
+    Registration method for the Admin user. It will call the
+    Registration class for the registering the new Admin user.
+    */
     boolean register() {
         System.out.println("Welcome to Admin registration page");
         IRegistration IRegistration = new Registration(inputs);
         return IRegistration.registerUser(UserType.ADMIN);
     }
 
+    /*
+    Password recovery for the Admin user. It will call the ForgotPassword class.
+     */
     boolean forgotPassword() throws MessagingException, InterruptedException {
         System.out.println("Welcome to Admin forgot password page");
         IForgotPassword IForgotPassword = new ForgotPassword(inputs);
         return IForgotPassword.passwordUpdateProcess(UserType.ADMIN);
     }
 
+    /*
+    Logout method for the Admin user. It will call the Logout class which is
+    present in the profileManagement package.
+     */
     boolean logout() {
         return new Logout(inputs).logout();
     }

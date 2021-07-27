@@ -2,7 +2,6 @@ package com.dal.cabby.money;
 
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
-import com.dal.cabby.io.PredefinedInputs;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -36,17 +35,15 @@ public class DriverEarningsTest {
             "(201, 1, 1, 201, 150, 1600, '2010-07-24 20:00:00'), " +
             "(202, 1, 2, 202, 80.5, 200, '2010-07-24 20:00:00');");
 
-        PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(1).add("24/07/2010");
-        DriverEarnings driverEarnings = new DriverEarnings(inputs);
+        DriverEarnings driverEarnings = new DriverEarnings();
 
         /*
          * Earning will be 150 + 80.5 = 230.5
          * 230.5 - commission (15% of total - distance is greater than 300)
          * 230.5 - 34.575 = 195.925
          */
-        assertEquals("\nTotal earning on 24/07/2010 is $195.925",
-            driverEarnings.getEarnings(1), "Driver's earning is not " +
+        assertEquals("\nTotal earning on 24/07/2010 is $195.93",
+            driverEarnings.getDailyEarnings(1, "24/07/2010"), "Driver's earning is not " +
                 "calculated correctly");
     }
 
@@ -73,21 +70,18 @@ public class DriverEarningsTest {
             "(203, 1, 3, 203, 150, 1600, '2010-07-31 20:00:00'), " +
             "(204, 1, 4, 204, 80.5, 200, '2010-07-31 20:00:00');");
 
-        PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(2).add("07/2010");
-        DriverEarnings driverEarnings = new DriverEarnings(inputs);
-
         /*
          * Earning will be (150 + 80.5 = 230.5) * 2
          * 230.5 - commission (15% of total - distance is greater than 300)
          * (230.5 - 34.575) * 2 = 195.925 * 2 = 391.85
          */
+        DriverEarnings driverEarnings = new DriverEarnings();
         assertEquals("\nThe total earnings in 07/2010 is $391.85",
-            driverEarnings.getEarnings(1), "Driver's earning is not " +
-                "calculated correctly");
+            driverEarnings.getMonthlyEarnings(1, "07/2010"), "Driver's " +
+                "earning is not calculated correctly");
     }
 
-    //@Test
+    @Test
     public void testSpecificPeriodEarnings() throws SQLException {
 
         // cleaning data for testing
@@ -97,31 +91,29 @@ public class DriverEarningsTest {
         // inserting data for testing in booking table
         iPersistence.executeCreateOrUpdateQuery("insert into bookings(booking_id, " +
             "created_at, driver_id, cust_id, cab_id, estimated_price, source, destination) values " +
-            "(201, '2010-01-01 20:00:00', 1, 1, 1, 150, 'Halifax', 'Toronto'), " +
-            "(202, '2010-01-01 20:00:00', 1, 2, 1, 150, 'Winnipeg', 'Toronto'), " +
-            "(203, '2010-12-31 20:00:00', 1, 3, 1, 150, 'Halifax', 'Toronto'), " +
+            "(201, '2010-12-28 20:00:00', 1, 1, 1, 150, 'Halifax', 'Toronto'), " +
+            "(202, '2010-12-29 20:00:00', 1, 2, 1, 150, 'Winnipeg', 'Toronto'), " +
+            "(203, '2010-12-30 20:00:00', 1, 3, 1, 150, 'Halifax', 'Toronto'), " +
             "(204, '2010-12-31 20:00:00', 1, 4, 1, 150, 'Winnipeg', 'Toronto');");
 
         // inserting data for testing in trips table
         iPersistence.executeCreateOrUpdateQuery("insert into trips(trip_id, driver_id, cust_id, " +
             "booking_id, trip_amount, distance_covered, created_at) values " +
-            "(201, 1, 1, 201, 150, 1600, '2010-01-01 20:00:00'), " +
-            "(202, 1, 2, 202, 80.5, 200, '2010-01-01 20:00:00'), " +
+            "(201, 1, 1, 201, 150, 1600, '2010-12-28 20:00:00'), " +
+            "(202, 1, 2, 202, 80.5, 200, '2010-12-28 20:00:00'), " +
             "(203, 1, 3, 203, 150, 1600, '2010-12-31 20:00:00'), " +
             "(204, 1, 4, 204, 80.5, 200, '2010-12-31 20:00:00');");
 
-        PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(3).add("01/01/2010").add("31/12/2010");
-        DriverEarnings driverEarnings = new DriverEarnings(inputs);
-
         /*
-         * Earning will be (150 + 80.5 = 230.5) * 2
-         * 230.5 - commission (15% of total - distance is greater than 300)
+         * Earning on 28th will be (150 + 80.5 = 230.5)
+         * Earning on 31st will be (150 + 80.5 = 230.5)
+         * 230.5 - commission (15% of total because distance is greater than 300)
          * (230.5 - 34.575) * 2 = 195.925 * 2 = 391.85
          */
-        assertEquals("\nTotal earnings between 01/01/2010 and 31/12/2010 is $391.85",
-            driverEarnings.getEarnings(1), "Driver's earning is not " +
-                "calculated correctly");
+        DriverEarnings driverEarnings = new DriverEarnings();
+        assertEquals("\nTotal earnings between 28/12/2010 and 31/12/2010 is $391.85",
+            driverEarnings.getSpecificPeriodEarnings(1, "28/12/2010", "31/12/2010"),
+            "Driver's earning is not calculated correctly");
     }
 
     @Test
@@ -145,12 +137,10 @@ public class DriverEarningsTest {
          * total rides: 1, total distance: 100, total time: 1, So 20% commission will be deducted
          * Total Amount: 150, After deduction of 20% commission: 120
          */
-
-        PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(1).add("24/07/2010");
-        DriverEarnings earnings = new DriverEarnings(inputs);
-        assertEquals("\nTotal earning on 24/07/2010 is $120.0",
-            earnings.getEarnings(1), "Earning is not calculated correctly");
+        DriverEarnings earnings = new DriverEarnings();
+        assertEquals("\nTotal earning on 24/07/2010 is $120.00",
+            earnings.getDailyEarnings(1, "24/07/2010"),
+            "Earning is not calculated correctly");
     }
 
     @Test
@@ -174,12 +164,10 @@ public class DriverEarningsTest {
          * total rides: 1, total distance: 250, total time: 1 hr, So 18% commission will be deducted
          * Total Amount: 150, After deduction of 18% commission: 123
          */
-
-        PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(1).add("24/07/2010");
-        DriverEarnings earnings = new DriverEarnings(inputs);
-        assertEquals("\nTotal earning on 24/07/2010 is $123.0",
-            earnings.getEarnings(1), "Earning is not calculated correctly");
+        DriverEarnings earnings = new DriverEarnings();
+        assertEquals("\nTotal earning on 24/07/2010 is $123.00",
+            earnings.getDailyEarnings(1, "24/07/2010"),
+            "Earning is not calculated correctly");
     }
 
     @Test
@@ -203,12 +191,10 @@ public class DriverEarningsTest {
          * total rides: 1, total distance: 251, total time: 1 hr, So 16% commission will be deducted
          * Total Amount: 150, After deduction of 18% commission: 126
          */
-
-        PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(1).add("24/07/2010");
-        DriverEarnings earnings = new DriverEarnings(inputs);
-        assertEquals("\nTotal earning on 24/07/2010 is $126.0",
-            earnings.getEarnings(1), "Earning is not calculated correctly");
+        DriverEarnings earnings = new DriverEarnings();
+        assertEquals("\nTotal earning on 24/07/2010 is $126.00",
+            earnings.getDailyEarnings(1, "24/07/2010"),
+            "Earning is not calculated correctly");
     }
 
     @Test
@@ -232,11 +218,9 @@ public class DriverEarningsTest {
          * total rides: 1, total distance: 350, total time: 1 hr, So 15% commission will be deducted
          * Total Amount: 150, After deduction of 18% commission: 127.5
          */
-
-        PredefinedInputs inputs = new PredefinedInputs();
-        inputs.add(1).add("24/07/2010");
-        DriverEarnings earnings = new DriverEarnings(inputs);
-        assertEquals("\nTotal earning on 24/07/2010 is $127.5",
-            earnings.getEarnings(1), "Earning is not calculated correctly");
+        DriverEarnings earnings = new DriverEarnings();
+        assertEquals("\nTotal earning on 24/07/2010 is $127.50",
+            earnings.getDailyEarnings(1, "24/07/2010"),
+            "Earning is not calculated correctly");
     }
 }

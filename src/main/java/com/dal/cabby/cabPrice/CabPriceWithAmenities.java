@@ -8,10 +8,10 @@ import java.sql.SQLException;
 public class CabPriceWithAmenities {
     Inputs inputs;
     IPersistence iPersistence;
-    CabPriceDistanceFactor cabPriceDistanceFactor;
+    CabPriceNormalBooking cabPriceNormalBooking;
     public CabPriceWithAmenities(Inputs inputs){
         this.inputs=inputs;
-        cabPriceDistanceFactor=new CabPriceDistanceFactor(inputs);
+        cabPriceNormalBooking =new CabPriceNormalBooking(inputs);
         try {
             iPersistence= DBHelper.getInstance();
         } catch (SQLException throwables) {
@@ -25,7 +25,7 @@ public class CabPriceWithAmenities {
         System.out.println("2. Wifi");
         System.out.println("3. Both");
         int input= inputs.getIntegerInput();
-        double basicPrice= cabPriceDistanceFactor.distanceFactor(source,distance, cabCategory,hour);
+        double basicPrice= cabPriceNormalBooking.distanceFactor(source,distance, cabCategory,hour);
         System.out.println("Price without amenities: $"+String.format("%.2f",basicPrice));
         double priceWithAmenities= basicPrice;
         double extraCharge=0;
