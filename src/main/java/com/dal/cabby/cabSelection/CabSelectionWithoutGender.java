@@ -9,7 +9,7 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 
-public class CabSelectionWithoutGender {
+public class CabSelectionWithoutGender implements ICabSelectionWithoutGender {
     IPersistence iPersistence;
     Inputs inputs;
     CabSelectionDBLayer cabSelectionDBLayer;
@@ -36,6 +36,7 @@ public class CabSelectionWithoutGender {
          Location and Cab location which will be used as one of the parameter two parameters
          (2nd one is Traffic Density) in Fetching optimal cab.
     */
+    @Override
     public CabSelectionDAO withoutGenderPreference() throws SQLException {
         List<CabSelectionDAO> mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
         try {

@@ -5,10 +5,10 @@ import com.dal.cabby.dbHelper.IPersistence;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CabPriceWithAmenities {
+public class CabPriceWithAmenities implements ICabPriceWithAmenities {
     Inputs inputs;
     IPersistence iPersistence;
-    CabPriceNormalBooking cabPriceNormalBooking;
+    ICabPriceNormalBooking cabPriceNormalBooking;
     public CabPriceWithAmenities(Inputs inputs){
         this.inputs=inputs;
         cabPriceNormalBooking =new CabPriceNormalBooking(inputs);
@@ -18,8 +18,14 @@ public class CabPriceWithAmenities {
             throwables.printStackTrace();
         }
     }
-    public double amenities(String source,double distance, int cabCategory, double hour) throws SQLException {
-        // For every 30 minutes of ride we are charging extra $2 per amenity.
+
+    /*
+        This method calculates extra price which needs to be charged based on user's choice of amenities.
+        For every 30 minutes of ride we are charging extra $2 per amenity.
+     */
+    @Override
+    public double amenities(String source, double distance, int cabCategory, double hour) throws SQLException {
+
         System.out.println("Choose amenities:");
         System.out.println("1. CarTV");
         System.out.println("2. Wifi");

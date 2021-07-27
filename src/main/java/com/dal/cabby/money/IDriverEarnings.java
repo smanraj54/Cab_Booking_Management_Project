@@ -2,6 +2,10 @@ package com.dal.cabby.money;
 
 import java.sql.SQLException;
 
+/**
+ * This interface has all the methods required to get the earning details for
+ * different time spans
+ */
 public interface IDriverEarnings {
 
     /**

@@ -1,6 +1,6 @@
 package com.dal.cabby.cabSelection;
-
 import com.dal.cabby.cabPrice.CabPriceCalculator;
+import com.dal.cabby.cabPrice.ICabPriceCalculator;
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.InputFromUser;
@@ -8,13 +8,13 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Booking;
 import java.sql.SQLException;
 
-public class CabSelection {
+public class CabSelection implements  ICabSelection{
     CabSelectionDAO bestCab;
     private IPersistence iPersistence;
     private Inputs inputs;
-    private CabPriceCalculator cabPriceCalculator;
-    private CabSelectionWithGender cabSelectionWithGender;
-    private CabSelectionWithoutGender cabSelectionWithoutGender;
+    private ICabPriceCalculator cabPriceCalculator;
+    private ICabSelectionWithGender cabSelectionWithGender;
+    private ICabSelectionWithoutGender cabSelectionWithoutGender;
     public String sourceLocation, destinationLocation;
 
     public CabSelection(Inputs inputs) throws SQLException {
@@ -34,6 +34,11 @@ public class CabSelection {
         cabSelection.preferredCab(1, 20);
     }
 
+    /*
+        This method serves as presentation layer for Cab Selection feature. This method takes Cab preference,source and
+        destination locations from user to book Cab. It also gives an option to book a cab based on gender of driver.
+     */
+    @Override
     public Booking preferredCab(int custId, double hour) throws SQLException {
         System.out.println("Enter your cab preference.");
         System.out.println("1. Micro or Mini");
@@ -58,7 +63,8 @@ public class CabSelection {
                 bestCab = cabSelectionWithoutGender.withoutGenderPreference();
         }
         double price = cabPriceCalculator.priceCalculation(sourceLocation, destinationLocation, cabType, hour);
-        Booking booking = new Booking(-1, custId, bestCab.driver_Id, -1, sourceLocation, destinationLocation, "", price, false);
+        Booking booking = new Booking(-1, custId, bestCab.driver_Id, -1, sourceLocation,
+                                        destinationLocation, "", price, false);
         return booking;
     }
 }

@@ -2,6 +2,9 @@ package com.dal.cabby.money;
 
 import java.sql.SQLException;
 
+/**
+ * This interface has the method to get earning from database
+ */
 public interface IDBDriverOperations {
 
     /**

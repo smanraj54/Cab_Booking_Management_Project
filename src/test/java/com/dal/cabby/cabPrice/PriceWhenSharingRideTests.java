@@ -1,6 +1,7 @@
 package com.dal.cabby.cabPrice;
 
 import com.dal.cabby.cabSelection.CabSelection;
+import com.dal.cabby.cabSelection.ICabSelection;
 import com.dal.cabby.io.PredefinedInputs;
 import com.dal.cabby.pojo.Booking;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +15,7 @@ public class PriceWhenSharingRideTests {
     void microAndMiniRideSharingTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(1).add("Halifax").add("Sydney").add(1).add(1).add(2).add(1);
-        CabSelection cabSelection = new CabSelection(inputs);
+        ICabSelection cabSelection = new CabSelection(inputs);
         Booking booking= cabSelection.preferredCab(1,20);
         double expectedPrice=63.32;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
@@ -24,7 +25,7 @@ public class PriceWhenSharingRideTests {
     void primeSedanRideSharingTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(2).add("Dartmouth").add("Toronto").add(1).add(2).add(2).add(1);
-        CabSelection cabSelection = new CabSelection(inputs);
+        ICabSelection cabSelection = new CabSelection(inputs);
         Booking booking= cabSelection.preferredCab(1,20);
         double expectedPrice=322.74;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
@@ -34,7 +35,7 @@ public class PriceWhenSharingRideTests {
     void primeSUVRideSharingTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(3).add("Sydney").add("BedFord").add(1).add(2).add(2).add(2);
-        CabSelection cabSelection = new CabSelection(inputs);
+        ICabSelection cabSelection = new CabSelection(inputs);
         Booking booking= cabSelection.preferredCab(1,20);
         double expectedPrice=109.89;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");
@@ -44,7 +45,7 @@ public class PriceWhenSharingRideTests {
     void luxuryClassRideSharingTest() throws SQLException {
         PredefinedInputs inputs = new PredefinedInputs();
         inputs.add(4).add("Halifax").add("Winnipeg").add(1).add(2).add(2).add(2);
-        CabSelection cabSelection = new CabSelection(inputs);
+        ICabSelection cabSelection = new CabSelection(inputs);
         Booking booking= cabSelection.preferredCab(1,20);
         double expectedPrice=206.17;
         Assertions.assertEquals(expectedPrice,booking.getPrice(),"Error in calculating right price");

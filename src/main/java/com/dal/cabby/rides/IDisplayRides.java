@@ -5,6 +5,10 @@ import com.dal.cabby.pojo.UserType;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * This interface has all the methods to get the rides details for
+ * different time periods.
+ */
 public interface IDisplayRides {
 
   /**
