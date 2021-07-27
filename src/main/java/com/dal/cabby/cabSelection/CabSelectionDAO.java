@@ -48,8 +48,7 @@ public class CabSelectionDAO {
         return routeTrafficDensity;
     }
     public void setRouteTrafficDensity(String routeTrafficDensity) {
-        this.routeTrafficDensity
-                = routeTrafficDensity;
+        this.routeTrafficDensity = routeTrafficDensity;
     }
     public int getCabSpeedOnRoute() {
         return cabSpeedOnRoute;

@@ -7,10 +7,10 @@ import com.dal.cabby.io.Inputs;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CabPriceDistanceFactor {
+public class CabPriceNormalBooking {
     IPersistence iPersistence;
     Inputs inputs;
-    public  CabPriceDistanceFactor(Inputs inputs){
+    public CabPriceNormalBooking(Inputs inputs){
         this.inputs=inputs;
         try {
             iPersistence = DBHelper.getInstance();

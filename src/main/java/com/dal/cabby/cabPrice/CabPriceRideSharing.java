@@ -9,12 +9,12 @@ import java.sql.SQLException;
 public class CabPriceRideSharing {
     Inputs inputs;
     IPersistence iPersistence;
-    CabPriceDistanceFactor cabPriceDistanceFactor;
+    CabPriceNormalBooking cabPriceNormalBooking;
 
     //CabPriceCalculator cabPriceCalculator;
     public CabPriceRideSharing(Inputs inputs) {
         this.inputs = inputs;
-        cabPriceDistanceFactor = new CabPriceDistanceFactor(inputs);
+        cabPriceNormalBooking = new CabPriceNormalBooking(inputs);
         //cabPriceCalculator=new CabPriceCalculator(inputs);
         try {
             iPersistence = DBHelper.getInstance();
@@ -28,7 +28,7 @@ public class CabPriceRideSharing {
         System.out.println("One co-passenger");
         System.out.println("Two co-passengers");
         int input = inputs.getIntegerInput();
-        double basicPrice = cabPriceDistanceFactor.distanceFactor(source, distance, cabCategory, hour);
+        double basicPrice = cabPriceNormalBooking.distanceFactor(source, distance, cabCategory, hour);
         System.out.println("Price without Co-passenger: $" + String.format("%.2f", basicPrice));
         double priceWithCoPassenger = basicPrice;
         double discount;

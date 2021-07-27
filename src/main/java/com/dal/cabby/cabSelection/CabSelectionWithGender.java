@@ -33,16 +33,15 @@ public class CabSelectionWithGender {
     }
 
     /*
-        This method pass names of all nearby cabs of a specific gender chosen by customer to price Calculation
-        class to calculate distance between Source Location and Cab location which is further used
-        in calculating price.
+        This method pass names of all nearby cabs of a specific gender chosen by customer to DB Layer
+         to calculate distance between Source Location and Cab location which will be used as one of the
+         parameter two parameters (2nd one is Traffic Density) in Fetching optimal cab.
     */
     public CabSelectionDAO withGenderPreference() throws SQLException {
-        List<CabSelectionDAO> mainArrayList;
+        List<CabSelectionDAO> mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
         List<String> maleArrayList = new ArrayList<>();
         List<String> femaleArrayList = new ArrayList<>();
         String gender;
-        mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
         System.out.println("Select your gender preference");
         System.out.println("1. Male ");
         System.out.println("2. Female ");
@@ -66,7 +65,7 @@ public class CabSelectionWithGender {
                     }
                 }
                 for (String s : maleArrayList) {
-                    cabPriceCalculator.locationAndCabDistanceFromOrigin(cabSelection.sourceLocation, s);
+                    cabSelectionDBLayer.locationAndCabDistanceFromOrigin(cabSelection.sourceLocation, s);
                 }
                 return bestNearbyCabOfMaleDriver();
             case 2:
@@ -77,7 +76,7 @@ public class CabSelectionWithGender {
                     }
                 }
                 for (String s : femaleArrayList) {
-                    cabPriceCalculator.locationAndCabDistanceFromOrigin(cabSelection.sourceLocation, s);
+                    cabSelectionDBLayer.locationAndCabDistanceFromOrigin(cabSelection.sourceLocation, s);
                 }
                 return bestNearbyCabOfFemaleDriver();
 
@@ -92,12 +91,13 @@ public class CabSelectionWithGender {
         factor on routes.
      */
     private CabSelectionDAO bestNearbyCabOfMaleDriver() throws SQLException {
+        List<CabSelectionDAO> mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
         List<Double> maleDriverTimeToReach = new ArrayList<>();
         String gender;
         CabSelectionDAO selectedCab = null;
         double min = Double.MAX_VALUE;
         IRatings iRatings = new Ratings();
-        for (CabSelectionDAO cabDetail : cabSelectionDBLayer.cabDetails) {
+        for (CabSelectionDAO cabDetail : mainArrayList) {
             gender = cabDetail.driverGender;
             if (gender.equals("Male")) {
                 double timeOfCab = (cabDetail.cabDistanceFromOrigin) / (cabDetail.cabSpeedOnRoute);
@@ -124,12 +124,13 @@ public class CabSelectionWithGender {
         factor on routes.
      */
     private CabSelectionDAO bestNearbyCabOfFemaleDriver() throws SQLException {
+        List<CabSelectionDAO> mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
         List<Double> femaleDriverTimeToReach = new ArrayList<>();
         String gender;
         CabSelectionDAO selectedCab = null;
         double min = Double.MAX_VALUE;
         IRatings iRatings = new Ratings();
-        for (CabSelectionDAO cabDetail : cabSelectionDBLayer.cabDetails) {
+        for (CabSelectionDAO cabDetail : mainArrayList) {
             gender = cabDetail.driverGender;
             if (gender.equals("Female")) {
                 double timeOfCab = (cabDetail.cabDistanceFromOrigin) / (cabDetail.cabSpeedOnRoute);
