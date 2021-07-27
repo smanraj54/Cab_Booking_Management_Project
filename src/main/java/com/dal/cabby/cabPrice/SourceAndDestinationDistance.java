@@ -4,6 +4,10 @@ import java.sql.SQLException;
 
 public class SourceAndDestinationDistance {
 
+    /*
+        This method calculate distance between Source and Destination place. It takes two parameters
+        i.e, source location and destination location as input.
+     */
     public double calculateDistance(Double source,Double destination) throws SQLException {
         double distance=0.0;
         if(source > 0 && destination > 0) {

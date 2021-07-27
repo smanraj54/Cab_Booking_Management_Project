@@ -1,9 +1,7 @@
 package com.dal.cabby.cabPrice;
-
 import com.dal.cabby.dbHelper.DBHelper;
 import com.dal.cabby.dbHelper.IPersistence;
 import com.dal.cabby.io.Inputs;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -21,7 +19,7 @@ public class CabPriceNormalBooking implements ICabPriceNormalBooking {
 
     @Override
     public double distanceFactor(String source, double distance, int cabType, double hour) throws SQLException {
-        double shortDistance = 5; //For initial few kilometers 5 dollars would be charged per Km
+        double shortDistance = 5; //For initial 5 kilometers 5 dollars would be charged per Km
         String rideArea = null;
         double price = 0.0;
         if (distance <= shortDistance) {
