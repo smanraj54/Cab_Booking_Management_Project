@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class CabPriceWithAmenities implements ICabPriceWithAmenities {
     Inputs inputs;
     IPersistence iPersistence;
-    CabPriceNormalBooking cabPriceNormalBooking;
+    ICabPriceNormalBooking cabPriceNormalBooking;
     public CabPriceWithAmenities(Inputs inputs){
         this.inputs=inputs;
         cabPriceNormalBooking =new CabPriceNormalBooking(inputs);

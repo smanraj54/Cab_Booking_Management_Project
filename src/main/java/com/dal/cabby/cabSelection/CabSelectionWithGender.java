@@ -10,7 +10,7 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.rating.IRatings;
 import com.dal.cabby.rating.Ratings;
 
-public class CabSelectionWithGender {
+public class CabSelectionWithGender implements ICabSelectionWithGender {
     IPersistence iPersistence;
     Inputs inputs;
     CabSelection cabSelection;
@@ -37,6 +37,7 @@ public class CabSelectionWithGender {
          to calculate distance between Source Location and Cab location which will be used as one of the
          parameter two parameters (2nd one is Traffic Density) in Fetching optimal cab.
     */
+    @Override
     public CabSelectionDAO withGenderPreference() throws SQLException {
         List<CabSelectionDAO> mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
         List<String> maleArrayList = new ArrayList<>();

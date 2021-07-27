@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class CabPriceRideSharing implements ICabPriceRideSharing {
     Inputs inputs;
     IPersistence iPersistence;
-    CabPriceNormalBooking cabPriceNormalBooking;
+    ICabPriceNormalBooking cabPriceNormalBooking;
 
     public CabPriceRideSharing(Inputs inputs) {
         this.inputs = inputs;
