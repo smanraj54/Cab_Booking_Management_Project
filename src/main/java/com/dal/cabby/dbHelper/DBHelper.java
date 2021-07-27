@@ -2,6 +2,9 @@ package com.dal.cabby.dbHelper;
 
 import java.sql.*;
 
+/**
+ * This class is database layer for our project.
+ */
 public class DBHelper implements IPersistence {
     private static Connection connection;
     private static Statement statement;

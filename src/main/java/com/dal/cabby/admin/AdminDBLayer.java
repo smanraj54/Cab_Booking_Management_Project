@@ -20,6 +20,9 @@ class AdminDBLayer {
         this.iPersistence = DBHelper.getInstance();
     }
 
+    /*
+    Fetch the list of drivers who are not in the activated state.
+     */
     List<Profile> listOfDriversToBeApproved() throws SQLException {
         String query = "select driver_id, name from driver where status = false order by driver_id desc";
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
@@ -32,6 +35,9 @@ class AdminDBLayer {
         return profileList;
     }
 
+    /*
+    Fetch the list of customers who are not in the activated state.
+     */
     List<Profile> listOfCustomersToBeApproved() throws SQLException {
         String query = "select cust_id, name from customer where status = false order by cust_id desc";
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
