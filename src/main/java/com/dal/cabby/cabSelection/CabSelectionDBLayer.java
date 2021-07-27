@@ -11,12 +11,12 @@ import java.util.List;
 public class CabSelectionDBLayer {
     IPersistence iPersistence;
     Inputs inputs;
-    CabSelectionService cabSelectionService;
+    CabSelection cabSelection;
     public List<CabSelectionDAO> cabDetails = new ArrayList<>();
 
-    public CabSelectionDBLayer(Inputs inputs, CabSelectionService cabSelectionService){
+    public CabSelectionDBLayer(Inputs inputs, CabSelection cabSelection){
         this.inputs=inputs;
-        this.cabSelectionService=cabSelectionService;
+        this.cabSelection = cabSelection;
         try {
             iPersistence= DBHelper.getInstance();
         } catch (SQLException throwables) {
@@ -26,7 +26,7 @@ public class CabSelectionDBLayer {
 
     public List<CabSelectionDAO> getAllNearbyCabs() throws SQLException {
         double sourceDistance = 0.0;
-        String query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", cabSelectionService.sourceLocation);
+        String query = String.format("Select distanceFromOrigin from price_Calculation where sourceName='%s'", cabSelection.sourceLocation);
         ResultSet resultSet = iPersistence.executeSelectQuery(query);
         while (resultSet.next()) {
             sourceDistance = resultSet.getDouble("distanceFromOrigin");

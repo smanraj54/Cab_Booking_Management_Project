@@ -8,7 +8,7 @@ import com.dal.cabby.io.Inputs;
 import com.dal.cabby.pojo.Booking;
 import java.sql.SQLException;
 
-public class CabSelectionService {
+public class CabSelection {
     CabSelectionDAO bestCab;
     private IPersistence iPersistence;
     private Inputs inputs;
@@ -17,7 +17,7 @@ public class CabSelectionService {
     private CabSelectionWithoutGender cabSelectionWithoutGender;
     public String sourceLocation, destinationLocation;
 
-    public CabSelectionService(Inputs inputs) throws SQLException {
+    public CabSelection(Inputs inputs) throws SQLException {
         this.inputs = inputs;
         cabPriceCalculator = new CabPriceCalculator(inputs);
         try {
@@ -30,8 +30,8 @@ public class CabSelectionService {
     }
 
     public static void main(String[] args) throws SQLException {
-        CabSelectionService cabSelectionService = new CabSelectionService(new InputFromUser());
-        cabSelectionService.preferredCab(1, 20);
+        CabSelection cabSelection = new CabSelection(new InputFromUser());
+        cabSelection.preferredCab(1, 20);
     }
 
     public Booking preferredCab(int custId, double hour) throws SQLException {

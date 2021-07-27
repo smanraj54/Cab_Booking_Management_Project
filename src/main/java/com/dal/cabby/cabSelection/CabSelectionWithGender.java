@@ -13,22 +13,30 @@ import com.dal.cabby.rating.Ratings;
 public class CabSelectionWithGender {
     IPersistence iPersistence;
     Inputs inputs;
-    CabSelectionService cabSelectionService;
+    CabSelection cabSelection;
     CabSelectionDBLayer cabSelectionDBLayer;
     CabPriceCalculator cabPriceCalculator;
 
-    public CabSelectionWithGender(Inputs inputs,CabSelectionService cabSelectionService){
+    /*
+        This is the constructor of class which interacts with DB Layer to fetch Nearby Cabs
+    */
+    public CabSelectionWithGender(Inputs inputs, CabSelection cabSelection){
         this.inputs=inputs;
-        this.cabSelectionService=cabSelectionService;
+        this.cabSelection = cabSelection;
         cabPriceCalculator = new CabPriceCalculator(inputs);
         try {
             iPersistence=DBHelper.getInstance();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        cabSelectionDBLayer=new CabSelectionDBLayer(inputs,cabSelectionService);
+        cabSelectionDBLayer=new CabSelectionDBLayer(inputs, cabSelection);
     }
 
+    /*
+        This method pass names of all nearby cabs of a specific gender chosen by customer to price Calculation
+        class to calculate distance between Source Location and Cab location which is further used
+        in calculating price.
+    */
     public CabSelectionDAO withGenderPreference() throws SQLException {
         List<CabSelectionDAO> mainArrayList;
         List<String> maleArrayList = new ArrayList<>();
@@ -58,7 +66,7 @@ public class CabSelectionWithGender {
                     }
                 }
                 for (String s : maleArrayList) {
-                    cabPriceCalculator.locationAndCabDistanceFromOrigin(cabSelectionService.sourceLocation, s);
+                    cabPriceCalculator.locationAndCabDistanceFromOrigin(cabSelection.sourceLocation, s);
                 }
                 return bestNearbyCabOfMaleDriver();
             case 2:
@@ -69,7 +77,7 @@ public class CabSelectionWithGender {
                     }
                 }
                 for (String s : femaleArrayList) {
-                    cabPriceCalculator.locationAndCabDistanceFromOrigin(cabSelectionService.sourceLocation, s);
+                    cabPriceCalculator.locationAndCabDistanceFromOrigin(cabSelection.sourceLocation, s);
                 }
                 return bestNearbyCabOfFemaleDriver();
 
@@ -79,6 +87,10 @@ public class CabSelectionWithGender {
         }
     }
 
+    /*
+        This method return best possible cab/ optimal cab of MALE driver after checking Traffic density
+        factor on routes.
+     */
     private CabSelectionDAO bestNearbyCabOfMaleDriver() throws SQLException {
         List<Double> maleDriverTimeToReach = new ArrayList<>();
         String gender;
@@ -107,6 +119,10 @@ public class CabSelectionWithGender {
         return selectedCab;
     }
 
+    /*
+        This method return best possible cab/ optimal cab of FEMALE driver after checking Traffic density
+        factor on routes.
+     */
     private CabSelectionDAO bestNearbyCabOfFemaleDriver() throws SQLException {
         List<Double> femaleDriverTimeToReach = new ArrayList<>();
         String gender;

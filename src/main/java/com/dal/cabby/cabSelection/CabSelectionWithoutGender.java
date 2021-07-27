@@ -13,21 +13,28 @@ public class CabSelectionWithoutGender {
     IPersistence iPersistence;
     Inputs inputs;
     CabSelectionDBLayer cabSelectionDBLayer;
-    CabSelectionService cabSelectionService;
+    CabSelection cabSelection;
     CabPriceCalculator cabPriceCalculator;
 
-    public CabSelectionWithoutGender(Inputs inputs,CabSelectionService cabSelectionService){
+    /*
+        This is the constructor of class which interacts with DB Layer to fetch Nearby Cabs
+     */
+    public CabSelectionWithoutGender(Inputs inputs, CabSelection cabSelection){
         this.inputs=inputs;
-        this.cabSelectionService=cabSelectionService;
+        this.cabSelection = cabSelection;
         cabPriceCalculator=new CabPriceCalculator(inputs);
         try {
             iPersistence=DBHelper.getInstance();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        cabSelectionDBLayer=new CabSelectionDBLayer(inputs,cabSelectionService);
+        cabSelectionDBLayer=new CabSelectionDBLayer(inputs, cabSelection);
     }
 
+    /*
+        This method pass names of all nearby cabs to price Calculation class to calculate distance between
+        Source Location and Cab location which is further used in calculating price.
+     */
     public CabSelectionDAO withoutGenderPreference() throws SQLException {
         List<CabSelectionDAO> mainArrayList;
         mainArrayList = cabSelectionDBLayer.getAllNearbyCabs();
@@ -50,11 +57,15 @@ public class CabSelectionWithoutGender {
         */
 
         for (String s : arrayList) {
-            cabPriceCalculator.locationAndCabDistanceFromOrigin(cabSelectionService.sourceLocation, s);
+            cabPriceCalculator.locationAndCabDistanceFromOrigin(cabSelection.sourceLocation, s);
         }
         return bestNearbyCabWithoutFilter();
     }
 
+    /*
+    This method return best possible cab/ optimal cab based on customer's preference after
+    checking Traffic density on routes.
+     */
     private CabSelectionDAO bestNearbyCabWithoutFilter() throws SQLException {
         List<Double> timeToReach = new ArrayList<>();
         CabSelectionDAO selectedCab = null;
