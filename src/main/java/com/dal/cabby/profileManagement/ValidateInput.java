@@ -5,6 +5,9 @@ import java.util.regex.Pattern;
 
 public class ValidateInput {
 
+    /*
+        Validating the email using regex for the proper format
+     */
     public boolean validateEmail(String email) {
 
         String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
@@ -17,6 +20,9 @@ public class ValidateInput {
 
     }
 
+    /*
+        Validating the confirm password with the value if input password
+     */
     public boolean validateConfirmPassword(String password,
                                            String confirmPassword) {
 
