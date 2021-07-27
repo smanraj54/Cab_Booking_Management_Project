@@ -1,5 +1,10 @@
 image: maven:latest
 
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
 stages:
   # These are the three states we want, building the app, testing it by
   # executing unit tests and checking the results, and finally if this
@@ -17,7 +22,8 @@ build:
   tags:
     - ugrad
   script:
-    - mvn clean compile
+    - mvn clean install -DskipTests=true
+    - ls
   artifacts:
     paths:
        - target/*.jar
